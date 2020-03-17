@@ -1,0 +1,83 @@
+{
+  "name": "vuex-logux",
+  "version": "0.1.0",
+  "description": "Vuex compatible API for Logux",
+  "keywords": [
+    "logux",
+    "client",
+    "vuex",
+    "websocket"
+  ],
+  "scripts": {
+    "clean": "rimraf coverage/",
+    "test": "jest --coverage && eslint . && size-limit"
+  },
+  "author": "Eduard Aksamitov <e@edaks.co>",
+  "license": "MIT",
+  "repository": "euaaaio/vuex-logux",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "peerDependencies": {
+    "vue": ">=2.6.11",
+    "vuex": ">=3.1.3"
+  },
+  "dependencies": {
+    "@logux/client": "logux/client",
+    "@logux/core": "logux/core",
+    "deep-obj-clone-js": "^1.0.2",
+    "nanoevents": "^5.1.0",
+    "vuex": "^3.1.3"
+  },
+  "devDependencies": {
+    "@logux/eslint-config": "^36.1.1",
+    "@logux/sharec-config": "^0.6.2",
+    "@size-limit/preset-small-lib": "^4.4.0",
+    "docdash": "^1.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prefer-let": "^1.0.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-unicorn": "^17.2.0",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "lint-staged": "^10.0.8",
+    "nanodelay": "^1.0.1",
+    "rimraf": "^3.0.2",
+    "size-limit": "^4.4.0",
+    "vue": "^2.6.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "statements": 100
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": "@logux/eslint-config"
+  },
+  "size-limit": [
+    {
+      "path": "index.js",
+      "limit": "10 KB"
+    }
+  ],
+  "sharec": {
+    "config": "@logux/sharec-config",
+    "version": "0.6.2"
+  }
+}
