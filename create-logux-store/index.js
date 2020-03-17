@@ -4,9 +4,7 @@ let { isFirstOlder } = require('@logux/core/is-first-older')
 let { Store } = require('vuex')
 let { clone } = require('deep-obj-clone-js')
 
-function createLoguxStore (config) {
-  if (!config) config = { }
-
+function createLoguxStore (config = { }) {
   let checkEvery = config.checkEvery || 25
   delete config.checkEvery
   let reasonlessHistory = config.reasonlessHistory || 1000
