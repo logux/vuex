@@ -1,5 +1,5 @@
 {
-  "name": "vuex-logux",
+  "name": "@logux/vuex",
   "version": "0.1.0",
   "description": "Vuex compatible API for Logux",
   "keywords": [
@@ -14,7 +14,7 @@
   },
   "author": "Eduard Aksamitov <e@edaks.co>",
   "license": "MIT",
-  "repository": "euaaaio/vuex-logux",
+  "repository": "logux/vuex",
   "engines": {
     "node": ">=10.0.0"
   },
