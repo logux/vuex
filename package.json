@@ -73,7 +73,7 @@
   "size-limit": [
     {
       "path": "index.js",
-      "limit": "10 KB"
+      "limit": "13 KB"
     }
   ],
   "sharec": {
