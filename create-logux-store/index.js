@@ -2,7 +2,8 @@ let { createNanoEvents } = require('nanoevents')
 let { CrossTabClient } = require('@logux/client/cross-tab-client')
 let { isFirstOlder } = require('@logux/core/is-first-older')
 let Vuex = require('vuex')
-let { clone } = require('deep-obj-clone-js')
+
+let { deepCopy } = require('../utils/deepCopy')
 
 function createLogux (config = { }) {
   let checkEvery = config.checkEvery || 25
@@ -18,7 +19,7 @@ function createLogux (config = { }) {
   let log = client.log
 
   let Store = function Store (vuexConfig) {
-    let store = new Vuex.Store(clone(vuexConfig))
+    let store = new Vuex.Store(deepCopy(vuexConfig))
 
     let emitter = createNanoEvents()
 
@@ -33,7 +34,7 @@ function createLogux (config = { }) {
     function saveHistory (meta) {
       actionCount += 1
       if (saveStateEvery === 1 || actionCount % saveStateEvery === 1) {
-        stateHistory[meta.id] = clone(store.state)
+        stateHistory[meta.id] = deepCopy(store.state)
       }
     }
 
@@ -78,9 +79,9 @@ function createLogux (config = { }) {
       log.add(action, meta)
 
       prevMeta = meta
-      let prevState = clone(store.state)
+      let prevState = deepCopy(store.state)
       originCommit(action)
-      emitter.emit('change', clone(store.state), prevState, action, meta)
+      emitter.emit('change', deepCopy(store.state), prevState, action, meta)
       saveHistory(meta)
     }
 
@@ -113,7 +114,7 @@ function createLogux (config = { }) {
     function replaceState (state, actions, pushHistory) {
       let last = actions[actions.length - 1][1]
       let newState = actions.reduceRight((prev, [action, id]) => {
-        let changed = clone(prev)
+        let changed = deepCopy(prev)
         if (vuexConfig.mutations[action.type]) {
           vuexConfig.mutations[action.type](changed, action)
         }
@@ -181,7 +182,7 @@ function createLogux (config = { }) {
             }
 
             if (!replayed) {
-              replaceState(clone(vuexConfig.state), actions.concat([
+              replaceState(deepCopy(vuexConfig.state), actions.concat([
                 [{ type: '@@redux/INIT' }]
               ]))
             }
@@ -281,9 +282,9 @@ function createLogux (config = { }) {
       }
 
       if (!meta.dispatch) {
-        let prevState = clone(store.state)
+        let prevState = deepCopy(store.state)
         process(action, meta).then(() => {
-          let currentState = clone(store.state)
+          let currentState = deepCopy(store.state)
           emitter.emit('change', currentState, prevState, action, meta)
         })
       }

@@ -25,7 +25,6 @@
   "dependencies": {
     "@logux/client": "logux/client",
     "@logux/core": "logux/core",
-    "deep-obj-clone-js": "^1.0.2",
     "nanoevents": "^5.1.0",
     "vuex": "^3.1.3"
   },
