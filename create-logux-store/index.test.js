@@ -3,7 +3,7 @@ let Vuex = require('vuex')
 let { TestPair, TestTime } = require('@logux/core')
 let { delay } = require('nanodelay')
 
-let { createLoguxStore } = require('..')
+let { createLogux } = require('..')
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
@@ -16,8 +16,8 @@ function createStore (mutations, opts) {
   opts.userId = 10
   opts.time = new TestTime()
 
-  let LoguxStore = createLoguxStore(opts)
-  let store = new LoguxStore({ state: { value: 0 }, mutations })
+  let Logux = createLogux(opts)
+  let store = new Logux.Store({ state: { value: 0 }, mutations })
 
   return store
 }
@@ -32,7 +32,7 @@ function historyLine (state, action) {
 
 it('throws error on missed config', () => {
   expect(() => {
-    createLoguxStore()
+    createLogux()
   }).toThrow('Missed server option in Logux client')
 })
 
