@@ -1,4 +1,4 @@
-let createLogux = require('./create-logux-store')
+let createLogux = require('./create-logux')
 
 module.exports = {
   createLogux
