@@ -50,12 +50,12 @@ it('action is not Object', () => {
 
 it('creates Logux client', () => {
   let store = createStore({ increment })
-
   expect(store.client.options.subprotocol).toEqual('1.0.0')
 })
 
 it('not found mutation', () => {
   let store = createStore({ increment })
+
   store.commit.crossTab({ type: 'mutation' })
   store.commit('increment')
   store.commit('increment')
@@ -65,6 +65,7 @@ it('not found mutation', () => {
 
 it('sets tab ID', async () => {
   let store = createStore({ increment })
+
   await new Promise(resolve => {
     store.log.on('add', (action, meta) => {
       expect(meta.tab).toEqual(store.client.tabId)
@@ -216,13 +217,17 @@ it('ignores cleaned history from non-legacy actions', async () => {
 
   await Promise.all([
     store.commit.crossTab(
-      { type: 'historyLine', value: 'a' }, { reasons: ['one'] }),
+      { type: 'historyLine', value: 'a' }, { reasons: ['one'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'b' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'b' }, { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'c' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'c' }, { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'd' }, { reasons: ['test'] })
+      { type: 'historyLine', value: 'd' }, { reasons: ['test'] }
+    )
   ])
   await store.log.removeReason('one')
   store.commit.crossTab(
@@ -244,6 +249,7 @@ it('does not replays actions on logux/ actions', async () => {
     'logux/subscribe': saveCommited,
     'logux/unsubscribe': saveCommited
   })
+
   store.log.add({ type: 'A' }, { reasons: ['t'] })
   store.log.add({ type: 'logux/processed' }, { time: 0 })
   store.log.add({ type: 'logux/subscribe' }, { sync: true, time: 0 })
@@ -412,7 +418,6 @@ it('cleans last 1000 by default', async () => {
       store.commit({ type: 'increment' })
     })
   }
-
   await promise
   await delay(1)
   expect(store.log.actions()).toHaveLength(1000)

@@ -17,7 +17,7 @@ This repository contains Vuex compatible API on top of [Logux Client].
 ## Install
 
 ```sh
-npm install vuex-logux
+npm install @logux/vuex
 ```
 
 ## Usage

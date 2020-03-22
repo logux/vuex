@@ -58,16 +58,10 @@ function createLogux (config = { }) {
       }
     }
 
-    store.commit = (...args) => {
-      let action
-      if (typeof args[0] === 'string') {
-        action = {
-          type: args[0],
-          value: args[1],
-          options: args[2]
-        }
-      } else {
-        action = args[0]
+    store.commit = (type, value, options) => {
+      let action = { type, value, options }
+      if (typeof type === 'object') {
+        action = type
       }
 
       let meta = {
