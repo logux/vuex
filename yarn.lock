@@ -2378,10 +2378,10 @@ eslint-ast-utils@^1.1.0:
     lodash.get "^4.4.2"
     lodash.zip "^4.2.0"
 
-eslint-config-standard@^14.1.0:
-  version "14.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-14.1.0.tgz#b23da2b76fe5a2eba668374f246454e7058f15d4"
-  integrity sha512-EF6XkrrGVbvv8hL/kYa/m6vnvmUT+K82pJJc4JJVMM6+Qgqh0pnwprSxdduDLB9p/7bIxD+YV5O0wfb8lmcPbA==
+eslint-config-standard@^14.1.1:
+  version "14.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-14.1.1.tgz#830a8e44e7aef7de67464979ad06b406026c56ea"
+  integrity sha512-Z9B+VR+JIXRxz21udPTL9HpFMyoMUEeX1G251EQ6e05WD9aPVtVBn09XUmZ259wCMlCDmYDSZG62Hhm+ZTJcUg==
 
 eslint-import-resolver-node@^0.3.2:
   version "0.3.3"
@@ -4794,6 +4794,11 @@ nanoevents@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-5.1.0.tgz#cef2c1b91e68137faf930861b0df6edf53c55193"
   integrity sha512-NMBk7w4I9GJ+zi4ljxartczW36+Hi1ml2I94PLwLE7eRzzXnB0f4GVk1AyONbwqhf/7SD/fTYooEBuDLpDfW3Q==
+
+nanoevents@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-5.1.2.tgz#63df1b87a01616e43f2034389b45c5855234b910"
+  integrity sha512-yv3xXYa05ND3pCDpA4YlvR3LxVO75bvxPsMkKTS/PEfZJHxDoxCzW4O5+Aac96WbIJm9NhJWqyLEl/SKTOub3A==
 
 nanoid@^2.1.11:
   version "2.1.11"
