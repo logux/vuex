@@ -33,7 +33,7 @@ import { createLogux } from '@logux/vuex'
 Vue.use(Vuex)
 
 const Logux = createLogux({
-	subprotocol: '1.0.0',
+  subprotocol: '1.0.0',
   server: process.env.NODE_ENV === 'development'
     ? 'ws://localhost:31337'
     : 'wss://logux.example.com',
