@@ -24,5 +24,34 @@ npm install @logux/vuex
 
 See [documentation] for Logux API.
 
+```js
+import Vue from 'vue'
+import Vux from 'vuex'
+import { createLogux } from '@logux/vuex'
 
-[documentation]: https://github.com/logux/logux
+Vue.use(Vuex)
+
+const Logux = createLogux({
+	subprotocol: '1.0.0',
+  server: process.env.NODE_ENV === 'development'
+    ? 'ws://localhost:31337'
+    : 'wss://logux.example.com',
+  userId: false,
+  credentials: ''
+})
+
+const store = new Logux.Store({
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: {}
+})
+
+log(store.client)
+
+store.client.start()
+
+export default store
+```
+
+[documentation]: https://github.com/logux/docs
