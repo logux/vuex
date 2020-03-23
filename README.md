@@ -1,4 +1,4 @@
-# Vuex Logux
+# Logux Vuex
 
 <img align="right" width="95" height="148" title="Logux logotype"
      src="https://logux.io/branding/logotype.svg">
@@ -9,8 +9,9 @@ between client, server, and other clients.
 
 **Documentation: [logux.io]**
 
-This repository contains Vuex compatible API on top of [Logux Client].
+This repository contains [Vuex] compatible API on top of [Logux Client].
 
+[Vuex]: https://vuex.vuejs.org
 [Logux Client]: https://github.com/logux/client
 [logux.io]: https://logux.io/
 
