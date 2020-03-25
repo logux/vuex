@@ -106,9 +106,10 @@ function createLogux (config = { }) {
     }
 
     function replaceState (state, actions, pushHistory) {
-      let last = actions[actions.length - 1][1]
       let newState = actions.reduceRight((prev, [action, id]) => {
         let changed = deepCopy(prev)
+        let last = actions[actions.length - 1][1]
+
         if (vuexConfig.mutations[action.type]) {
           vuexConfig.mutations[action.type](changed, action)
         }
@@ -117,6 +118,7 @@ function createLogux (config = { }) {
         } else if (stateHistory[id]) {
           stateHistory[id] = changed
         }
+
         return changed
       }, state)
       originCommit({ type: 'logux/state', state: newState })
@@ -176,9 +178,7 @@ function createLogux (config = { }) {
             }
 
             if (!replayed) {
-              replaceState(deepCopy(vuexConfig.state), actions.concat([
-                [{ type: '@@redux/INIT' }]
-              ]))
+              replaceState(deepCopy(vuexConfig.state), actions)
             }
           }
 
