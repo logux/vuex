@@ -27,7 +27,7 @@ See [documentation] for Logux API.
 
 ```js
 import Vue from 'vue'
-import Vux from 'vuex'
+import Vuex from 'vuex'
 import { createLogux } from '@logux/vuex'
 
 Vue.use(Vuex)
