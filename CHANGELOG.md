@@ -2,11 +2,11 @@
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.1.1
-* Fix peerDependencies
+* Fixed peerDependencies
 * Move to yarn from npm
-* Refactor API to more native for Vue developers
-  * Rename `createLoguxStore` → `createLogux`
-  * Return `{ Store }` from `createLogux`
+* More familiar API for Vue developers
+  * `createLoguxStore` renamed to `createLogux`
+  * `createLogux` return `{ Store }`
 
 ## 0.1.0
 * Initial release.
