@@ -11,7 +11,7 @@
   "scripts": {
     "spell": "yaspeller *.md",
     "clean": "rimraf coverage/",
-    "test": "jest --coverage && eslint . && size-limit && yarn spell"
+    "test": "jest --coverage && eslint . && check-dts && size-limit && yarn spell"
   },
   "author": "Eduard Aksamitov <e@edaks.co>",
   "license": "MIT",
@@ -35,6 +35,7 @@
     "@logux/sharec-config": "^0.6.2",
     "@size-limit/preset-small-lib": "^4.4.4",
     "@vue/test-utils": "^1.0.0-beta.32",
+    "check-dts": "^0.1.4",
     "docdash": "^1.2.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
