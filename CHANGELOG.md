@@ -1,6 +1,12 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.0
+* Added `subscriptionMixin` mixin
+  * Adds `isSubscribing` property to component
+* Renamed `checkEvery` to `cleanEvery`
+* Mark package as side effect free
+
 ## 0.1.2
 * Fixed possible bugs
 
@@ -13,4 +19,3 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.1.0
 * Initial release.
-
