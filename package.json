@@ -32,6 +32,7 @@
     "@logux/eslint-config": "^36.1.2",
     "@logux/sharec-config": "^0.6.2",
     "@size-limit/preset-small-lib": "^4.4.2",
+    "@vue/test-utils": "^1.0.0-beta.32",
     "docdash": "^1.2.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
@@ -49,7 +50,8 @@
     "nanodelay": "^1.0.1",
     "rimraf": "^3.0.2",
     "size-limit": "^4.4.2",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11"
   },
   "husky": {
     "hooks": {
