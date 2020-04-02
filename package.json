@@ -92,7 +92,8 @@
       "GraphQL",
       "io",
       "logux",
-      "vuex"
+      "vuex",
+      "mixin"
     ]
   },
   "sharec": {
