@@ -9,8 +9,9 @@
     "websocket"
   ],
   "scripts": {
+    "spell": "yaspeller *.md",
     "clean": "rimraf coverage/",
-    "test": "jest --coverage && eslint . && size-limit"
+    "test": "jest --coverage && eslint . && size-limit && yarn spell"
   },
   "author": "Eduard Aksamitov <e@edaks.co>",
   "license": "MIT",
@@ -52,7 +53,8 @@
     "rimraf": "^3.0.2",
     "size-limit": "^4.4.4",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "yaspeller": "^6.1.0"
   },
   "husky": {
     "hooks": {
@@ -60,6 +62,7 @@
     }
   },
   "lint-staged": {
+    "*.md": "yaspeller",
     "*.js": "eslint"
   },
   "jest": {
@@ -78,6 +81,20 @@
       "limit": "13 KB"
     }
   ],
+  "yaspeller": {
+    "lang": "en",
+    "ignoreCapitalization": true,
+    "dictionary": [
+      "versioning",
+      "peerDependencies",
+      "npm",
+      "vue",
+      "GraphQL",
+      "io",
+      "logux",
+      "vuex"
+    ]
+  },
   "sharec": {
     "config": "@logux/sharec-config",
     "version": "0.6.2"
