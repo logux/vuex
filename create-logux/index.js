@@ -259,7 +259,7 @@ function createLogux (config = { }) {
 
       if (action.type === 'logux/processed') {
         if (processing[action.id]) {
-          processing[action.id][0]()
+          processing[action.id][0](meta)
           delete processing[action.id]
         }
       } else if (!meta.noAutoReason) {
