@@ -1,3 +1,5 @@
+const Vue = require('vue')
+
 function unifyChannelsObject (channels) {
   if (!channels) {
     return [[{}, '']]
@@ -12,7 +14,7 @@ function subscriptionsId (subscriptions) {
   return subscriptions.map(i => i[1]).sort().join(' ')
 }
 
-const subscriptionMixin = {
+const subscriptionMixin = Vue.extend({
   data: () => ({
     isSubscribing: false,
     $_loguxVuex_ignoreResponse: []
@@ -77,6 +79,6 @@ const subscriptionMixin = {
       })
     }
   }
-}
+})
 
 module.exports = subscriptionMixin
