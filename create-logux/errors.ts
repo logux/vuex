@@ -3,11 +3,11 @@ import { createLogux } from '..'
 let opts = {
   server: 'wss://localhost:1337',
   subprotocol: '1.0.0',
-  userId: "10",
+  userId: '10',
 }
 
 interface RootState {
-  value: number;
+  value: number
 }
 
 let Logux = createLogux(opts)

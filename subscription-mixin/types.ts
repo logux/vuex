@@ -1,6 +1,6 @@
-import mixins from 'vue-typed-mixins';
+import mixins from 'vue-typed-mixins'
 
-import { subscriptionMixin } from "./..";
+import { subscriptionMixin } from '..'
 
 mixins(subscriptionMixin).extend({
   computed: {
@@ -12,6 +12,6 @@ mixins(subscriptionMixin).extend({
     }
   },
   mounted() {
-    console.log(this.isSubscribing);
+    console.log(this.isSubscribing)
   }
-});
+})

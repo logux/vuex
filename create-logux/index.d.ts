@@ -1,13 +1,13 @@
 import { Unsubscribe } from 'nanoevents'
-import { Action as ClientAction, Log } from "@logux/core";
-import { ClientMeta, ClientOptions, CrossTabClient } from "@logux/client";
-import { Payload as VuexPayload, Commit as VuexCommit, Store as VuexStore, CommitOptions } from "vuex";
+import { Action as ClientAction, Log } from '@logux/core'
+import { ClientMeta, ClientOptions, CrossTabClient } from '@logux/client'
+import { Payload as VuexPayload, Commit as VuexCommit, Store as VuexStore, CommitOptions } from 'vuex'
 
-export type Action = ClientAction & VuexPayload;
+export type Action = ClientAction & VuexPayload
 
 export interface Commit extends VuexCommit {
-  (type: string, payload?: any, options?: CommitOptions): void;
-  <A extends Action>(payloadWithType: A, options?: CommitOptions): void;
+  (type: string, payload?: any, options?: CommitOptions): void
+  <A extends Action>(payloadWithType: A, options?: CommitOptions): void
 
   /**
    * Add sync action to log and update store state.
@@ -26,7 +26,7 @@ export interface Commit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
-  sync<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>;
+  sync<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
    * Add cross-tab action to log and update store state.
@@ -45,7 +45,7 @@ export interface Commit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  crossTab<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>;
+  crossTab<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
    * Add local action to log and update store state.
@@ -65,7 +65,7 @@ export interface Commit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  local<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>;
+  local<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 }
 
 interface StateListener<S> {
@@ -125,7 +125,7 @@ export type LoguxConfig = ClientOptions & {
   /**
    * Callback when there is no history to replay actions accurate.
    */
-  onMissedHistory?: (action: ClientAction) => void;
+  onMissedHistory?: (action: ClientAction) => void
 }
 
 export function createLogux(config: LoguxConfig): {

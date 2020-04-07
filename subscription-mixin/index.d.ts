@@ -1,9 +1,9 @@
-import type { ExtendedVue, Vue } from "vue/types/vue";
+import type { ExtendedVue, Vue } from 'vue/types/vue'
 
 export type LoguxSubscription = string | {
   channel: string
   [key: string]: any
-};
+}
 
 export const subscriptionMixin: ExtendedVue<
   Vue,
@@ -14,8 +14,8 @@ export const subscriptionMixin: ExtendedVue<
     }
   },
   {
-    $_loguxVuex_subscribe(subscriptions: LoguxSubscription[]): Promise<void>;
-    $_loguxVuex_unsubscribe(subscriptions: LoguxSubscription[]): void;
+    $_loguxVuex_subscribe(subscriptions: LoguxSubscription[]): Promise<void>
+    $_loguxVuex_unsubscribe(subscriptions: LoguxSubscription[]): void
   },
   {},
   {}

@@ -1,4 +1,4 @@
-const Vue = require('vue')
+let Vue = require('vue')
 
 function unifyChannelsObject (channels) {
   if (!channels) {
@@ -14,7 +14,7 @@ function subscriptionsId (subscriptions) {
   return subscriptions.map(i => i[1]).sort().join(' ')
 }
 
-const subscriptionMixin = Vue.extend({
+let subscriptionMixin = Vue.extend({
   data: () => ({
     isSubscribing: false,
     $_loguxVuex_ignoreResponse: {}
