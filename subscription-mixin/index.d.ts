@@ -1,6 +1,6 @@
 import type { ExtendedVue, Vue } from "vue/types/vue";
 
-export type LoguxSubscription = {
+export type LoguxSubscription = string | {
   channel: string
   [key: string]: any
 };
