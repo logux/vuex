@@ -17,7 +17,7 @@ function subscriptionsId (subscriptions) {
 const subscriptionMixin = Vue.extend({
   data: () => ({
     isSubscribing: false,
-    $_loguxVuex_ignoreResponse: []
+    $_loguxVuex_ignoreResponse: {}
   }),
   watch: {
     channels: {
