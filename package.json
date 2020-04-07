@@ -55,6 +55,7 @@
     "size-limit": "^4.4.4",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11",
+    "vue-typed-mixins": "^0.2.0",
     "yaspeller": "^6.1.0"
   },
   "husky": {
