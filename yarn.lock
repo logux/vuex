@@ -1492,17 +1492,25 @@ chalk@^3.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+chalk@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.0.0.tgz#6e98081ed2d17faab615eb52ac66ec1fe6209e72"
+  integrity sha512-N9oWFcegS0sFr9oh1oz2d7Npos6vNoWW9HvtCg5N1KRFpUhaAhvTv5Y58g880fZaEYSNm3qDz8SU1UrGvp+n7A==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
 chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-check-dts@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/check-dts/-/check-dts-0.1.4.tgz#cae69a4259163aa06a113d2ce5537aca61e6b536"
-  integrity sha512-ijGAPC7Hx4CCtgN6FlT4WVHfGEZH0Kzu9U8IYKHgxo/HZnycwEfQTPsrv8fHH5fTnZ3qDCDCtnHPl7H2pGZISQ==
+check-dts@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/check-dts/-/check-dts-0.3.0.tgz#1d1b9e3f15cb71ad8e189146ef6d86d5100d3f51"
+  integrity sha512-eHdGt65Oqu9Cdubv/kmiqXgWc5qGQMCDZAStmHc+amWLn5ngKwWLEvQU3v1499k7wQ7bjx9jB7okqS4DYp//Ww==
   dependencies:
-    chalk "^3.0.0"
+    chalk "^4.0.0"
     ci-job-number "^1.2.1"
     globby "^11.0.0"
     line-column "^1.0.2"
@@ -1614,10 +1622,15 @@ cli-cursor@^3.1.0:
   dependencies:
     restore-cursor "^3.1.0"
 
-cli-spinners@^2.0.0, cli-spinners@^2.2.0:
+cli-spinners@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.2.0.tgz#e8b988d9206c692302d8ee834e7a85c0144d8f77"
   integrity sha512-tgU3fKwzYjiLEQgPMD9Jt+JjHVL9kW93FiIMX/l7rivvOD4/LL0Mf7gda3+4U2KJBloybwgj5KEoQgGRioMiKQ==
+
+cli-spinners@^2.2.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.3.0.tgz#0632239a4b5aa4c958610142c34bb7a651fc8df5"
+  integrity sha512-Xs2Hf2nzrvJMFKimOR7YR0QwZ8fc0u98kdtwN1eNAZzNQgH3vK2pXzff6GJtKh7S5hoJ87ECiAiZFS2fb5Ii2w==
 
 cli-truncate@^0.2.1:
   version "0.2.1"
@@ -7627,6 +7640,11 @@ vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
+
+vue-class-component@^7.2.3:
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.2.3.tgz#a5b1abd53513a72ad51098752e2dedd499807cca"
+  integrity sha512-oEqYpXKaFN+TaXU+mRLEx8dX0ah85aAJEe61mpdoUrq0Bhe/6sWhyZX1JjMQLhVsHAkncyhedhmCdDVSasUtDw==
 
 vue-template-compiler@^2.6.11:
   version "2.6.11"
