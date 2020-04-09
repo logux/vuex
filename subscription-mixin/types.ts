@@ -2,7 +2,7 @@ import Vue from 'vue';
 import typedMixins from 'vue-typed-mixins'
 import Component, { mixins } from 'vue-class-component';
 
-import { subscriptionMixin } from '..'
+import { Subscription, SubscriptionComponent, subscriptionMixin } from '..'
 
 // vue-typed-mixins
 typedMixins(subscriptionMixin).extend({
@@ -27,8 +27,8 @@ const props = Vue.extend({
 });
 
 @Component
-class UserPhoto extends mixins(subscriptionMixin, props) {
-  get channels () {
+class UserPhoto extends mixins(subscriptionMixin, props) implements SubscriptionComponent {
+  get channels (): Subscription[] {
     return [
       'user',
       { channel: `user/${ this.name }`, fields: ['name'] }

@@ -1,8 +1,12 @@
 import type { ExtendedVue, Vue } from 'vue/types/vue'
 
-export type LoguxSubscription = string | {
+export type Subscription = string | {
   channel: string
   [key: string]: any
+}
+
+export interface SubscriptionComponent {
+  channels: Subscription[];
 }
 
 export const subscriptionMixin: ExtendedVue<
