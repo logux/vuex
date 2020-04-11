@@ -48,8 +48,6 @@ const store = new Logux.Store({
   modules: {}
 })
 
-log(store.client)
-
 store.client.start()
 
 export default store
