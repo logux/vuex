@@ -1,0 +1,33 @@
+name: Test
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ">=13.12.0"
+      - name: Get Yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Yarn cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: logux-vuex-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            logux-vuex-yarn-
+      - name: Install
+        run: yarn install --frozen-lockfile
+      - name: Test
+        run: yarn test
