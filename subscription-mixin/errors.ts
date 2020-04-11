@@ -13,4 +13,4 @@ class UserPhoto extends mixins(subscriptionMixin) {
 }
 
 let photo = new UserPhoto()
-console.log(photo);
+console.log(photo)

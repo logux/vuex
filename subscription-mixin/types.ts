@@ -1,8 +1,8 @@
-import Vue from 'vue';
+import Vue from 'vue'
 import typedMixins from 'vue-typed-mixins'
-import Component, { mixins } from 'vue-class-component';
+import Component, { mixins } from 'vue-class-component'
 
-import { Subscription, SubscriptionComponent, subscriptionMixin } from '..'
+import { subscriptionMixin, SubscriptionComponent } from '..'
 
 // vue-typed-mixins
 typedMixins(subscriptionMixin).extend({
@@ -22,16 +22,16 @@ typedMixins(subscriptionMixin).extend({
 // vue-class-component
 const props = Vue.extend({
   props: {
-    name: String
+    id: String
   }
-});
+})
 
 @Component
-class UserPhoto extends mixins(subscriptionMixin, props) implements SubscriptionComponent {
-  get channels (): Subscription[] {
+class UserList extends mixins(subscriptionMixin, props) implements SubscriptionComponent {
+  get channels () {
     return [
-      'user',
-      { channel: `user/${ this.name }`, fields: ['name'] }
+      'users',
+      { channel: `user/${ this.id }`, fields: ['name'] }
     ]
   }
 
@@ -40,5 +40,5 @@ class UserPhoto extends mixins(subscriptionMixin, props) implements Subscription
   }
 }
 
-let photo = new UserPhoto();
-console.log(photo);
+let photo = new UserList()
+console.log(photo)
