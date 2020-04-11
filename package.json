@@ -82,7 +82,7 @@
   "size-limit": [
     {
       "import": "{ createLogux, subscriptionMixin }",
-      "limit": "13 KB"
+      "limit": "10 KB"
     }
   ],
   "yaspeller": {
