@@ -63,6 +63,39 @@ it('not found mutation', () => {
   expect(store.state).toEqual({ value: 1 })
 })
 
+it('commit root mutation in namespaced module', () => {
+  let Logux = createLogux({
+    server: 'wss://localhost:1337',
+    subprotocol: '1.0.0',
+    userId: 10,
+    time: new TestTime()
+  })
+  let store = new Logux.Store({
+    state: { value: 0 },
+    mutations: { increment },
+    modules: {
+      user: {
+        namespaced: true,
+        state: { value: 0 },
+        mutations: { increment },
+        actions: {
+          someAction ({ commit }) {
+            commit('increment')
+            commit('increment', null, { root: true })
+          }
+        }
+      }
+    }
+  })
+
+  store.dispatch('user/someAction')
+  expect(store.state).toEqual({ value: 1, user: { value: 1 } })
+  expect(store.log.actions()).toEqual([
+    { type: 'user/increment', value: undefined },
+    { type: 'increment', value: null, options: { root: true } }
+  ])
+})
+
 it('sets tab ID', async () => {
   let store = createStore({ increment })
 
