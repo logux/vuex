@@ -59,7 +59,10 @@ function createLogux (config = { }) {
     }
 
     store.commit = (type, value, options) => {
-      let action = { type, value, options }
+      let action = { type, value }
+      if (options && options.root) {
+        action.options = options
+      }
       if (typeof type === 'object') {
         action = type
       }
