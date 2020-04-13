@@ -37,8 +37,8 @@ const Logux = createLogux({
   server: process.env.NODE_ENV === 'development'
     ? 'ws://localhost:31337'
     : 'wss://logux.example.com',
-  userId: false,
-  credentials: ''
+  userId: '',
+  token: ''
 })
 
 const store = new Logux.Store({

@@ -26,8 +26,8 @@
     "vuex": ">=3.0.0"
   },
   "dependencies": {
-    "@logux/client": "^0.7.0",
-    "@logux/core": "^0.4.0",
+    "@logux/client": "^0.8.1",
+    "@logux/core": "^0.5.2",
     "nanoevents": "^5.1.5"
   },
   "devDependencies": {

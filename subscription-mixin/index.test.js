@@ -13,7 +13,7 @@ function createComponent (content) {
   let Logux = createLogux({
     subprotocol: '1.0.0',
     server: 'wss://localhost:1337',
-    userId: false,
+    userId: '',
     time: new TestTime()
   })
   let store = new Logux.Store(() => ({ }))

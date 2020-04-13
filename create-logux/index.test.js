@@ -13,7 +13,7 @@ function createStore (mutations, opts) {
   if (!opts) opts = { }
   if (!opts.server) opts.server = 'wss://localhost:1337'
   opts.subprotocol = '1.0.0'
-  opts.userId = 10
+  opts.userId = '10'
   opts.time = new TestTime()
 
   let Logux = createLogux(opts)
@@ -67,7 +67,7 @@ it('commit root mutation in namespaced module', () => {
   let Logux = createLogux({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
-    userId: 10,
+    userId: '10',
     time: new TestTime()
   })
   let store = new Logux.Store({
