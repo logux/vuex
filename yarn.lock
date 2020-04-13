@@ -516,7 +516,7 @@
   dependencies:
     semver "7.1.3"
 
-"@size-limit/preset-small-lib@^4.4.4":
+"@size-limit/preset-small-lib@^4.4.5":
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/@size-limit/preset-small-lib/-/preset-small-lib-4.4.5.tgz#4b5793e8e7830de5aad20284b55c62e8f5cb7b63"
   integrity sha512-PzmPWA0JzeR4AAOu9dkDfvXdj+8f7Kie2yN5uQDo/kovGyl4lFjtkc29NXH4ExG+Oyh09sQUfYJJHZVf1YV1Fg==
@@ -664,7 +664,7 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@vue/test-utils@^1.0.0-beta.32":
+"@vue/test-utils@^1.0.0-beta.33":
   version "1.0.0-beta.33"
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-1.0.0-beta.33.tgz#627511afbd4307e7557634f860a1b985bd25d9cd"
   integrity sha512-Xzqoe0lTLn3QRWfjhmKPOXYR86l0Y+g/zPHaheJQOkPLj5ojJl3rG0t4F3kXFWuLD88YzUVRMIBWOG7v9KOJQQ==
@@ -3581,7 +3581,7 @@ human-signals@^1.1.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
-husky@^4.2.3:
+husky@^4.2.5:
   version "4.2.5"
   resolved "https://registry.yarnpkg.com/husky/-/husky-4.2.5.tgz#2b4f7622673a71579f901d9885ed448394b5fa36"
   integrity sha512-SYZ95AjKcX7goYVZtVZF2i6XiZcHknw50iXvY7b0MiGoj5RwdgRQNEHdb+gPDPCXKlzwrybjFjkL6FOj8uRhZQ==
@@ -4440,7 +4440,7 @@ jest-worker@^25.2.6:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest@^25.2.4:
+jest@^25.3.0:
   version "25.3.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-25.3.0.tgz#7a5e59741d94b8662664c77a9f346246d6bf228b"
   integrity sha512-iKd5ShQSHzFT5IL/6h5RZJhApgqXSoPxhp5HEi94v6OAw9QkF8T7X+liEU2eEHJ1eMFYTHmeWLrpBWulsDpaUg==
@@ -4634,7 +4634,7 @@ linkify-it@^2.0.0:
   dependencies:
     uc.micro "^1.0.1"
 
-lint-staged@^10.1.1:
+lint-staged@^10.1.3:
   version "10.1.3"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.1.3.tgz#da27713d3ac519da305381b4de87d5f866b1d2f1"
   integrity sha512-o2OkLxgVns5RwSC5QF7waeAjJA5nz5gnUfqL311LkZcFipKV7TztrSlhNUK5nQX9H0E5NELAdduMQ+M/JPT7RQ==
@@ -6804,7 +6804,7 @@ sisteransi@^1.0.4:
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
 
-size-limit@^4.4.4:
+size-limit@^4.4.5:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/size-limit/-/size-limit-4.4.5.tgz#b700621bf2c2ca0814425d78e530722996caf889"
   integrity sha512-BSczblK8xSm5ErI+8DTYvnIZN23EdlzadAlzaIEBIu+6HzuwM70fbDWUkb5eL0YLIm61vF6BO9uYaO3XLz8vDw==
@@ -8034,13 +8034,13 @@ yargs@^15.3.1:
     y18n "^4.0.0"
     yargs-parser "^18.1.1"
 
-yaspeller@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/yaspeller/-/yaspeller-6.1.0.tgz#387b1545f88d0b596d50877cf84fc39464df07cf"
-  integrity sha512-6peC/EiHgesEa5JLYveDaKeVCejN3I8/rsLDdVKNFtlbEHQrXxOYqNy1GTohrr2oIY9tvapBBCTgawatIGx06g==
+yaspeller@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/yaspeller/-/yaspeller-7.0.0.tgz#c49af3b5b147edda430996fa1e65b1e577bfb4f4"
+  integrity sha512-M8phUfHrL0dGCU5jUK9k85hikCSmjpPFAdjnH/Lg1/E81TEuTI7m8m5jhIWAXHWjfZ+wPEhGBz8HLDuEs4areA==
   dependencies:
     async "^3.2.0"
-    chalk "^3.0.0"
+    chalk "^4.0.0"
     commander "^3.0.0"
     cosmiconfig "^6.0.0"
     entities "^2.0.0"
