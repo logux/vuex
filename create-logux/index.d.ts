@@ -106,28 +106,28 @@ export declare class Store<S = any> extends VuexStore<S> {
 
 export type LoguxConfig = ClientOptions & {
   /**
-   * How often we need to clean log from old actions. Default is every `25`
-   * actions.
-   */
-  cleanEvery?: number
-
-  /**
    * How many actions without `meta.reasons` will be kept for time travel.
    * Default is `1000`.
    */
-  reasonlessHistory?: number;
+  reasonlessHistory?: number
 
   /**
    * How often save state to history. Default is `50`.
    */
-  saveStateEvery?: number;
+  saveStateEvery?: number
 
   /**
    * Callback when there is no history to replay actions accurate.
    */
   onMissedHistory?: (action: ClientAction) => void
+
+  /**
+   * How often we need to clean log from old actions. Default is every `25`
+   * actions.
+   */
+  cleanEvery?: number
 }
 
 export function createLogux(config: LoguxConfig): {
   Store: typeof Store
-};
+}
