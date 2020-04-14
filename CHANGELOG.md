@@ -1,6 +1,19 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.0
+ * Add TypeScript definitions (by Nikolay Govorov)
+ * Add API docs via TypeDoc
+ * Fix `commit.sync` return `ClientMeta`
+ * Fix typo in mixin
+ * Update to Logux Core 0.5 and Logux Client 0.8
+   * Use WebSocket Protocol 3
+   * Add `store.client.changeUser`
+   * Add support for dynamic `token`
+   * `userId` must be always a string without ":"
+   * Rename `credentials` option to `token`
+ * Move Vuex to peerDependencies.
+
 ## 0.2.0
 * Add `subscriptionMixin` mixin
   * Adds `isSubscribing` property to component
