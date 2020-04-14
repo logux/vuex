@@ -100,7 +100,9 @@
       "io",
       "logux",
       "vuex",
-      "mixin"
+      "mixin",
+      "TypeDoc",
+      "WebSocket"
     ]
   },
   "sharec": {
