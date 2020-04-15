@@ -3,11 +3,11 @@ import { Action as ClientAction, Log } from '@logux/core'
 import { ClientMeta, ClientOptions, CrossTabClient } from '@logux/client'
 import { Payload as VuexPayload, Commit as VuexCommit, Store as VuexStore, CommitOptions } from 'vuex'
 
-export type Action = ClientAction & VuexPayload
+export type VuexAction = ClientAction & VuexPayload
 
 export interface Commit extends VuexCommit {
   (type: string, payload?: any, options?: CommitOptions): void
-  <A extends Action>(payloadWithType: A, options?: CommitOptions): void
+  <A extends VuexAction>(payloadWithType: A, options?: CommitOptions): void
 
   /**
    * Add sync action to log and update store state.
@@ -26,7 +26,7 @@ export interface Commit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
-  sync<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  sync<A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
    * Add cross-tab action to log and update store state.
@@ -45,7 +45,7 @@ export interface Commit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  crossTab<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  crossTab<A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
    * Add local action to log and update store state.
@@ -65,11 +65,11 @@ export interface Commit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  local<A extends Action>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  local<A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 }
 
 interface StateListener<S> {
-  <A extends Action>(state: S, prevState: S, action: A, meta: ClientMeta): void
+  <A extends VuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
 }
 
 export declare class Store<S = any> extends VuexStore<S> {
