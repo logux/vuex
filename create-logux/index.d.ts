@@ -72,7 +72,7 @@ interface StateListener<S> {
   <A extends VuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
 }
 
-export class Store<S = any> extends VuexStore<S> {
+export class LoguxVuexStore<S = any> extends VuexStore<S> {
   /**
    * Add action to log with Vuex compatible API.
    */
@@ -157,5 +157,5 @@ export type LoguxConfig = ClientOptions & {
  * @returns Vuex’s `Store` instance.
  */
 export function createLogux(config: LoguxConfig): {
-  Store: typeof Store
+  LoguxVuexStore: typeof LoguxVuexStore
 }
