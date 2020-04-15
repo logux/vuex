@@ -316,4 +316,4 @@ function createLogux (config = { }) {
   return { Store }
 }
 
-module.exports = createLogux
+module.exports = { createLogux }

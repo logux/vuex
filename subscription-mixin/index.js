@@ -79,4 +79,4 @@ let subscriptionMixin = {
   }
 }
 
-module.exports = subscriptionMixin
+module.exports = { subscriptionMixin }
