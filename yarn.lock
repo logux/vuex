@@ -443,10 +443,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@logux/client@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@logux/client/-/client-0.8.1.tgz#6cd056328f269fbd3271f4a93dd87a6b09e4eb72"
-  integrity sha512-ZcOYvkepUSY0Lbyc7bYbDYe1Cfjp64EFZikIrr35zwyFrJWSx3UrP6lrs7FFYj3g8+ajvNsIw7l4f5XPATpadw==
+"@logux/client@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@logux/client/-/client-0.8.2.tgz#b5a1800563f35cc2eb26d5b074e661a6b3b07c5c"
+  integrity sha512-FSXMA6+RHM9ybHxhdUSUcVYKcOym4EhYdHT3R64gexag+qHNpHuCGN8CvsFHR3txihsS7zS6fu60aiE0o2gpxQ==
   dependencies:
     "@logux/core" "^0.5.2"
     browser-supports-log-styles "^1.1.7"
