@@ -72,7 +72,7 @@ interface StateListener<S> {
   <A extends VuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
 }
 
-export declare class Store<S = any> extends VuexStore<S> {
+export class Store<S = any> extends VuexStore<S> {
   /**
    * Add action to log with Vuex compatible API.
    */
