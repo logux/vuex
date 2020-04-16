@@ -1,11 +1,11 @@
 import { Unsubscribe } from 'nanoevents'
-import { Action as ClientAction, Log } from '@logux/core'
+import { Action, Log } from '@logux/core'
 import { ClientMeta, ClientOptions, CrossTabClient } from '@logux/client'
-import { Payload as VuexPayload, Commit as VuexCommit, Store as VuexStore, CommitOptions } from 'vuex'
+import { Payload as VuexPayload, Commit as VuexCommit, Store as VuexStore, CommitOptions, StoreOptions as VuexStoreOptions, Dispatch as VuexDispatch } from 'vuex'
 
-export type VuexAction = ClientAction & VuexPayload
+export type VuexAction = Action & VuexPayload
 
-export interface Commit extends VuexCommit {
+export interface LoguxCommit extends VuexCommit {
   (type: string, payload?: any, options?: CommitOptions): void
   <A extends VuexAction>(payloadWithType: A, options?: CommitOptions): void
 
@@ -73,10 +73,13 @@ interface StateListener<S> {
 }
 
 export class LoguxVuexStore<S = any> extends VuexStore<S> {
+  constructor (options: VuexStoreOptions<S>)
+  dispatch: VuexDispatch
+
   /**
    * Add action to log with Vuex compatible API.
    */
-  commit: Commit
+  commit: LoguxCommit
 
   /**
    * Subscribe for store events.
@@ -119,7 +122,7 @@ export type LoguxConfig = ClientOptions & {
   /**
    * Callback when there is no history to replay actions accurate.
    */
-  onMissedHistory?: (action: ClientAction) => void
+  onMissedHistory?: (action: Action) => void
 
   /**
    * How often we need to clean log from old actions. Default is every `25`
@@ -157,5 +160,5 @@ export type LoguxConfig = ClientOptions & {
  * @returns Vuex’s `Store` instance.
  */
 export function createLogux(config: LoguxConfig): {
-  LoguxVuexStore: typeof LoguxVuexStore
+  Store: typeof LoguxVuexStore
 }
