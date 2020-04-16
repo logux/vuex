@@ -94,12 +94,12 @@ let subscriptionComponent = {
     }
   },
   render (h) {
-    const { isSubscribing } = this
+    let { isSubscribing } = this
     
-    const defaultSlot = this.$scopedSlots.default
+    let defaultSlot = this.$scopedSlots.default
     if (!defaultSlot) return null
     
-    const node = defaultSlot({ isSubscribing })
+    let node = defaultSlot({ isSubscribing })
     return Array.isArray(node) ? convertVNodeArray(h, this.tag, node) : node
   }
 }
