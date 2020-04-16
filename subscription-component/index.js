@@ -100,7 +100,7 @@ let subscriptionComponent = {
     if (!defaultSlot) return null
     
     const node = defaultSlot({ isSubscribing })
-    return Array.isArray(node) ? convertVNodeArray(h, this.tag, node)
+    return Array.isArray(node) ? convertVNodeArray(h, this.tag, node) : node
   }
 }
 
