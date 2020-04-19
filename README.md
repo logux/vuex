@@ -25,6 +25,8 @@ npm install @logux/vuex vuex
 
 See [documentation] for Logux API.
 
+[documentation]: https://github.com/logux/docs
+
 ```js
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -52,5 +54,39 @@ store.client.start()
 
 export default store
 ```
+```html
+<template>
+  <div v-if="isSubscribing">
+    <h1>Loading</h1>
+  </div>
+  <div v-else>
+    <h1>{{ counter }}</h1>
+    <button @click="increment" />
+  </div>
+</template>
 
-[documentation]: https://github.com/logux/docs
+<script>
+import { subscriptionMixin } from '@logux/vuex'
+
+export default {
+  name: 'Counter',
+  mixins: [subscriptionMixin],
+  computed: {
+    // Retrieve counter state from store
+    counter () {
+      return this.$store.state.counter
+    },
+    // Load current counter from server and subscribe to counter changes
+    channels () {
+      return ['counter']
+    }
+  },
+  methods: {
+    increment () {
+      // Send action to the server and all tabs in this browser
+      this.$store.commit.sync({ type: 'INC' })
+    }
+  }
+}
+</script>
+``
