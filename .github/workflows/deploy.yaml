@@ -1,9 +1,7 @@
 name: Deploy
 
 on:
-  create:
-    tags:
-      - "*.*.*"
+  - push
 
 jobs:
   deploy:
