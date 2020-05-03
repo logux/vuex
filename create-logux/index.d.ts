@@ -137,7 +137,7 @@ export type LoguxConfig = ClientOptions & {
  * ```js
  * import { createLogux } from '@logux/vuex'
  *
- * const createStore = createLogux({
+ * const Logux = createLogux({
  *   subprotocol: '1.0.0',
  *   server: process.env.NODE_ENV === 'development'
  *     ? 'ws://localhost:31337'
@@ -146,7 +146,7 @@ export type LoguxConfig = ClientOptions & {
  *   token: token.content
  * })
  *
- * const store = createStore({
+ * const store = new Logux.Store({
  *  state: {},
  *  mutations: {},
  *  actions: {},
