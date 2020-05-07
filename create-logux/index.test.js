@@ -42,10 +42,20 @@ it('creates Vuex store', () => {
   expect(store.state).toEqual({ value: 1 })
 })
 
-it('action is not Object', () => {
+it('unify commit arguments', async () => {
   let store = createStore({ historyLine })
-  store.commit('historyLine', 5)
-  expect(store.state).toEqual({ value: 5 })
+  store.commit('historyLine', 1)
+  store.commit({ type: 'historyLine', value: 1 })
+  expect(store.state).toEqual({ value: 2 })
+
+  store.commit.sync('historyLine', 1, { reasons: ['test1'] })
+  store.commit.sync({ type: 'historyLine', value: 1 }, { reasons: ['test2'] })
+  await delay(10)
+  let log = store.log.store.created
+  expect(log[2][0]).toEqual({ type: 'historyLine', value: 1 })
+  expect(log[2][1].sync).toBe(true)
+  expect(log[2][1].reasons).toEqual(['test1', 'syncing'])
+  expect(log[3][1].reasons).toEqual(['test2', 'syncing'])
 })
 
 it('creates Logux client', () => {
@@ -91,8 +101,8 @@ it('commit root mutation in namespaced module', () => {
   store.dispatch('user/someAction')
   expect(store.state).toEqual({ value: 1, user: { value: 1 } })
   expect(store.log.actions()).toEqual([
-    { type: 'user/increment', value: undefined },
-    { type: 'increment', value: null, options: { root: true } }
+    { type: 'user/increment' },
+    { type: 'increment' }
   ])
 })
 

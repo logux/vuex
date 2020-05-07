@@ -5,7 +5,12 @@ import { Payload as VuexPayload, Commit as VuexCommit, Store as VuexStore, Commi
 
 export type VuexAction = Action & VuexPayload
 
-export interface LoguxCommit extends VuexCommit {
+export interface LoguxCommit {
+  (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  <A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+}
+
+export interface LoguxCommitWithOptions extends VuexCommit {
   (type: string, payload?: any, options?: CommitOptions): void
   <A extends VuexAction>(payloadWithType: A, options?: CommitOptions): void
 
@@ -26,7 +31,7 @@ export interface LoguxCommit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
-  sync<A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  sync: LoguxCommit
 
   /**
    * Add cross-tab action to log and update store state.
@@ -45,7 +50,7 @@ export interface LoguxCommit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  crossTab<A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  crossTab: LoguxCommit
 
   /**
    * Add local action to log and update store state.
@@ -65,7 +70,7 @@ export interface LoguxCommit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  local<A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  local: LoguxCommit
 }
 
 interface StateListener<S> {
@@ -79,7 +84,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
   /**
    * Add action to log with Vuex compatible API.
    */
-  commit: LoguxCommit
+  commit: LoguxCommitWithOptions
 
   /**
    * Subscribe for store events.

@@ -23,6 +23,7 @@ let store = new Logux.Store<RootState>({
 store.commit('increment')
 store.commit({ type: 'increment' })
 store.commit({ type: 'increment' }, { silent: true })
+store.commit.local('increment', null, { reasons: ['reason'] })
 store.commit.crossTab({ type: 'increment' }, { reasons: ['reason'] })
 store.commit.sync({ type: 'increment' }).then(meta => {
   console.log(meta.id)

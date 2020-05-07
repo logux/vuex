@@ -23,4 +23,4 @@ let store = new Logux.Store<RootState>({
 })
 
 // THROWS Type 'number' is not assignable to type 'string[] | undefined'.
-store.commit.crossTab({ type: 'increment' }, { reasons: 1 })
+store.commit.crossTab('increment', null, { reasons: 1 })

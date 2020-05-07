@@ -48,52 +48,69 @@ function createLogux (config = { }) {
     let prevMeta
     let storeCommit = store.commit
 
-    function originCommit (action) {
+    function originCommit (action, options) {
       if (action.type === 'logux/state') {
         store.replaceState(action.state)
         return
       }
       if (action.type in store._mutations) {
-        storeCommit(action)
+        storeCommit(action, options)
       }
     }
 
-    store.commit = (type, value, options) => {
-      let action = { type, value }
-      if (options && options.root) {
-        action.options = options
-      }
-      if (typeof type === 'object') {
+    function unifyCommitArgs (type, payload = { }, options = { }) {
+      let action
+      let meta
+
+      if (typeof type === 'object' && type.type) {
         action = type
+        meta = payload
       }
 
+      if (typeof type === 'string') {
+        if (typeof payload === 'object') {
+          action = { type, ...payload }
+        } else {
+          action = { type, value: payload }
+        }
+        meta = options
+      }
+
+      return { action, meta, options: meta }
+    }
+
+    store.commit = (type, payload, _options) => {
+      let { action, options } = unifyCommitArgs(type, payload, _options)
       let meta = {
         id: log.generateId(),
         tab: store.client.tabId,
         reasons: ['timeTravelTab' + store.client.tabId],
         dispatch: true
       }
-      log.add(action, meta)
 
+      log.add(action, meta)
       prevMeta = meta
       let prevState = deepCopy(store.state)
-      originCommit(action)
+      originCommit(action, options)
       emitter.emit('change', deepCopy(store.state), prevState, action, meta)
       saveHistory(meta)
     }
 
-    store.commit.local = (action, meta = { }) => {
+    store.commit.local = (type, payload, _meta) => {
+      let { action, meta } = unifyCommitArgs(type, payload, _meta)
       meta.tab = client.tabId
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
       return log.add(action, meta)
     }
 
-    store.commit.crossTab = (action, meta = { }) => {
+    store.commit.crossTab = (type, payload, _meta) => {
+      let { action, meta } = unifyCommitArgs(type, payload, _meta)
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
       return log.add(action, meta)
     }
 
-    store.commit.sync = (action, meta = { }) => {
+    store.commit.sync = (type, payload, _meta) => {
+      let { action, meta } = unifyCommitArgs(type, payload, _meta)
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
 
       meta.sync = true
