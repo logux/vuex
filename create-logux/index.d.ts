@@ -87,7 +87,9 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
   commit: LoguxCommitWithOptions
 
   /**
-   * Subscribe for store events.
+   * Subscribe for store events. Supported events:
+   *
+   * * `change`: when store was changed by action.
    *
    * ```js
    * store.on('change', (state, prevState, action, meta) => {
