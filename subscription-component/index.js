@@ -1,16 +1,9 @@
-function unifyChannelsObject (channels) {
-  if (!channels) {
-    return [[{}, '']]
-  }
-  return channels.map(i => {
-    let subscription = typeof i === 'string' ? { channel: i } : i
-    return [subscription, JSON.stringify(subscription)]
-  })
-}
-
-function subscriptionsId (subscriptions) {
-  return subscriptions.map(i => i[1]).sort().join(' ')
-}
+const {
+  subscribe,
+  unsubscribe,
+  unifyChannelsObject,
+  subscriptionsId
+} = require('../subscription-mixin')
 
 function convertVNodeArray (h, wrapperTag, nodes) {
   // for arrays and single text nodes
@@ -52,45 +45,22 @@ let subscriptionComponent = {
     this.unsubscribe(subscriptions)
   },
   methods: {
-    subscribe (subscriptions) {
+    async subscribe (subscriptions) {
       this.isSubscribing = true
 
       let id = subscriptionsId(subscriptions)
       delete this.ignoreResponse[id]
 
-      if (!this.$store.subscriptions) this.$store.subscriptions = { }
-      if (!this.$store.subscribers) this.$store.subscribers = { }
-
-      return Promise.all(subscriptions.map(i => {
-        let subscription = i[0]
-        let json = i[1]
-        if (!this.$store.subscribers[json]) this.$store.subscribers[json] = 0
-        this.$store.subscribers[json] += 1
-        if (this.$store.subscribers[json] === 1) {
-          let action = { ...subscription, type: 'logux/subscribe' }
-          this.$store.subscriptions[json] = this.$store.commit.sync(action)
-        }
-        return this.$store.subscriptions[json]
-      })).then(() => {
-        if (!this.ignoreResponse[id]) {
-          this.isSubscribing = false
-        }
-      })
+      await subscribe(this.$store, subscriptions)
+      if (!this.ignoreResponse[id]) {
+        this.isSubscribing = false
+      }
     },
     unsubscribe (subscriptions) {
       let id = subscriptionsId(subscriptions)
       this.ignoreResponse[id] = true
 
-      subscriptions.forEach(i => {
-        let subscription = i[0]
-        let json = i[1]
-        this.$store.subscribers[json] -= 1
-        if (this.$store.subscribers[json] === 0) {
-          let action = { ...subscription, type: 'logux/unsubscribe' }
-          this.$store.log.add(action, { sync: true })
-          delete this.$store.subscriptions[json]
-        }
-      })
+      unsubscribe(this.$store, subscriptions)
     }
   },
   render (h) {

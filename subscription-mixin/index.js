@@ -12,6 +12,36 @@ function subscriptionsId (subscriptions) {
   return subscriptions.map(i => i[1]).sort().join(' ')
 }
 
+function subscribe (store, subscriptions) {
+  if (!store.subscriptions) store.subscriptions = { }
+  if (!store.subscribers) store.subscribers = { }
+
+  return Promise.all(subscriptions.map(i => {
+    let subscription = i[0]
+    let json = i[1]
+    if (!store.subscribers[json]) store.subscribers[json] = 0
+    store.subscribers[json] += 1
+    if (store.subscribers[json] === 1) {
+      let action = { ...subscription, type: 'logux/subscribe' }
+      store.subscriptions[json] = store.commit.sync(action)
+    }
+    return store.subscriptions[json]
+  }))
+}
+
+function unsubscribe (store, subscriptions) {
+  subscriptions.forEach(i => {
+    let subscription = i[0]
+    let json = i[1]
+    store.subscribers[json] -= 1
+    if (store.subscribers[json] === 0) {
+      let action = { ...subscription, type: 'logux/unsubscribe' }
+      store.log.add(action, { sync: true })
+      delete store.subscriptions[json]
+    }
+  })
+}
+
 let subscriptionMixin = {
   data: () => ({
     isSubscribing: false,
@@ -36,47 +66,30 @@ let subscriptionMixin = {
     this.$_loguxVuex_unsubscribe(subscriptions)
   },
   methods: {
-    $_loguxVuex_subscribe (subscriptions) {
+    async $_loguxVuex_subscribe (subscriptions) {
       this.isSubscribing = true
 
       let id = subscriptionsId(subscriptions)
       delete this.$data.$_loguxVuex_ignoreResponse[id]
 
-      if (!this.$store.subscriptions) this.$store.subscriptions = { }
-      if (!this.$store.subscribers) this.$store.subscribers = { }
-
-      return Promise.all(subscriptions.map(i => {
-        let subscription = i[0]
-        let json = i[1]
-        if (!this.$store.subscribers[json]) this.$store.subscribers[json] = 0
-        this.$store.subscribers[json] += 1
-        if (this.$store.subscribers[json] === 1) {
-          let action = { ...subscription, type: 'logux/subscribe' }
-          this.$store.subscriptions[json] = this.$store.commit.sync(action)
-        }
-        return this.$store.subscriptions[json]
-      })).then(() => {
-        if (!this.$data.$_loguxVuex_ignoreResponse[id]) {
-          this.isSubscribing = false
-        }
-      })
+      await subscribe(this.$store, subscriptions)
+      if (!this.$data.$_loguxVuex_ignoreResponse[id]) {
+        this.isSubscribing = false
+      }
     },
     $_loguxVuex_unsubscribe (subscriptions) {
       let id = subscriptionsId(subscriptions)
       this.$data.$_loguxVuex_ignoreResponse[id] = true
 
-      subscriptions.forEach(i => {
-        let subscription = i[0]
-        let json = i[1]
-        this.$store.subscribers[json] -= 1
-        if (this.$store.subscribers[json] === 0) {
-          let action = { ...subscription, type: 'logux/unsubscribe' }
-          this.$store.log.add(action, { sync: true })
-          delete this.$store.subscriptions[json]
-        }
-      })
+      unsubscribe(this.$store, subscriptions)
     }
   }
 }
 
-module.exports = { subscriptionMixin }
+module.exports = {
+  subscribe,
+  unsubscribe,
+  subscriptionMixin,
+  unifyChannelsObject,
+  subscriptionsId
+}
