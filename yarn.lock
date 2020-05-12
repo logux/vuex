@@ -5107,6 +5107,11 @@ nanoevents@^5.1.5:
   resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-5.1.5.tgz#ad9854a531c4240296f21e8362c9e51f9ebde528"
   integrity sha512-4uRsi3eXxPLQfiXSWPstkS2opiYqRP7mkqh2KDWr24/IwJnqdCLL41ljl86rYW6LxN0w6B6PlwoClAH8o17hBQ==
 
+nanoevents@^5.1.7:
+  version "5.1.7"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-5.1.7.tgz#4819a026268725fb0cbf45a36bd1a4ea2737e63b"
+  integrity sha512-erZPLYnJMmzD5OeXX+ZrfaS+KwuclhvrHbx8okK89Pyb8omSubguKVFyJHlX7Q2k/F2mgv4QoH3cTDdua6j18g==
+
 nanoid@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.3.tgz#b2bcfcfda4b4d6838bc22a0c8dd3c0a17a204c20"
