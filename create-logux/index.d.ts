@@ -139,7 +139,7 @@ export type LoguxConfig = ClientOptions & {
 }
 
 /**
- * Creates Logux client and connect it to Vuex.Store instance.
+ * Creates Logux client and attach it to Vuex.Store instance.
  *
  * ```js
  * import { createLogux } from '@logux/vuex'
@@ -149,8 +149,8 @@ export type LoguxConfig = ClientOptions & {
  *   server: process.env.NODE_ENV === 'development'
  *     ? 'ws://localhost:31337'
  *     : 'wss://logux.example.com',
- *   userId: userId.content
- *   token: token.content
+ *   userId: 'anonymous',
+ *   token: ''
  * })
  *
  * const store = new Logux.Store({
