@@ -168,8 +168,8 @@ it('changes subscription', async () => {
   await delay(1)
   expect(component.client.log.actions()).toEqual([
     { type: 'logux/subscribe', channel: 'users/1', fields: ['photo'] },
-    { type: 'logux/unsubscribe', channel: 'users/1', fields: ['photo'] },
-    { type: 'logux/subscribe', channel: 'users/2', fields: ['photo'] }
+    { type: 'logux/subscribe', channel: 'users/2', fields: ['photo'] },
+    { type: 'logux/unsubscribe', channel: 'users/1', fields: ['photo'] }
   ])
 })
 
@@ -227,7 +227,7 @@ it('reports about subscription end', async () => {
   expect(component.vm.$children[0].isSubscribing).toBe(true)
 
   component.trigger('click', { id: 1 })
-  await localVue.nextTick()
+  await delay(1)
   expect(component.vm.$children[0].isSubscribing).toBe(true)
 
   component.trigger('click', { id: 2 })
@@ -236,16 +236,14 @@ it('reports about subscription end', async () => {
 
   log.add({ type: 'logux/processed', id: `1 ${ nodeId } 0` })
   await delay(1)
-  await localVue.nextTick()
   expect(component.vm.$children[0].isSubscribing).toBe(true)
 
-  log.add({ type: 'logux/processed', id: `3 ${ nodeId } 0` })
+  log.add({ type: 'logux/processed', id: `2 ${ nodeId } 0` })
   await delay(1)
-  await localVue.nextTick()
   expect(component.vm.$children[0].isSubscribing).toBe(false)
 })
 
-it('works on channels size changes', () => {
+it('works on channels size changes 123', () => {
   jest.spyOn(console, 'error')
 
   let UserList = {
@@ -278,4 +276,32 @@ it('works on channels size changes', () => {
     component.trigger('click', { ids: [1, 2] })
   })
   expect(console.error).not.toHaveBeenCalled()
+})
+
+it('avoid the same channels', async () => {
+  let component = createComponent({
+    mixins: [subscriptionMixin],
+    data: () => ({ ids: [1] }),
+    computed: {
+      channels () {
+        return this.ids.map(id => `users/${ id }`)
+      }
+    },
+    methods: {
+      change ($e) {
+        this.ids = $e.ids
+      }
+    },
+    render (h) {
+      return h('div', {
+        on: { click: this.change }
+      })
+    }
+  })
+
+  component.trigger('click', { ids: [1] })
+  await localVue.nextTick()
+  expect(component.client.log.actions()).toEqual([
+    { type: 'logux/subscribe', channel: 'users/1' }
+  ])
 })
