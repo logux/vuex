@@ -90,3 +90,36 @@ export default {
 }
 </script>
 ```
+```html
+<template>
+  <subscription-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
+    <div v-if="isSubscribing">
+      <h1>Loading</h1>
+    </div>
+    <div v-else>
+      <h1>{{ user.name }}</h1>
+      <button @click="increment" />
+    </div>
+  </subscription-component>
+</template>
+
+<script>
+import { subscriptionComponent } from '@logux/vuex'
+
+export default {
+  name: 'UserProfile',
+  components: {
+    subscriptionComponent
+  },
+  props: {
+    userId: String
+  },
+  computed: {
+    // Retrieve counter state from store
+    user () {
+      return this.$store.state.user
+    }
+  }
+}
+</script>
+```
