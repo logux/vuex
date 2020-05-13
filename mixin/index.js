@@ -42,7 +42,7 @@ function unsubscribe (store, subscriptions) {
   })
 }
 
-let subscriptionMixin = {
+let loguxMixin = {
   data: () => ({
     isSubscribing: false,
     $_loguxVuex_ignoreResponse: {}
@@ -90,9 +90,9 @@ let subscriptionMixin = {
 }
 
 module.exports = {
+  loguxMixin,
   subscribe,
   unsubscribe,
-  subscriptionMixin,
   unifyChannelsObject,
   subscriptionsId
 }

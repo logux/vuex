@@ -1,6 +1,6 @@
 import type { ExtendedVue, Vue } from 'vue/types/vue'
 
-import { Channel } from '../subscription-mixin'
+import { Channel } from '../mixin'
 
 /**
  * Component with scoped slots,
@@ -12,23 +12,23 @@ import { Channel } from '../subscription-mixin'
  *
  * ```html
  * <template>
- *   <subscription-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
+ *   <logux-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
  *     <div v-if="isSubscribing">
  *       <h1>Loading</h1>
  *     </div>
  *     <div v-else>
  *       <h1>{{ user.name }}</h1>
  *     </div>
- *   </subscription-component>
+ *   </logux-component>
  * </template>
  *
  * <script>
- * import { subscriptionComponent } from '@logux/vuex'
+ * import { loguxComponent } from '@logux/vuex'
  *
  * export default {
  *   name: 'UserProfile',
  *   components: {
- *     subscriptionComponent
+ *     loguxComponent
  *   },
  *   props: {
  *     userId: String
@@ -42,7 +42,7 @@ import { Channel } from '../subscription-mixin'
  * </script>
  * ```
  */
-export const subscriptionComponent: ExtendedVue<
+export const loguxComponent: ExtendedVue<
   Vue,
   {
     /**

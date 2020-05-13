@@ -66,11 +66,11 @@ export default store
 </template>
 
 <script>
-import { subscriptionMixin } from '@logux/vuex'
+import { loguxMixin } from '@logux/vuex'
 
 export default {
   name: 'Counter',
-  mixins: [subscriptionMixin],
+  mixins: [loguxMixin],
   computed: {
     // Retrieve counter state from store
     counter () {
@@ -92,7 +92,7 @@ export default {
 ```
 ```html
 <template>
-  <subscription-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
+  <logux-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
     <div v-if="isSubscribing">
       <h1>Loading</h1>
     </div>
@@ -100,16 +100,16 @@ export default {
       <h1>{{ user.name }}</h1>
       <button @click="increment" />
     </div>
-  </subscription-component>
+  </logux-component>
 </template>
 
 <script>
-import { subscriptionComponent } from '@logux/vuex'
+import { loguxComponent } from '@logux/vuex'
 
 export default {
   name: 'UserProfile',
   components: {
-    subscriptionComponent
+    loguxComponent
   },
   props: {
     userId: String

@@ -3,13 +3,13 @@ let { TestTime } = require('@logux/core')
 let { mount, createLocalVue } = require('@vue/test-utils')
 let { delay } = require('nanodelay')
 
-let { createLogux, subscriptionComponent: subscribe } = require('..')
+let { createLogux, loguxMixin } = require('..')
 
 let localVue = createLocalVue()
 
 localVue.use(Vuex)
 
-function createComponent (component, options) {
+function createComponent (content) {
   let Logux = createLogux({
     subprotocol: '1.0.0',
     server: 'wss://localhost:1337',
@@ -17,14 +17,21 @@ function createComponent (component, options) {
     time: new TestTime()
   })
   let store = new Logux.Store(() => ({ }))
-  let wrapper = mount(component, { store, localVue, ...options })
-  wrapper.client = store.client
-  return wrapper
+  let component = mount(content, { store, localVue })
+  component.client = store.client
+  return component
 }
 
 let UserPhoto = {
-  name: 'UserPhoto',
-  props: ['id', 'isSubscribing'],
+  mixins: [loguxMixin],
+  props: ['id'],
+  computed: {
+    channels () {
+      return [
+        { channel: `users/${ this.id }`, fields: ['photo'] }
+      ]
+    }
+  },
   render (h) {
     return h('img', {
       attrs: {
@@ -35,101 +42,51 @@ let UserPhoto = {
   }
 }
 
-let SubscribeUserPhoto = {
-  name: 'SubscribeUserPhoto',
-  props: ['id'],
-  render (h) {
-    return h(subscribe, {
-      props: {
-        channels: [{ channel: `users/${ this.id }`, fields: ['photo'] }]
-      },
-      scopedSlots: {
-        default: props => h(UserPhoto, {
-          props: { ...props, id: this.id }
-        })
-      }
-    })
-  }
-}
-
-it('throw empty scoped slot', () => {
-  jest.spyOn(console, 'error').mockImplementation()
-
-  expect(() => {
-    createComponent({
-      render (h) {
-        return h(subscribe, {
-          props: { channels: ['users'] }
-        })
-      }
-    })
-  }).toThrow('Provided scoped slot is empty')
-})
-
-it('returns wrapped component', () => {
-  let component = createComponent(SubscribeUserPhoto, {
-    propsData: { id: '1' }
-  })
-  expect(component.findComponent(UserPhoto).exists()).toBe(true)
-  expect(component.html()).toBe('<img issubscribing="true" src="1.jpg">')
-})
-
 it('subscribes', async () => {
-  let User = {}
-  let SubscribeUser = {
-    props: ['id'],
-    render (h) {
-      return h(subscribe, {
-        props: {
-          channels: [`users/${ this.id }`]
-        }
-      }, [User])
-    }
-  }
   let component = createComponent({
     render (h) {
       return h('div', [
-        h(SubscribeUser, {
-          props: { id: 1, key: 1 }
+        h(UserPhoto, {
+          props: { id: '1', key: 1 }
         }),
-        h(SubscribeUser, {
-          props: { id: 1, key: 2 }
+        h(UserPhoto, {
+          props: { id: '1', key: 2 }
         }),
-        h(SubscribeUser, {
-          props: { id: 2, key: 3 }
+        h(UserPhoto, {
+          props: { id: '2', key: 3 }
         })
       ])
+    }
+  })
+  await delay(1)
+  expect(component.client.log.actions()).toEqual([
+    { type: 'logux/subscribe', channel: 'users/1', fields: ['photo'] },
+    { type: 'logux/subscribe', channel: 'users/2', fields: ['photo'] }
+  ])
+})
+
+it('accepts channel names', async () => {
+  let User = {
+    mixins: [loguxMixin],
+    props: ['id'],
+    computed: {
+      channels () {
+        return [`users/${ this.id }`, `users/${ this.id }/comments`]
+      }
+    },
+    render: h => h('div')
+  }
+  let component = createComponent({
+    render (h) {
+      return h(User, {
+        props: { id: '1', key: 1 }
+      })
     }
   })
   await delay(1)
   expect(component.client.log.actions()).toEqual([
     { type: 'logux/subscribe', channel: 'users/1' },
-    { type: 'logux/subscribe', channel: 'users/2' }
-  ])
-})
-
-it('subscribes by channel name', async () => {
-  let User = {}
-  let SubscribeUser = {
-    render (h) {
-      return h(subscribe, {
-        props: {
-          channels: ['users']
-        }
-      }, [User])
-    }
-  }
-  let component = createComponent({
-    render (h) {
-      return h('div', [
-        h(SubscribeUser, { props: { key: 1 } }),
-        h(SubscribeUser, { props: { key: 2 } })
-      ])
-    }
-  })
-  await delay(1)
-  expect(component.client.log.actions()).toEqual([
-    { type: 'logux/subscribe', channel: 'users' }
+    { type: 'logux/subscribe', channel: 'users/1/comments' }
   ])
 })
 
@@ -149,13 +106,18 @@ it('unsubscribes', async () => {
           click: this.change
         }
       }, Object.keys(this.users).map(key => {
-        return h(SubscribeUserPhoto, {
+        return h(UserPhoto, {
           props: { id: this.users[key], key }
         })
       }))
     }
   }
-  let component = createComponent(UserList)
+
+  let component = createComponent({
+    render (h) {
+      return h(UserList, { })
+    }
+  })
   await delay(1)
   expect(component.client.log.actions()).toEqual([
     { type: 'logux/subscribe', channel: 'users/1', fields: ['photo'] },
@@ -192,7 +154,7 @@ it('changes subscription', async () => {
       return h('div', {
         on: { click: this.change }
       }, [
-        h(SubscribeUserPhoto, {
+        h(UserPhoto, {
           props: { id: this.id }
         })
       ])
@@ -223,7 +185,7 @@ it('does not resubscribe on non-relevant props changes', () => {
       return h('div', {
         on: { click: this.change }
       }, [
-        h(SubscribeUserPhoto, {
+        h(UserPhoto, {
           props: { id: 1, nonId: this.id }
         })
       ])
@@ -237,39 +199,6 @@ it('does not resubscribe on non-relevant props changes', () => {
 
   component.trigger('click', { id: 2 })
   expect(resubscriptions).toEqual(0)
-})
-
-it('supports multiple channels', async () => {
-  let User = {}
-  let SubscribeUser = {
-    props: ['id'],
-    render (h) {
-      return h(subscribe, {
-        props: {
-          channels: [
-            `users/${ this.id }`,
-            `pictures/${ this.id }`
-          ]
-        }
-      }, [User])
-    }
-  }
-  let component = createComponent({
-    render (h) {
-      return h('div', [
-        h(SubscribeUser, { props: { id: 1, key: 1 } }),
-        h(SubscribeUser, { props: { id: 1, key: 2 } }),
-        h(SubscribeUser, { props: { id: 2, key: 3 } })
-      ])
-    }
-  })
-  await delay(1)
-  expect(component.client.log.actions()).toEqual([
-    { type: 'logux/subscribe', channel: 'users/1' },
-    { type: 'logux/subscribe', channel: 'pictures/1' },
-    { type: 'logux/subscribe', channel: 'users/2' },
-    { type: 'logux/subscribe', channel: 'pictures/2' }
-  ])
 })
 
 it('reports about subscription end', async () => {
@@ -286,7 +215,7 @@ it('reports about subscription end', async () => {
       return h('div', {
         on: { click: this.change }
       }, [
-        h(SubscribeUserPhoto, { props: { id: this.id } })
+        h(UserPhoto, { props: { id: this.id } })
       ])
     }
   })
@@ -295,35 +224,37 @@ it('reports about subscription end', async () => {
   let log = component.client.log
 
   await delay(1)
-  expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(true)
+  expect(component.vm.$children[0].isSubscribing).toBe(true)
 
   component.trigger('click', { id: 1 })
   await delay(1)
-  expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(true)
+  expect(component.vm.$children[0].isSubscribing).toBe(true)
 
   component.trigger('click', { id: 2 })
-  await delay(1)
-  expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(true)
+  await localVue.nextTick()
+  expect(component.vm.$children[0].isSubscribing).toBe(true)
 
   log.add({ type: 'logux/processed', id: `1 ${ nodeId } 0` })
   await delay(1)
-  expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(true)
+  expect(component.vm.$children[0].isSubscribing).toBe(true)
 
   log.add({ type: 'logux/processed', id: `2 ${ nodeId } 0` })
   await delay(1)
-  expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(false)
+  expect(component.vm.$children[0].isSubscribing).toBe(false)
 })
 
-it('functional channels', async () => {
-  let SubscribeUserList = {
+it('works on channels size changes 123', () => {
+  jest.spyOn(console, 'error')
+
+  let UserList = {
+    mixins: [loguxMixin],
     props: ['ids'],
-    render (h) {
-      return h(subscribe, {
-        props: {
-          channels: this.ids.map(id => `users/${ id }`)
-        }
-      }, [h('div')])
-    }
+    computed: {
+      channels () {
+        return this.ids.map(id => `users/${ id }`)
+      }
+    },
+    render: h => h('div')
   }
 
   let component = createComponent({
@@ -337,54 +268,40 @@ it('functional channels', async () => {
       return h('div', {
         on: { click: this.change }
       }, [
-        h(SubscribeUserList, { props: { ids: this.ids } })
+        h(UserList, { props: { ids: this.ids } })
       ])
     }
   })
-  await localVue.nextTick()
-  component.trigger('click', { ids: [1, 2] })
-  await delay(10)
-  expect(component.client.log.actions()).toEqual([
-    { type: 'logux/subscribe', channel: 'users/1' },
-    { type: 'logux/subscribe', channel: 'users/2' }
-  ])
+  localVue.nextTick(() => {
+    component.trigger('click', { ids: [1, 2] })
+  })
+  expect(console.error).not.toHaveBeenCalled()
 })
 
-it('avoid the same channels 123', async () => {
+it('avoid the same channels', async () => {
   let component = createComponent({
+    mixins: [loguxMixin],
     data: () => ({ ids: [1] }),
+    computed: {
+      channels () {
+        return this.ids.map(id => `users/${ id }`)
+      }
+    },
     methods: {
       change ($e) {
         this.ids = $e.ids
       }
     },
     render (h) {
-      return h(subscribe, {
-        props: {
-          channels: this.ids.map(id => `users/${ id }`)
-        },
-        scopedSlots: {
-          default: () => {
-            return h('div', {
-              on: { click: this.change }
-            })
-          }
-        }
+      return h('div', {
+        on: { click: this.change }
       })
     }
   })
 
-  component.trigger('click', { ids: [1, 2] })
+  component.trigger('click', { ids: [1] })
   await localVue.nextTick()
   expect(component.client.log.actions()).toEqual([
-    { type: 'logux/subscribe', channel: 'users/1' },
-    { type: 'logux/subscribe', channel: 'users/2' }
-  ])
-
-  component.trigger('click', { ids: [1, 2] })
-  await localVue.nextTick()
-  expect(component.client.log.actions()).toEqual([
-    { type: 'logux/subscribe', channel: 'users/1' },
-    { type: 'logux/subscribe', channel: 'users/2' }
+    { type: 'logux/subscribe', channel: 'users/1' }
   ])
 })

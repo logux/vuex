@@ -1,9 +1,9 @@
 let { createLogux } = require('./create-logux')
-let { subscriptionMixin } = require('./subscription-mixin')
-let { subscriptionComponent } = require('./subscription-component')
+let { loguxMixin } = require('./mixin')
+let { loguxComponent } = require('./component')
 
 module.exports = {
   createLogux,
-  subscriptionMixin,
-  subscriptionComponent
+  loguxMixin,
+  loguxComponent
 }

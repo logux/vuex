@@ -2,10 +2,10 @@ import Vue from 'vue'
 import typedMixins from 'vue-typed-mixins'
 import Component, { mixins } from 'vue-class-component'
 
-import { subscriptionMixin, SubscriptionComponent } from '..'
+import { loguxMixin, loguxMixinComponent } from '.'
 
 // vue-typed-mixins
-typedMixins(subscriptionMixin).extend({
+typedMixins(loguxMixin).extend({
   computed: {
     channels () {
       return [
@@ -27,7 +27,7 @@ const props = Vue.extend({
 })
 
 @Component
-class UserList extends mixins(subscriptionMixin, props) implements SubscriptionComponent {
+class UserList extends mixins(loguxMixin, props) implements loguxMixinComponent {
   get channels () {
     return [
       'users',

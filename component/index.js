@@ -3,9 +3,9 @@ const {
   unsubscribe,
   unifyChannelsObject,
   subscriptionsId
-} = require('../subscription-mixin')
+} = require('../mixin')
 
-let subscriptionComponent = {
+let loguxComponent = {
   props: {
     channels: {
       type: Array,
@@ -72,4 +72,4 @@ let subscriptionComponent = {
   }
 }
 
-module.exports = { subscriptionComponent }
+module.exports = { loguxComponent }

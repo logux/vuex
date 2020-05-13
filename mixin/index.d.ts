@@ -5,7 +5,7 @@ export type Channel = string | {
   [key: string]: any
 }
 
-export interface SubscriptionComponent {
+export interface loguxMixinComponent {
   channels: Channel[]
 }
 
@@ -27,11 +27,11 @@ export interface SubscriptionComponent {
  * </template>
  *
  * <script>
- * import { subscriptionMixin } from '@logux/vuex'
+ * import { loguxMixin } from '@logux/vuex'
  *
  * export default {
  *   name: 'UserProfile',
- *   mixins: [subscriptionMixin],
+ *   mixins: [loguxMixin],
  *   props: {
  *     userId: String
  *   },
@@ -47,7 +47,7 @@ export interface SubscriptionComponent {
  * </script>
  * ```
  */
-export const subscriptionMixin: ExtendedVue<
+export const loguxMixin: ExtendedVue<
   Vue,
   {
     /**

@@ -1,9 +1,9 @@
 import Component, { mixins } from 'vue-class-component'
 
-import { subscriptionMixin } from '..'
+import { loguxMixin } from '..'
 
 @Component
-class UserPhoto extends mixins(subscriptionMixin) {
+class UserPhoto extends mixins(loguxMixin) {
   mounted() {
     // THROWS Type 'boolean' is not assignable to type 'string'.
     let message: string = this.isSubscribing
