@@ -5,12 +5,6 @@ const {
   subscriptionsId
 } = require('../subscription-mixin')
 
-function convertVNodeArray (h, wrapperTag, nodes) {
-  // for arrays and single text nodes
-  if (nodes.length > 1 || !nodes[0].tag) return h(wrapperTag, {}, nodes)
-  return nodes[0]
-}
-
 let subscriptionComponent = {
   props: {
     channels: {
@@ -63,7 +57,7 @@ let subscriptionComponent = {
       unsubscribe(this.$store, subscriptions)
     }
   },
-  render (h) {
+  render () {
     let { isSubscribing } = this
     let defaultSlot = this.$scopedSlots.default
 
@@ -71,8 +65,7 @@ let subscriptionComponent = {
       throw new Error('Provided scoped slot is empty')
     }
 
-    let node = defaultSlot({ isSubscribing })
-    return Array.isArray(node) ? convertVNodeArray(h, this.tag, node) : node
+    return defaultSlot({ isSubscribing })
   }
 }
 
