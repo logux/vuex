@@ -65,9 +65,11 @@ let subscriptionComponent = {
   },
   render (h) {
     let { isSubscribing } = this
-
     let defaultSlot = this.$scopedSlots.default
-    if (!defaultSlot) return null
+
+    if (!defaultSlot) {
+      throw new Error('Provided scoped slot is empty')
+    }
 
     let node = defaultSlot({ isSubscribing })
     return Array.isArray(node) ? convertVNodeArray(h, this.tag, node) : node
