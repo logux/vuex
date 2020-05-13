@@ -22,13 +22,16 @@ let subscriptionComponent = {
   }),
   watch: {
     channels: {
-      handler (channels, oldChannels) {
-        let subscriptions = unifyChannelsObject(channels)
+      handler (newChannels, oldChannels) {
+        let newSubscriptions = unifyChannelsObject(newChannels)
         let oldSubscriptions = unifyChannelsObject(oldChannels)
 
-        if (subscriptions[0][1] !== oldSubscriptions[0][1]) {
+        let newId = subscriptionsId(newSubscriptions)
+        let oldId = subscriptionsId(oldSubscriptions)
+
+        if (newId !== oldId) {
+          this.subscribe(newSubscriptions)
           oldChannels && this.unsubscribe(oldSubscriptions)
-          this.subscribe(subscriptions)
         }
       },
       immediate: true
