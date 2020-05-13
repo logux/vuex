@@ -5097,10 +5097,10 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
 
-nanodelay@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/nanodelay/-/nanodelay-1.0.1.tgz#efd11374a69f15a120d785fcf26869fe1bcdce0a"
-  integrity sha512-KEfGZBAVg+DxO/IzOYfZ+2kZ0TWy15aUBFjez5VzjQfemS4rn5JIzPO67mPollKXyzq2Bj2TJF9/j13RC02qYg==
+nanodelay@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/nanodelay/-/nanodelay-1.0.2.tgz#91574187cded3d2e9d5d74064d9a1bbc0990fd32"
+  integrity sha512-1M3DWr383fQR1PDbaudBoKEOEqmm1RS1ZAPbGR0THjVdRLJbpkeTbURCNByg8Y+ba7v+Ni6xGwAARjaEDrRWfQ==
 
 nanoevents@^5.1.5:
   version "5.1.5"
