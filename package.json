@@ -81,7 +81,7 @@
   },
   "size-limit": [
     {
-      "import": "{ createLogux, subscriptionMixin }",
+      "import": "{ createLogux, subscriptionMixin, subscriptionComponent }",
       "limit": "10 KB"
     }
   ],
