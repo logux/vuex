@@ -5,6 +5,8 @@ export type Channel = string | {
   [key: string]: any
 }
 
+export type Subscription = [Channel, string]
+
 export interface loguxMixinComponent {
   channels: Channel[]
 }
@@ -53,14 +55,14 @@ export const loguxMixin: ExtendedVue<
     /**
      * Indicates loading state.
      */
-    isSubscribing: boolean,
+    isSubscribing: boolean
     $_logux_ignoreResponse: {
       [id: string]: boolean
     }
   },
   {
-    $_logux_subscribe(subscriptions: Channel[]): Promise<void>
-    $_logux_unsubscribe(subscriptions: Channel[]): void
+    $_logux_subscribe(subscriptions: Subscription[]): Promise<void>
+    $_logux_unsubscribe(subscriptions: Subscription[]): void
   },
   {},
   {}

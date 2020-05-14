@@ -37,6 +37,9 @@ class UserList extends mixins(loguxMixin, props) implements loguxMixinComponent 
 
   mounted() {
     console.log(this.isSubscribing)
+
+    // just a positive test
+    this.$_logux_subscribe([[{ channel: 'users' }, '']])
   }
 }
 

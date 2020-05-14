@@ -1,6 +1,6 @@
 import type { ExtendedVue, Vue } from 'vue/types/vue'
 
-import { Channel } from '../mixin'
+import { Channel, Subscription } from '../mixin'
 
 /**
  * Component with scoped slots,
@@ -48,18 +48,18 @@ export const loguxComponent: ExtendedVue<
     /**
      * Indicates loading state.
      */
-    isSubscribing: boolean,
+    isSubscribing: boolean
     ignoreResponse: {
       [id: string]: boolean
     }
   },
   {
-    subscribe(subscriptions: Channel[]): Promise<void>
-    unsubscribe(subscriptions: Channel[]): void
+    subscribe(subscriptions: Subscription[]): Promise<void>
+    unsubscribe(subscriptions: Subscription[]): void
   },
   {},
   {
-    tag: string,
+    tag: string
     channels: Channel[]
   }
 >
