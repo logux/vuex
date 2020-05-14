@@ -1,6 +1,6 @@
 {
   "name": "@logux/vuex",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Vuex compatible API for Logux",
   "keywords": [
     "logux",

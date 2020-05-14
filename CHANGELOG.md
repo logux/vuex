@@ -1,12 +1,12 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.4.0 (not released)
- * Add `loguxComponent` component with scoped slots (#18) (by Stanislav Lashmanov)
+## 0.4.0
+ * Add `loguxComponent`, component with scoped slots ([#18](https://github.com/logux/vuex/pull/18), [#25](https://github.com/logux/vuex/pull/25)) (by Stanislav Lashmanov)
  * Fix incorrect subscription after changing `channels` in `subscriptionMixin`
  * Fix incorrect TypeScript for mixin’s private methods
- * Rename mixin private methods
- * Rename `subscriptionMixin` to `loguxMixin`
+ * Rename mixin’s private methods
+ * Rename mixin `subscriptionMixin` to `loguxMixin`
  * Rename folder `/subscription-mixin` to `/mixin`
  * Update dependencies
 
