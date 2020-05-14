@@ -54,13 +54,13 @@ export const loguxMixin: ExtendedVue<
      * Indicates loading state.
      */
     isSubscribing: boolean,
-    $_loguxVuex_ignoreResponse: {
+    $_logux_ignoreResponse: {
       [id: string]: boolean
     }
   },
   {
-    $_loguxVuex_subscribe(subscriptions: Channel[]): Promise<void>
-    $_loguxVuex_unsubscribe(subscriptions: Channel[]): void
+    $_logux_subscribe(subscriptions: Channel[]): Promise<void>
+    $_logux_unsubscribe(subscriptions: Channel[]): void
   },
   {},
   {}

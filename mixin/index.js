@@ -45,7 +45,7 @@ function unsubscribe (store, subscriptions) {
 let loguxMixin = {
   data: () => ({
     isSubscribing: false,
-    $_loguxVuex_ignoreResponse: {}
+    $_logux_ignoreResponse: {}
   }),
   watch: {
     channels: {
@@ -57,8 +57,8 @@ let loguxMixin = {
         let oldId = subscriptionsId(oldSubscriptions)
 
         if (newId !== oldId) {
-          this.$_loguxVuex_subscribe(newSubscriptions)
-          oldChannels && this.$_loguxVuex_unsubscribe(oldSubscriptions)
+          this.$_logux_subscribe(newSubscriptions)
+          oldChannels && this.$_logux_unsubscribe(oldSubscriptions)
         }
       },
       immediate: true
@@ -66,23 +66,23 @@ let loguxMixin = {
   },
   beforeDestroy () {
     let subscriptions = unifyChannelsObject(this.channels)
-    this.$_loguxVuex_unsubscribe(subscriptions)
+    this.$_logux_unsubscribe(subscriptions)
   },
   methods: {
-    async $_loguxVuex_subscribe (subscriptions) {
+    async $_logux_subscribe (subscriptions) {
       this.isSubscribing = true
 
       let id = subscriptionsId(subscriptions)
-      delete this.$data.$_loguxVuex_ignoreResponse[id]
+      delete this.$data.$_logux_ignoreResponse[id]
 
       await subscribe(this.$store, subscriptions)
-      if (!this.$data.$_loguxVuex_ignoreResponse[id]) {
+      if (!this.$data.$_logux_ignoreResponse[id]) {
         this.isSubscribing = false
       }
     },
-    $_loguxVuex_unsubscribe (subscriptions) {
+    $_logux_unsubscribe (subscriptions) {
       let id = subscriptionsId(subscriptions)
-      this.$data.$_loguxVuex_ignoreResponse[id] = true
+      this.$data.$_logux_ignoreResponse[id] = true
 
       unsubscribe(this.$store, subscriptions)
     }
