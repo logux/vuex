@@ -3,7 +3,7 @@ let { CrossTabClient } = require('@logux/client/cross-tab-client')
 let { isFirstOlder } = require('@logux/core/is-first-older')
 let Vuex = require('vuex')
 
-let { deepCopy } = require('../utils/deepCopy')
+let { deepCopy, getNestedObject } = require('../utils')
 
 function createLogux (config = { }) {
   let cleanEvery = config.cleanEvery || 25
@@ -126,13 +126,30 @@ function createLogux (config = { }) {
     }
 
     function replaceState (state, actions, pushHistory) {
+      let last = actions.length ? actions[actions.length - 1][1] : ''
       let newState = actions.reduceRight((prev, [action, id]) => {
         let changed = deepCopy(prev)
-        let last = actions[actions.length - 1][1]
 
-        if (vuexConfig.mutations[action.type]) {
-          vuexConfig.mutations[action.type](changed, action)
+        if (action.type in store._mutations) {
+          let moduleName = action.type.split('/')[0]
+          let module = getNestedObject(vuexConfig, ['modules', moduleName])
+          let actionTypeNamespaced = action.type.split(`${ moduleName }/`)[1]
+          if (
+            module &&
+            module.namespaced &&
+            getNestedObject(module, ['mutations', actionTypeNamespaced])
+          ) {
+            module.mutations[actionTypeNamespaced](changed[moduleName], action)
+          } else if (
+            module &&
+            getNestedObject(module, ['mutations', action.type])
+          ) {
+            module.mutations[action.type](changed[moduleName], action)
+          } else {
+            vuexConfig.mutations[action.type](changed, action)
+          }
         }
+
         if (pushHistory && id === last) {
           stateHistory[pushHistory] = changed
         } else if (stateHistory[id]) {
@@ -198,7 +215,18 @@ function createLogux (config = { }) {
             }
 
             if (!replayed) {
-              replaceState(deepCopy(vuexConfig.state), actions)
+              let storeConfig = deepCopy(vuexConfig)
+              let state = storeConfig.state || {}
+
+              if (storeConfig.modules) {
+                Object.entries(storeConfig.modules).forEach(
+                  ([moduleName, module]) => {
+                    state = { ...state, [moduleName]: module.state }
+                  }
+                )
+              }
+
+              replaceState(state, actions)
             }
           }
 

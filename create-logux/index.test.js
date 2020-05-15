@@ -9,16 +9,28 @@ Vue.config.productionTip = false
 Vue.config.devtools = false
 Vue.use(Vuex)
 
-function createStore (mutations, opts) {
-  if (!opts) opts = { }
+function initLogux (opts = { }) {
   if (!opts.server) opts.server = 'wss://localhost:1337'
   opts.subprotocol = '1.0.0'
   opts.userId = '10'
   opts.time = new TestTime()
 
-  let Logux = createLogux(opts)
-  let store = new Logux.Store({ state: { value: 0 }, mutations })
+  return createLogux(opts)
+}
 
+function createStore (mutations, opts) {
+  let Logux = initLogux(opts)
+  let store = new Logux.Store({ state: { value: 0 }, mutations })
+  return store
+}
+
+function createStoreWithModule (namespaced, mutations, opts) {
+  let Logux = initLogux(opts)
+  let store = new Logux.Store({
+    modules: {
+      user: { namespaced, state: { value: 0 }, mutations }
+    }
+  })
   return store
 }
 
@@ -587,6 +599,112 @@ it('applies old actions from store', async () => {
 
   await store2.initialize
   expect(store2.state.value).toEqual('0134abcde')
+})
+
+it('applies old actions from store in modules', async () => {
+  let store1 = createStoreWithModule(
+    false,
+    { 'user/historyLine': historyLine },
+    { reasonlessHistory: 2 }
+  )
+  let store2
+
+  await Promise.all([
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '1' },
+      { id: '0 10:x 1', reasons: ['test'] }
+    ),
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '2' },
+      { id: '0 10:x 2', reasons: ['test'] }
+    ),
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '3' },
+      { id: '0 10:x 3', reasons: ['test'] }
+    ),
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '4' },
+      { id: '0 10:x 4', reasons: ['test'] }
+    ),
+    store1.log.add(
+      { type: 'user/historyLine', value: '5' },
+      { id: '0 10:x 5', reasons: ['test'], tab: 'test2' }
+    ),
+    store1.commit.crossTab(
+      { type: 'logux/undo', id: '0 10:x 2' },
+      { id: '0 10:x 6', reasons: ['test'] }
+    )
+  ])
+  store2 = createStoreWithModule(
+    false,
+    { 'user/historyLine': historyLine },
+    { store: store1.log.store }
+  )
+
+  store2.commit({ type: 'user/historyLine', value: 'a' })
+  store2.commit({ type: 'user/historyLine', value: 'b' })
+  store2.commit.crossTab(
+    { type: 'user/historyLine', value: 'c' }, { reasons: ['test'] }
+  )
+  store2.commit({ type: 'user/historyLine', value: 'd' })
+  store2.commit({ type: 'user/historyLine', value: 'e' })
+  expect(store2.state.user.value).toEqual('0abde')
+
+  await store2.initialize
+  expect(store2.state.user.value).toEqual('0134abcde')
+})
+
+it('applies old actions from store in namespaced modules', async () => {
+  let store1 = createStoreWithModule(
+    true,
+    { historyLine },
+    { reasonlessHistory: 2 }
+  )
+  let store2
+
+  await Promise.all([
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '1' },
+      { id: '0 10:x 1', reasons: ['test'] }
+    ),
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '2' },
+      { id: '0 10:x 2', reasons: ['test'] }
+    ),
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '3' },
+      { id: '0 10:x 3', reasons: ['test'] }
+    ),
+    store1.commit.crossTab(
+      { type: 'user/historyLine', value: '4' },
+      { id: '0 10:x 4', reasons: ['test'] }
+    ),
+    store1.log.add(
+      { type: 'user/historyLine', value: '5' },
+      { id: '0 10:x 5', reasons: ['test'], tab: 'test2' }
+    ),
+    store1.commit.crossTab(
+      { type: 'logux/undo', id: '0 10:x 2' },
+      { id: '0 10:x 6', reasons: ['test'] }
+    )
+  ])
+  store2 = createStoreWithModule(
+    true,
+    { historyLine },
+    { store: store1.log.store }
+  )
+
+  store2.commit({ type: 'user/historyLine', value: 'a' })
+  store2.commit({ type: 'user/historyLine', value: 'b' })
+  store2.commit.crossTab(
+    { type: 'user/historyLine', value: 'c' }, { reasons: ['test'] }
+  )
+  store2.commit({ type: 'user/historyLine', value: 'd' })
+  store2.commit({ type: 'user/historyLine', value: 'e' })
+  expect(store2.state.user.value).toEqual('0abde')
+
+  await store2.initialize
+  expect(store2.state.user.value).toEqual('0134abcde')
 })
 
 it('waits for replaying', async () => {
