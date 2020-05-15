@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.0-beta.1
+ * Fix incorrect behavior with modules ([#26](https://github.com/logux/vuex/issues/26))
+
 ## 0.4.0
  * Add `loguxComponent`, component with scoped slots ([#18](https://github.com/logux/vuex/pull/18), [#25](https://github.com/logux/vuex/pull/25)) (by Stanislav Lashmanov)
  * Fix incorrect subscription after changing `channels` in `subscriptionMixin`
