@@ -85,6 +85,21 @@ it('not found mutation', () => {
   expect(store.state).toEqual({ value: 1 })
 })
 
+it('commit mutation with prefixed name', async () => {
+  let store = createStore({
+    'utils/clean': state => {
+      state.value = 0
+    },
+    increment
+  })
+
+  store.commit('increment')
+  store.commit('increment')
+  await store.commit.crossTab('increment')
+  store.commit('utils/clean')
+  expect(store.state.value).toBe(0)
+})
+
 it('commit root mutation in namespaced module', () => {
   let Logux = createLogux({
     server: 'wss://localhost:1337',
