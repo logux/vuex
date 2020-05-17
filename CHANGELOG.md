@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.0-beta.2
+ * Fix incorrect behavior with nested modules ([#26](https://github.com/logux/vuex/issues/26))
+ * Update dependencies
+
 ## 0.5.0-beta.1
  * Fix incorrect behavior with modules ([#26](https://github.com/logux/vuex/issues/26))
 
