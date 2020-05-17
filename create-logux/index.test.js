@@ -756,15 +756,17 @@ it('applies old actions from store in nested modules', async () => {
     }
   })
 
-  await store1.commit.crossTab('historyLine', '1', {
-    id: '0 10:x 1', reasons: ['test']
-  })
-  await store1.commit.crossTab('a/historyLine', '2', {
-    id: '0 10:x 2', reasons: ['test']
-  })
-  await store1.commit.crossTab('a/c/d/historyLine', '3', {
-    id: '0 10:x 3', reasons: ['test']
-  })
+  await Promise.all([
+    store1.commit.crossTab('historyLine', '1', {
+      id: '0 10:x 1', reasons: ['test']
+    }),
+    store1.commit.crossTab('a/historyLine', '2', {
+      id: '0 10:x 2', reasons: ['test']
+    }),
+    store1.commit.crossTab('a/c/d/historyLine', '3', {
+      id: '0 10:x 3', reasons: ['test']
+    })
+  ])
 
   let Logux2 = initLogux({ store: store1.log.store })
   let store2 = new Logux2.Store({
