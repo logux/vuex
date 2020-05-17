@@ -722,6 +722,109 @@ it('applies old actions from store in namespaced modules', async () => {
   expect(store2.state.user.value).toEqual('0134abcde')
 })
 
+it('applies old actions from store in nested modules', async () => {
+  let Logux1 = initLogux()
+  let store1 = new Logux1.Store({
+    state: { value: 0 },
+    mutations: { historyLine },
+    modules: {
+      a: {
+        namespaced: true,
+        state: { value: 0 },
+        mutations: { historyLine },
+        modules: {
+          b: {
+            state: { value: 0 },
+            mutations: { historyLine },
+            modules: {
+              c: {
+                namespaced: true,
+                state: { value: 0 },
+                mutations: { historyLine },
+                modules: {
+                  d: {
+                    namespaced: true,
+                    state: { value: 0 },
+                    mutations: { historyLine }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+
+  await store1.commit.crossTab('historyLine', '1', {
+    id: '0 10:x 1', reasons: ['test']
+  })
+  await store1.commit.crossTab('a/historyLine', '2', {
+    id: '0 10:x 2', reasons: ['test']
+  })
+  await store1.commit.crossTab('a/c/d/historyLine', '3', {
+    id: '0 10:x 3', reasons: ['test']
+  })
+
+  let Logux2 = initLogux({ store: store1.log.store })
+  let store2 = new Logux2.Store({
+    state: { value: 0 },
+    mutations: { historyLine },
+    modules: {
+      a: {
+        namespaced: true,
+        state: { value: 0 },
+        mutations: { historyLine },
+        modules: {
+          b: {
+            state: { value: 0 },
+            mutations: { historyLine },
+            modules: {
+              c: {
+                namespaced: true,
+                state: { value: 0 },
+                mutations: { historyLine },
+                modules: {
+                  d: {
+                    namespaced: true,
+                    state: { value: 0 },
+                    mutations: { historyLine }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+
+  store2.commit('historyLine', 'a')
+  expect(store2.state.value).toBe('0a')
+  expect(store2.state.a.value).toBe(0)
+  expect(store2.state.a.b.value).toBe(0)
+
+  store2.commit('a/historyLine', 'b')
+  expect(store2.state.value).toBe('0a')
+  expect(store2.state.a.value).toBe('0b')
+  expect(store2.state.a.b.value).toBe('0b')
+  expect(store2.state.a.b.c.value).toBe(0)
+
+  store2.commit('a/c/d/historyLine', 'd')
+  expect(store2.state.value).toBe('0a')
+  expect(store2.state.a.value).toBe('0b')
+  expect(store2.state.a.b.value).toBe('0b')
+  expect(store2.state.a.b.c.value).toBe(0)
+  expect(store2.state.a.b.c.d.value).toBe('0d')
+
+  await store2.initialize
+  expect(store2.state.value).toBe('01a')
+  expect(store2.state.a.value).toBe('02b')
+  expect(store2.state.a.b.value).toBe('02b')
+  expect(store2.state.a.b.c.value).toBe(0)
+  expect(store2.state.a.b.c.d.value).toBe('03d')
+})
+
 it('waits for replaying', async () => {
   let store = createStore({ historyLine })
   let run

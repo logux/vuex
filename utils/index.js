@@ -1,8 +1,8 @@
 let { deepCopy, find } = require('./deepCopy')
-let { getNestedObject } = require('./getNestedObject')
+let { forEachValue } = require('./forEachValue')
 
 module.exports = {
   find,
   deepCopy,
-  getNestedObject
+  forEachValue
 }

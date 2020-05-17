@@ -3,7 +3,7 @@ let { CrossTabClient } = require('@logux/client/cross-tab-client')
 let { isFirstOlder } = require('@logux/core/is-first-older')
 let Vuex = require('vuex')
 
-let { deepCopy, getNestedObject } = require('../utils')
+let { deepCopy, forEachValue } = require('../utils')
 
 function createLogux (config = { }) {
   let cleanEvery = config.cleanEvery || 25
@@ -22,6 +22,8 @@ function createLogux (config = { }) {
     let store = new Vuex.Store(deepCopy(vuexConfig))
 
     let emitter = createNanoEvents()
+
+    let mutations = collectMutations(vuexConfig)
 
     store.client = client
     store.log = log
@@ -130,24 +132,16 @@ function createLogux (config = { }) {
       let newState = actions.reduceRight((prev, [action, id]) => {
         let changed = deepCopy(prev)
 
-        if (action.type in store._mutations) {
-          let moduleName = action.type.split('/')[0]
-          let module = getNestedObject(vuexConfig, ['modules', moduleName])
-          let actionTypeNamespaced = action.type.split(`${ moduleName }/`)[1]
-          if (
-            module &&
-            module.namespaced &&
-            getNestedObject(module, ['mutations', actionTypeNamespaced])
-          ) {
-            module.mutations[actionTypeNamespaced](changed[moduleName], action)
-          } else if (
-            module &&
-            getNestedObject(module, ['mutations', action.type])
-          ) {
-            module.mutations[action.type](changed[moduleName], action)
-          } else {
-            vuexConfig.mutations[action.type](changed, action)
-          }
+        if (action.type in mutations) {
+          mutations[action.type].forEach(mutation => {
+            let mutationState = changed
+            if (mutation.path.length) {
+              mutationState = mutation.path.reduce((obj, key) => {
+                return obj[key]
+              }, changed)
+            }
+            mutation.fn(mutationState, action)
+          })
         }
 
         if (pushHistory && id === last) {
@@ -215,17 +209,7 @@ function createLogux (config = { }) {
             }
 
             if (!replayed) {
-              let storeConfig = deepCopy(vuexConfig)
-              let state = storeConfig.state || {}
-
-              if (storeConfig.modules) {
-                Object.entries(storeConfig.modules).forEach(
-                  ([moduleName, module]) => {
-                    state = { ...state, [moduleName]: module.state }
-                  }
-                )
-              }
-
+              let state = collectState(deepCopy(vuexConfig))
               replaceState(state, actions)
             }
           }
@@ -359,6 +343,52 @@ function createLogux (config = { }) {
   }
 
   return { Store }
+}
+
+function collectState (store) {
+  let state = store.state || { }
+  function collectModuleState (module, moduleName, moduleState) {
+    if (moduleName) {
+      moduleState[moduleName] = module.state
+    }
+    if (module.modules) {
+      forEachValue(module.modules, (childModule, childModuleName) => {
+        let childModuleState =
+          moduleName ? moduleState[moduleName] : moduleState
+        collectModuleState(childModule, childModuleName, childModuleState)
+      })
+    }
+  }
+  collectModuleState(store, false, state)
+  return state
+}
+
+function collectMutations (store) {
+  let mutations = []
+  function collectModuleMutations (module, moduleName, _namespace, _path) {
+    let namespace = _namespace || ''
+    let path = _path || []
+    if (moduleName) {
+      if (module.namespaced) {
+        namespace = _namespace + moduleName + '/'
+      }
+      path = [..._path, moduleName]
+    }
+    if (module.mutations) {
+      forEachValue(module.mutations, (mutation, _type) => {
+        let type = namespace + _type
+        let entry = mutations[type] || (mutations[type] = [])
+        entry.push({ fn: mutation, path })
+      })
+    }
+    if (module.modules) {
+      forEachValue(module.modules, (childModule, childModuleName) => {
+        collectModuleMutations(childModule, childModuleName, namespace, path)
+      })
+    }
+  }
+  collectModuleMutations(store)
+  return mutations
 }
 
 module.exports = { createLogux }
