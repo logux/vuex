@@ -1,4 +1,4 @@
-let { deepCopy, find } = require('./deepCopy')
+let { deepCopy, find } = require('.')
 
 it('find', () => {
   let list = [33, 22, 112, 222, 43]
