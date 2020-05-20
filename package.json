@@ -106,7 +106,8 @@
       "mixin’s",
       "TypeDoc",
       "WebSocket",
-      "payload"
+      "payload",
+      "ES"
     ]
   },
   "sharec": {
