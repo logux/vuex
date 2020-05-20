@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.1
+ * Add ES modules support
+
 ## 0.5.0
  * Add full support of Vuex modules
  * Fix incorrect behavior with modules ([#26](https://github.com/logux/vuex/issues/26))
