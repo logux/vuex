@@ -60,7 +60,7 @@ let loguxComponent = {
       unsubscribe(this.$store, subscriptions)
     }
   },
-  render () {
+  render (h) {
     let { isSubscribing } = this
     let defaultSlot = this.$scopedSlots.default
 
@@ -68,7 +68,14 @@ let loguxComponent = {
       throw new Error('Provided scoped slot is empty')
     }
 
-    return defaultSlot({ isSubscribing })
+    let vnode = defaultSlot({ isSubscribing })
+
+    // for arrays and single text nodes
+    if (vnode.length > 1 || !vnode[0].tag) {
+      return h(this.tag, {}, vnode)
+    }
+
+    return vnode
   }
 }
 

@@ -74,6 +74,33 @@ it('returns wrapped component', () => {
   expect(component.html()).toBe('<img issubscribing="true" src="1.jpg">')
 })
 
+it('wrap multiple children', () => {
+  let component = createComponent({
+    render (h) {
+      return h(subscribe, {
+        props: { channels: [] }
+      }, [
+        h('span'),
+        h('span')
+      ])
+    }
+  })
+
+  expect(component.element.tagName).toBe('DIV')
+})
+
+it('wrap single text', () => {
+  let component = createComponent({
+    render (h) {
+      return h(subscribe, {
+        props: { channels: [] }
+      }, ['Logux', 'Vuex'])
+    }
+  })
+
+  expect(component.element.tagName).toBe('DIV')
+})
+
 it('subscribes', async () => {
   let User = {}
   let SubscribeUser = {
