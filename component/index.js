@@ -1,9 +1,9 @@
 const {
   subscribe,
   unsubscribe,
-  unifyChannelsObject,
-  subscriptionsId
-} = require('../mixin')
+  subscriptionsId,
+  unifyChannelsObject
+} = require('../helpers')
 
 let loguxComponent = {
   props: {
