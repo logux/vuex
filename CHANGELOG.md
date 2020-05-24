@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.6.0
+ * Add `tag` property for component to wrap multiple children and single text
+ * Replace shared helpers
+ * Update dependencies
+
 ## 0.5.1
  * Add ES modules support
 
