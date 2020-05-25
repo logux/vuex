@@ -28,7 +28,7 @@ let UserPhoto = {
   computed: {
     channels () {
       return [
-        { channel: `users/${ this.id }`, fields: ['photo'] }
+        { channel: `users/${this.id}`, fields: ['photo'] }
       ]
     }
   },
@@ -36,7 +36,7 @@ let UserPhoto = {
     return h('img', {
       attrs: {
         isSubscribing: this.isSubscribing,
-        src: `${ this.id }.jpg`
+        src: `${this.id}.jpg`
       }
     })
   }
@@ -71,7 +71,7 @@ it('accepts channel names', async () => {
     props: ['id'],
     computed: {
       channels () {
-        return [`users/${ this.id }`, `users/${ this.id }/comments`]
+        return [`users/${this.id}`, `users/${this.id}/comments`]
       }
     },
     render: h => h('div')
@@ -234,11 +234,11 @@ it('reports about subscription end', async () => {
   await localVue.nextTick()
   expect(component.vm.$children[0].isSubscribing).toBe(true)
 
-  log.add({ type: 'logux/processed', id: `1 ${ nodeId } 0` })
+  log.add({ type: 'logux/processed', id: `1 ${nodeId} 0` })
   await delay(1)
   expect(component.vm.$children[0].isSubscribing).toBe(true)
 
-  log.add({ type: 'logux/processed', id: `2 ${ nodeId } 0` })
+  log.add({ type: 'logux/processed', id: `2 ${nodeId} 0` })
   await delay(1)
   expect(component.vm.$children[0].isSubscribing).toBe(false)
 })
@@ -251,7 +251,7 @@ it('works on channels size changes 123', () => {
     props: ['ids'],
     computed: {
       channels () {
-        return this.ids.map(id => `users/${ id }`)
+        return this.ids.map(id => `users/${id}`)
       }
     },
     render: h => h('div')
@@ -284,7 +284,7 @@ it('avoid the same channels', async () => {
     data: () => ({ ids: [1] }),
     computed: {
       channels () {
-        return this.ids.map(id => `users/${ id }`)
+        return this.ids.map(id => `users/${id}`)
       }
     },
     methods: {

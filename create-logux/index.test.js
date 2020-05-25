@@ -139,7 +139,7 @@ it('sets tab ID', async () => {
   await new Promise(resolve => {
     store.log.on('add', (action, meta) => {
       expect(meta.tab).toEqual(store.client.tabId)
-      expect(meta.reasons).toEqual([`timeTravelTab${ store.client.tabId }`])
+      expect(meta.reasons).toEqual([`timeTravelTab${store.client.tabId}`])
       resolve()
     })
     store.commit({ type: 'increment' })
@@ -230,10 +230,10 @@ it('cleans its history on removing action', async () => {
     store.commit.crossTab({ type: 'A' }, { reasons: ['test'] }),
     store.commit.crossTab({ type: 'A' }, { reasons: ['test'] })
   ])
-  await store.log.changeMeta(`5 ${ nodeId } 0`, { reasons: [] })
+  await store.log.changeMeta(`5 ${nodeId} 0`, { reasons: [] })
   calls = 0
   await store.commit.crossTab(
-    { type: 'A' }, { id: `5 ${ nodeId } 1`, reasons: ['test'] }
+    { type: 'A' }, { id: `5 ${nodeId} 1`, reasons: ['test'] }
   )
   expect(calls).toEqual(3)
 })
@@ -272,7 +272,7 @@ it('undoes actions', async () => {
   ])
   expect(store.state.value).toEqual('0abc')
   store.commit.crossTab(
-    { type: 'logux/undo', id: `2 ${ nodeId } 0` }, { reasons: ['test'] }
+    { type: 'logux/undo', id: `2 ${nodeId} 0` }, { reasons: ['test'] }
   )
   await delay(1)
   expect(store.state.value).toEqual('0ac')
@@ -501,9 +501,9 @@ it('copies reasons to undo action', async () => {
     { type: 'increment' }, { reasons: ['a', 'b'] }
   )
   await store.commit.crossTab(
-    { type: 'logux/undo', id: `1 ${ nodeId } 0` }, { reasons: [] }
+    { type: 'logux/undo', id: `1 ${nodeId} 0` }, { reasons: [] }
   )
-  let result = await store.log.byId(`2 ${ nodeId } 0`)
+  let result = await store.log.byId(`2 ${nodeId} 0`)
   expect(result[0].type).toEqual('logux/undo')
   expect(result[1].reasons).toEqual(['a', 'b'])
 })

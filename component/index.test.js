@@ -29,7 +29,7 @@ let UserPhoto = {
     return h('img', {
       attrs: {
         isSubscribing: this.isSubscribing,
-        src: `${ this.id }.jpg`
+        src: `${this.id}.jpg`
       }
     })
   }
@@ -41,7 +41,7 @@ let SubscribeUserPhoto = {
   render (h) {
     return h(subscribe, {
       props: {
-        channels: [{ channel: `users/${ this.id }`, fields: ['photo'] }]
+        channels: [{ channel: `users/${this.id}`, fields: ['photo'] }]
       },
       scopedSlots: {
         default: props => h(UserPhoto, {
@@ -108,7 +108,7 @@ it('subscribes', async () => {
     render (h) {
       return h(subscribe, {
         props: {
-          channels: [`users/${ this.id }`]
+          channels: [`users/${this.id}`]
         }
       }, [User])
     }
@@ -274,8 +274,8 @@ it('supports multiple channels', async () => {
       return h(subscribe, {
         props: {
           channels: [
-            `users/${ this.id }`,
-            `pictures/${ this.id }`
+            `users/${this.id}`,
+            `pictures/${this.id}`
           ]
         }
       }, [User])
@@ -332,11 +332,11 @@ it('reports about subscription end', async () => {
   await delay(1)
   expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(true)
 
-  log.add({ type: 'logux/processed', id: `1 ${ nodeId } 0` })
+  log.add({ type: 'logux/processed', id: `1 ${nodeId} 0` })
   await delay(1)
   expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(true)
 
-  log.add({ type: 'logux/processed', id: `2 ${ nodeId } 0` })
+  log.add({ type: 'logux/processed', id: `2 ${nodeId} 0` })
   await delay(1)
   expect(component.findComponent(subscribe).vm.$data.isSubscribing).toBe(false)
 })
@@ -347,7 +347,7 @@ it('functional channels', async () => {
     render (h) {
       return h(subscribe, {
         props: {
-          channels: this.ids.map(id => `users/${ id }`)
+          channels: this.ids.map(id => `users/${id}`)
         }
       }, [h('div')])
     }
@@ -388,7 +388,7 @@ it('avoid the same channels 123', async () => {
     render (h) {
       return h(subscribe, {
         props: {
-          channels: this.ids.map(id => `users/${ id }`)
+          channels: this.ids.map(id => `users/${id}`)
         },
         scopedSlots: {
           default: () => {
