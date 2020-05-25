@@ -101,6 +101,19 @@ it('wrap single text', () => {
   expect(component.element.tagName).toBe('DIV')
 })
 
+it('render with temporary no children', () => {
+  let component = createComponent({
+    components: { subscribe },
+    template: `
+      <subscribe :channels="['user']" v-slot="{ isSubscribing }">
+        <div v-if="!isSubscribing"></div>
+      </subscribe>
+    `
+  })
+
+  expect(component.html()).toBe('')
+})
+
 it('subscribes', async () => {
   let User = {}
   let SubscribeUser = {

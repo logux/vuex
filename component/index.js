@@ -71,7 +71,7 @@ let loguxComponent = {
     let vnode = defaultSlot({ isSubscribing })
 
     // for arrays and single text nodes
-    if (vnode.length > 1 || !vnode[0].tag) {
+    if (vnode && (vnode.length > 1 || !vnode[0].tag)) {
       return h(this.tag, {}, vnode)
     }
 
