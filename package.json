@@ -80,7 +80,10 @@
     }
   },
   "eslintConfig": {
-    "extends": "@logux/eslint-config"
+    "extends": "@logux/eslint-config",
+    "rules": {
+      "prettierx/options": [0]
+    }
   },
   "size-limit": [
     {
