@@ -127,6 +127,10 @@ function createLogux (config = { }) {
       })
     }
 
+    store.local = store.commit.local
+    store.crossTab = store.commit.crossTab
+    store.sync = store.commit.sync
+
     function replaceState (state, actions, pushHistory) {
       let last = actions.length ? actions[actions.length - 1][1] : ''
       let newState = actions.reduceRight((prev, [action, id]) => {
