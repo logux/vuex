@@ -14,12 +14,30 @@ export interface LoguxCommit extends VuexCommit {
   (type: string, payload?: any, options?: CommitOptions): void
   <A extends VuexAction>(payloadWithType: A, options?: CommitOptions): void
 
+  sync: LoguxCommitAction
+  crossTab: LoguxCommitAction
+  local: LoguxCommitAction
+}
+
+interface StateListener<S> {
+  <A extends VuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
+}
+
+export class LoguxVuexStore<S = any> extends VuexStore<S> {
+  constructor (options: VuexStoreOptions<S>)
+  dispatch: VuexDispatch
+
+  /**
+   * Add action to log with Vuex compatible API.
+   */
+  commit: LoguxCommit
+
   /**
    * Add sync action to log and update store state.
    * This action will be visible only for server and all browser tabs.
    *
    * ```js
-   * store.commit.sync(
+   * this.$logux.sync(
    *   { type: 'CHANGE_NAME', name },
    *   { reasons: ['lastName'] }
    * ).then(meta => {
@@ -38,7 +56,7 @@ export interface LoguxCommit extends VuexCommit {
    * This action will be visible only for all tabs.
    *
    * ```js
-   * store.commit.crossTab(
+   * this.$logux.crossTab(
    *   { type: 'CHANGE_FAVICON', favicon },
    *   { reasons: ['lastFavicon'] }
    * ).then(meta => {
@@ -58,7 +76,7 @@ export interface LoguxCommit extends VuexCommit {
    *
    * ```js
    *
-   * store.commit.local(
+   * this.$logux.local(
    *   { type: 'OPEN_MENU' },
    *   { reasons: ['lastMenu'] }
    * ).then(meta => {
@@ -71,20 +89,6 @@ export interface LoguxCommit extends VuexCommit {
    * @returns Promise when action will be saved to the log.
    */
   local: LoguxCommitAction
-}
-
-interface StateListener<S> {
-  <A extends VuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
-}
-
-export class LoguxVuexStore<S = any> extends VuexStore<S> {
-  constructor (options: VuexStoreOptions<S>)
-  dispatch: VuexDispatch
-
-  /**
-   * Add action to log with Vuex compatible API.
-   */
-  commit: LoguxCommit
 
   /**
    * Subscribe for store events. Supported events:
