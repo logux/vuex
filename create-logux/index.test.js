@@ -9,7 +9,7 @@ Vue.config.productionTip = false
 Vue.config.devtools = false
 Vue.use(Vuex)
 
-function initLogux (opts = { }) {
+function initLogux (opts = {}) {
   if (!opts.server) opts.server = 'wss://localhost:1337'
   opts.subprotocol = '1.0.0'
   opts.userId = '10'

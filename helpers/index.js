@@ -13,8 +13,8 @@ function subscriptionsId (subscriptions) {
 }
 
 function subscribe (store, subscriptions) {
-  if (!store.subscriptions) store.subscriptions = { }
-  if (!store.subscribers) store.subscribers = { }
+  if (!store.subscriptions) store.subscriptions = {}
+  if (!store.subscribers) store.subscribers = {}
 
   return Promise.all(subscriptions.map(i => {
     let subscription = i[0]

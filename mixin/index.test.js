@@ -16,7 +16,7 @@ function createComponent (content) {
     userId: '',
     time: new TestTime()
   })
-  let store = new Logux.Store(() => ({ }))
+  let store = new Logux.Store(() => ({}))
   let component = mount(content, { store, localVue })
   component.client = store.client
   return component
@@ -115,7 +115,7 @@ it('unsubscribes', async () => {
 
   let component = createComponent({
     render (h) {
-      return h(UserList, { })
+      return h(UserList, {})
     }
   })
   await delay(1)

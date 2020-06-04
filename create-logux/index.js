@@ -5,7 +5,7 @@ let Vuex = require('vuex')
 
 let { deepCopy, forEachValue } = require('../utils')
 
-function createLogux (config = { }) {
+function createLogux (config = {}) {
   let cleanEvery = config.cleanEvery || 25
   delete config.cleanEvery
   let reasonlessHistory = config.reasonlessHistory || 1000
@@ -23,14 +23,14 @@ function createLogux (config = { }) {
 
     let emitter = createNanoEvents()
 
-    let mutations = collectMutations(vuexConfig)
+    let mutations = collectMutations(deepCopy(vuexConfig))
 
     store.client = client
     store.log = log
     let historyCleaned = false
-    let stateHistory = { }
+    let stateHistory = {}
 
-    let processing = { }
+    let processing = {}
 
     let actionCount = 0
     function saveHistory (meta) {
@@ -60,34 +60,13 @@ function createLogux (config = { }) {
       }
     }
 
-    function unifyCommitArgs (type, payload = { }, options = { }) {
-      let action
-      let meta
-
-      if (typeof type === 'object' && type.type) {
-        action = type
-        meta = payload
-      }
-
-      if (typeof type === 'string') {
-        if (typeof payload === 'object') {
-          action = { type, ...payload }
-        } else {
-          action = { type, value: payload }
-        }
-        meta = options
-      }
-
-      return { action, meta, options: meta }
-    }
-
     store.commit = (type, payload, _options) => {
       let { action, options } = unifyCommitArgs(type, payload, _options)
       let meta = {
         id: log.generateId(),
         tab: store.client.tabId,
         reasons: ['timeTravelTab' + store.client.tabId],
-        dispatch: true
+        commit: true
       }
 
       log.add(action, meta)
@@ -162,7 +141,7 @@ function createLogux (config = { }) {
 
     let replaying
     function replay (actionId) {
-      let ignore = { }
+      let ignore = {}
       let actions = []
       let replayed = false
       let newAction
@@ -235,12 +214,12 @@ function createLogux (config = { }) {
       if (!isLogux && !isFirstOlder(prevMeta, meta)) {
         meta.reasons.push('replay')
       }
-      if (!isLogux && !meta.noAutoReason && !meta.dispatch) {
+      if (!isLogux && !meta.noAutoReason && !meta.commit) {
         meta.reasons.push('timeTravel')
       }
     })
 
-    let wait = { }
+    let wait = {}
 
     async function process (action, meta) {
       if (replaying) {
@@ -311,7 +290,7 @@ function createLogux (config = { }) {
         }
       }
 
-      if (!meta.dispatch) {
+      if (!meta.commit) {
         let prevState = deepCopy(store.state)
         process(action, meta).then(() => {
           let currentState = deepCopy(store.state)
@@ -326,7 +305,7 @@ function createLogux (config = { }) {
     })
 
     let previous = []
-    let ignores = { }
+    let ignores = {}
     log.each((action, meta) => {
       if (!meta.tab) {
         if (action.type === 'logux/undo') {
@@ -349,8 +328,29 @@ function createLogux (config = { }) {
   return { Store }
 }
 
+function unifyCommitArgs (type, payload = {}, options = {}) {
+  let action
+  let meta
+
+  if (typeof type === 'object' && type.type) {
+    action = type
+    meta = payload
+  }
+
+  if (typeof type === 'string') {
+    if (typeof payload === 'object') {
+      action = { type, ...payload }
+    } else {
+      action = { type, value: payload }
+    }
+    meta = options
+  }
+
+  return { action, meta, options: meta }
+}
+
 function collectState (store) {
-  let state = store.state || { }
+  let state = store.state || {}
   function collectModuleState (module, moduleName, moduleState) {
     if (moduleName) {
       moduleState[moduleName] = module.state
