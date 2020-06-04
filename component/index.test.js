@@ -16,7 +16,7 @@ function createComponent (component, options) {
     userId: '',
     time: new TestTime()
   })
-  let store = new Logux.Store(() => ({ }))
+  let store = new Logux.Store(() => ({}))
   let wrapper = mount(component, { store, localVue, ...options })
   wrapper.client = store.client
   return wrapper
