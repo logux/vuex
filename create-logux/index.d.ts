@@ -1,36 +1,48 @@
 import { Unsubscribe } from 'nanoevents'
 import { Action, Log } from '@logux/core'
-import { ClientMeta, ClientOptions, CrossTabClient } from '@logux/client'
-import { Payload as VuexPayload, Commit as VuexCommit, Store as VuexStore, CommitOptions, StoreOptions as VuexStoreOptions, Dispatch as VuexDispatch } from 'vuex'
+import {
+  ClientMeta,
+  ClientOptions,
+  CrossTabClient
+} from '@logux/client'
+import {
+  Payload as VuexPayload,
+  Commit as VuexCommit,
+  Store as VuexStore,
+  CommitOptions as VuexCommitOptions,
+  StoreOptions as VuexStoreOptions,
+  Dispatch as VuexDispatch
+} from 'vuex'
 
-export type VuexAction = Action & VuexPayload
+export type LoguxVuexAction = Action & VuexPayload
 
-export interface LoguxCommitAction {
+export interface LoguxVuexCommitAction {
   (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
-  <A extends VuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 }
 
-export interface LoguxCommit extends VuexCommit {
-  (type: string, payload?: any, options?: CommitOptions): void
-  <A extends VuexAction>(payloadWithType: A, options?: CommitOptions): void
+export interface LoguxVuexCommit extends VuexCommit {
+  (type: string, payload?: any, options?: VuexCommitOptions): void
+  <A extends LoguxVuexAction>(payloadWithType: A, options?: VuexCommitOptions): void
 
-  sync: LoguxCommitAction
-  crossTab: LoguxCommitAction
-  local: LoguxCommitAction
+  sync: LoguxVuexCommitAction
+  crossTab: LoguxVuexCommitAction
+  local: LoguxVuexCommitAction
 }
 
 interface StateListener<S> {
-  <A extends VuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
+  <A extends LoguxVuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
 }
 
 export class LoguxVuexStore<S = any> extends VuexStore<S> {
   constructor (options: VuexStoreOptions<S>)
+
   dispatch: VuexDispatch
 
   /**
    * Add action to log with Vuex compatible API.
    */
-  commit: LoguxCommit
+  commit: LoguxVuexCommit
 
   /**
    * Add sync action to log and update store state.
@@ -49,7 +61,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
-  sync: LoguxCommitAction
+  sync: LoguxVuexCommitAction
 
   /**
    * Add cross-tab action to log and update store state.
@@ -68,7 +80,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  crossTab: LoguxCommitAction
+  crossTab: LoguxVuexCommitAction
 
   /**
    * Add local action to log and update store state.
@@ -88,7 +100,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * @param meta Action’s metadata.
    * @returns Promise when action will be saved to the log.
    */
-  local: LoguxCommitAction
+  local: LoguxVuexCommitAction
 
   /**
    * Subscribe for store events. Supported events:
