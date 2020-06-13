@@ -6,30 +6,26 @@ let Vuex = require('vuex')
 let { deepCopy, forEachValue } = require('../utils')
 
 function createLogux (config = {}) {
-  let cleanEvery = config.cleanEvery || 25
-  delete config.cleanEvery
   let reasonlessHistory = config.reasonlessHistory || 1000
-  delete config.reasonlessHistory
   let saveStateEvery = config.saveStateEvery || 50
-  delete config.saveStateEvery
   let onMissedHistory = config.onMissedHistory
+  let cleanEvery = config.cleanEvery || 25
+
+  delete config.reasonlessHistory
+  delete config.saveStateEvery
   delete config.onMissedHistory
+  delete config.cleanEvery
 
   let client = new CrossTabClient(config)
   let log = client.log
 
   let Store = function Store (vuexConfig) {
     let store = new Vuex.Store(deepCopy(vuexConfig))
-
+    let mutations = collectMutations(deepCopy(vuexConfig))
     let emitter = createNanoEvents()
 
-    let mutations = collectMutations(deepCopy(vuexConfig))
-
-    store.client = client
-    store.log = log
     let historyCleaned = false
     let stateHistory = {}
-
     let processing = {}
 
     let actionCount = 0
@@ -40,6 +36,8 @@ function createLogux (config = {}) {
       }
     }
 
+    store.client = client
+    store.log = log
     store.on = emitter.on.bind(emitter)
 
     let init
@@ -77,20 +75,20 @@ function createLogux (config = {}) {
       saveHistory(meta)
     }
 
-    store.commit.local = (type, payload, _meta) => {
+    store.local = (type, payload, _meta) => {
       let { action, meta } = unifyCommitArgs(type, payload, _meta)
       meta.tab = client.tabId
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
       return log.add(action, meta)
     }
 
-    store.commit.crossTab = (type, payload, _meta) => {
+    store.crossTab = (type, payload, _meta) => {
       let { action, meta } = unifyCommitArgs(type, payload, _meta)
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
       return log.add(action, meta)
     }
 
-    store.commit.sync = (type, payload, _meta) => {
+    store.sync = (type, payload, _meta) => {
       let { action, meta } = unifyCommitArgs(type, payload, _meta)
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
 
@@ -106,9 +104,9 @@ function createLogux (config = {}) {
       })
     }
 
-    store.local = store.commit.local
-    store.crossTab = store.commit.crossTab
-    store.sync = store.commit.sync
+    store.commit.local = store.local
+    store.commit.crossTab = store.crossTab
+    store.commit.sync = store.sync
 
     function replaceState (state, actions, pushHistory) {
       let last = actions.length ? actions[actions.length - 1][1] : ''
