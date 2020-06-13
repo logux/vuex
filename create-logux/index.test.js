@@ -63,7 +63,7 @@ it('unify commit arguments', async () => {
   store.sync('historyLine', 1, { reasons: ['test1'] })
   store.sync({ type: 'historyLine', value: 1 }, { reasons: ['test2'] })
   await delay(10)
-  let log = store.log.store.created
+  let log = store.log.entries()
   expect(log[2][0]).toEqual({ type: 'historyLine', value: 1 })
   expect(log[2][1].sync).toBe(true)
   expect(log[2][1].reasons).toEqual(['test1', 'syncing'])
@@ -151,7 +151,7 @@ it('has shortcut for add', async () => {
 
   await store.crossTab({ type: 'increment' }, { reasons: ['test'] })
   expect(store.state).toEqual({ value: 1 })
-  expect(store.log.store.created[0][1].reasons).toEqual(['test'])
+  expect(store.log.entries()[0][1].reasons).toEqual(['test'])
 })
 
 it('listen for action from other tabs', () => {
@@ -352,7 +352,7 @@ it('replays history for reason-less action', async () => {
   )
   await delay(1)
   expect(store.state.value).toEqual('0a|bc')
-  expect(store.log.store.created).toHaveLength(3)
+  expect(store.log.entries()).toHaveLength(3)
 })
 
 it('replays actions before staring since initial state', async () => {
@@ -512,9 +512,10 @@ it('commits local actions', async () => {
   let store = createStore({ increment })
 
   await store.local({ type: 'increment' }, { reasons: ['test'] })
-  expect(store.log.store.created[0][0]).toEqual({ type: 'increment' })
-  expect(store.log.store.created[0][1].tab).toEqual(store.client.tabId)
-  expect(store.log.store.created[0][1].reasons).toEqual(['test'])
+  let log = store.log.entries()
+  expect(log[0][0]).toEqual({ type: 'increment' })
+  expect(log[0][1].tab).toEqual(store.client.tabId)
+  expect(log[0][1].reasons).toEqual(['test'])
 })
 
 it('allows to miss meta for local actions', async () => {
@@ -523,7 +524,7 @@ it('allows to miss meta for local actions', async () => {
     meta.reasons.push('preadd')
   })
   await store.local({ type: 'increment' })
-  expect(store.log.store.created[0][0]).toEqual({ type: 'increment' })
+  expect(store.log.entries()[0][0]).toEqual({ type: 'increment' })
 })
 
 it('commits sync actions', async () => {
@@ -531,7 +532,7 @@ it('commits sync actions', async () => {
 
   store.sync({ type: 'increment' }, { reasons: ['test'] })
   await delay(1)
-  let log = store.log.store.created
+  let log = store.log.entries()
   expect(log[0][0]).toEqual({ type: 'increment' })
   expect(log[0][1].sync).toBe(true)
   expect(log[0][1].reasons).toEqual(['test', 'syncing'])
