@@ -38,22 +38,22 @@
     "@vue/test-utils": "^1.0.3",
     "check-dts": "^0.3.0",
     "docdash": "^1.2.0",
-    "dual-publish": "^0.10.2",
-    "eslint": "^7.1.0",
+    "dual-publish": "^0.10.3",
+    "eslint": "^7.2.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.13.1",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jest": "^23.13.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^1.0.1",
-    "eslint-plugin-prettierx": "^0.12.0",
+    "eslint-plugin-prettierx": "^0.12.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-unicorn": "^20.0.0",
+    "eslint-plugin-unicorn": "^20.1.0",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
-    "lint-staged": "^10.2.6",
-    "nanodelay": "^1.0.2",
+    "lint-staged": "^10.2.10",
+    "nanodelay": "^1.0.3",
     "rimraf": "^3.0.2",
     "size-limit": "^4.5.0",
     "vue": "^2.6.11",
@@ -82,7 +82,9 @@
   "eslintConfig": {
     "extends": "@logux/eslint-config",
     "rules": {
-      "prettierx/options": [0]
+      "prettierx/options": [
+        0
+      ]
     }
   },
   "size-limit": [
