@@ -38,8 +38,12 @@ function increment (state) {
   state.value = state.value + 1
 }
 
-function historyLine (state, action) {
-  state.value = state.value + action.value
+function historyLine (state, payload) {
+  if (typeof payload === 'object') {
+    state.value = state.value + payload.value
+  } else {
+    state.value = state.value + payload
+  }
 }
 
 it('throws error on missed config', () => {
@@ -64,7 +68,7 @@ it('unify commit arguments', async () => {
   store.sync({ type: 'historyLine', value: 1 }, { reasons: ['test2'] })
   await delay(10)
   let log = store.log.entries()
-  expect(log[2][0]).toEqual({ type: 'historyLine', value: 1 })
+  expect(log[2][0]).toEqual({ type: 'historyLine', payload: 1 })
   expect(log[2][1].sync).toBe(true)
   expect(log[2][1].reasons).toEqual(['test1', 'syncing'])
   expect(log[3][1].reasons).toEqual(['test2', 'syncing'])
