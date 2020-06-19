@@ -494,10 +494,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@logux/client@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@logux/client/-/client-0.9.0.tgz#3c7e1cbf97f7c2a56b9ed285c1900fb082320eaa"
-  integrity sha512-X3L7Dx813LumbqPzgNF0+41JnFeTcyZzpIb5sRm6s6NhOZICzqGzWoCzuzuqZCUZMAnu4v1PSpY9PofslKSwgQ==
+"@logux/client@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@logux/client/-/client-0.9.1.tgz#890b9dcccbf2759770c3ed214bc883d2ba684b11"
+  integrity sha512-R/4JrKEe69uARwYgG/AjMIz7k05aA7BCLEflIr93ST82RIlmkTJifbdfxyjTEwoRz9Ka9kSpKmZ8VJrCoS8PbA==
   dependencies:
     "@logux/core" "^0.6.0"
     nanoevents "^5.1.8"
