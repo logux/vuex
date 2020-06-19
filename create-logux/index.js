@@ -54,6 +54,10 @@ function createLogux (config = {}) {
         return
       }
       if (action.type in store._mutations) {
+        if (action.payload && typeof action.payload !== 'object') {
+          storeCommit(action.type, action.payload, options)
+          return
+        }
         storeCommit(action, options)
       }
     }
@@ -121,7 +125,12 @@ function createLogux (config = {}) {
                 return obj[key]
               }, changed)
             }
-            mutation.fn(mutationState, action)
+
+            let mutationPayload = action
+            if (action.payload && typeof action.payload !== 'object') {
+              mutationPayload = action.payload
+            }
+            mutation.fn(mutationState, mutationPayload)
           })
         }
 
@@ -339,7 +348,7 @@ function unifyCommitArgs (type, payload = {}, options = {}) {
     if (typeof payload === 'object') {
       action = { type, ...payload }
     } else {
-      action = { type, value: payload }
+      action = { type, payload }
     }
     meta = options
   }
