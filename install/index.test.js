@@ -22,8 +22,15 @@ function createComponent (component) {
 }
 
 it('provide $logux', () => {
+  let child = {
+    render: h => h('div')
+  }
   let component = createComponent({
-    render (h) { h('div') }
+    render (h) {
+      return h('div', [h(child)])
+    }
   })
+
   expect(component.vm.$logux).toEqual(component.vm.$store)
+  expect(component.vm.$children[0].$logux).toEqual(component.vm.$children[0].$store)
 })
