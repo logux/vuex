@@ -21,7 +21,7 @@ export interface LoguxVuexCommit extends VuexCommit {
   <A extends LoguxVuexAction>(payloadWithType: A, options?: CommitOptions): void
 
   /**
-   * Add sync action to log and update store state.
+   * Adds sync action to log and updates store state.
    * This action will be visible only for server and all browser tabs.
    *
    * ```js
@@ -33,20 +33,20 @@ export interface LoguxVuexCommit extends VuexCommit {
    * })
    * ```
    *
-   * @param type The new action type.
-   * @param payload The new action payload.
+   * @param type Action type.
+   * @param payload Action’s payload.
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
   sync (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
   /**
-   * @param action The new action.
+   * @param action Action.
    * @param meta Action’s metadata.
    */
   sync <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
-   * Add cross-tab action to log and update store state.
+   * Adds cross-tab action to log and updates store state.
    * This action will be visible only for all tabs.
    *
    * ```js
@@ -58,20 +58,20 @@ export interface LoguxVuexCommit extends VuexCommit {
    * })
    * ```
    *
-   * @param type The new action type.
-   * @param payload The new action payload.
+   * @param type Action type.
+   * @param payload Action’s payload.
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
   crossTab (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
   /**
-   * @param action The new action.
+   * @param action Action.
    * @param meta Action’s metadata.
    */
   crossTab <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
-   * Add local action to log and update store state.
+   * Adds local action to log and updates store state.
    * This action will be visible only for current tab.
    *
    * ```js
@@ -84,14 +84,14 @@ export interface LoguxVuexCommit extends VuexCommit {
    * })
    * ```
    *
-   * @param type The new action type.
-   * @param payload The new action payload.
+   * @param type Action type.
+   * @param payload Action’s payload.
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
   local (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
   /**
-   * @param action The new action.
+   * @param action Action.
    * @param meta Action’s metadata.
    */
   local <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
@@ -112,7 +112,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
   commit: LoguxVuexCommit
 
   /**
-   * Add sync action to log and update store state.
+   * Adds sync action to log and updates store state.
    * This action will be visible only for server and all browser tabs.
    *
    * ```js
@@ -124,20 +124,20 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * })
    * ```
    *
-   * @param type The new action type.
-   * @param payload The new action payload.
+   * @param type Action type.
+   * @param payload Action’s payload.
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
   sync (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
   /**
-   * @param action The new action.
+   * @param action Action.
    * @param meta Action’s metadata.
    */
   sync <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
-   * Add cross-tab action to log and update store state.
+   * Adds cross-tab action to log and updates store state.
    * This action will be visible only for all tabs.
    *
    * ```js
@@ -149,20 +149,20 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * })
    * ```
    *
-   * @param type The new action type.
-   * @param payload The new action payload.
+   * @param type Action type.
+   * @param payload Action’s payload.
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
   crossTab (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
   /**
-   * @param action The new action.
+   * @param action Action.
    * @param meta Action’s metadata.
    */
   crossTab <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
-   * Add local action to log and update store state.
+   * Adds local action to log and updates store state.
    * This action will be visible only for current tab.
    *
    * ```js
@@ -175,25 +175,25 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * })
    * ```
    *
-   * @param type The new action type.
-   * @param payload The new action payload.
+   * @param type Action type.
+   * @param payload Action’s payload.
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
   local (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
   /**
-   * @param action The new action.
+   * @param action Action.
    * @param meta Action’s metadata.
    */
   local <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
 
   /**
-   * Subscribe for store events. Supported events:
+   * Subscribes for store events. Supported events:
    *
    * * `change`: when store was changed by action.
    *
    * ```js
-   * store.on('change', (state, prevState, action, meta) => {
+   * this.$logux.on('change', (state, prevState, action, meta) => {
    *   console.log(state, prevState, action, meta)
    * })
    * ```
@@ -240,7 +240,7 @@ export type LoguxConfig = ClientOptions & {
 }
 
 /**
- * Creates Logux client and attach it to Vuex.Store instance.
+ * Creates Logux client and attach it to Vuex instance.
  *
  * ```js
  * import { createLogux } from '@logux/vuex'
