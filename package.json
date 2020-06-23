@@ -114,7 +114,8 @@
       "WebSocket",
       "payload",
       "ES",
-      "roadmap"
+      "roadmap",
+      "refactor"
     ]
   },
   "sharec": {
