@@ -24,6 +24,10 @@ This repository contains [Vuex] compatible API on top of [Logux Client].
 ```sh
 npm install @logux/vuex vuex
 ```
+or
+```sh
+yarn add @logux/vuex vuex
+```
 
 ## Usage
 
@@ -33,17 +37,16 @@ See [documentation] for Logux API.
 
 ```js
 import Vue from 'vue'
-import Vuex from 'vuex'
-import { createLogux } from '@logux/vuex'
+import { LoguxVuex, createLogux } from '@logux/vuex'
 
-Vue.use(Vuex)
+Vue.use(LoguxVuex)
 
 const Logux = createLogux({
   subprotocol: '1.0.0',
   server: process.env.NODE_ENV === 'development'
     ? 'ws://localhost:31337'
     : 'wss://logux.example.com',
-  userId: '',
+  userId: 'anonymous',
   token: ''
 })
 
