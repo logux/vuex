@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.7.0-beta.1
+ * Add Vue plugin API
+ * Refactor TypeScript definitions
+ * Update dependencies
+
 ## 0.6.1
  * Fix component render with temporary no children
 
