@@ -1,9 +1,20 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.7.0-beta.1
+## 0.7.0
  * Add Vue plugin API
- * Refactor TypeScript definitions
+   ```js
+   import Vue from 'vue'
+   import { LoguxVuex, createLogux } from '@logux/vuex'
+
+   Vue.use(LoguxVuex)
+   ```
+ * Add new API
+   * `this.$logux.local`
+   * `this.$logux.crossTab`
+   * `this.$logux.sync`
+   * `store.commit.local`, `store.commit.crossTab`, `store.commit.sync` still available as alias to `this.$logux`
+ * Refactor TypeScript support
  * Update dependencies
 
 ## 0.6.1
