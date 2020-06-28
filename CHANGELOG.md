@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
    * `this.$logux.crossTab`
    * `this.$logux.sync`
    * `store.commit.local`, `store.commit.crossTab`, `store.commit.sync` still available as alias to `this.$logux`
+ * Fix native Vuex payload behavior
  * Refactor TypeScript support
  * Update dependencies
 
