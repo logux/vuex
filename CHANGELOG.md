@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.7.1
+ * Fix native Vuex payload behavior
+
 ## 0.7.0
  * Add Vue plugin API
    ```js
