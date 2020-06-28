@@ -54,7 +54,7 @@ function createLogux (config = {}) {
         return
       }
       if (action.type in store._mutations) {
-        if (action.payload && typeof action.payload !== 'object') {
+        if (hasSimplePayload(action)) {
           storeCommit(action.type, action.payload, options)
           return
         }
@@ -127,7 +127,7 @@ function createLogux (config = {}) {
             }
 
             let mutationPayload = action
-            if (action.payload && typeof action.payload !== 'object') {
+            if (hasSimplePayload(action)) {
               mutationPayload = action.payload
             }
             mutation.fn(mutationState, mutationPayload)
@@ -333,6 +333,10 @@ function createLogux (config = {}) {
   }
 
   return { Store }
+}
+
+function hasSimplePayload (action) {
+  return 'payload' in action && typeof action.payload !== 'object'
 }
 
 function unifyCommitArgs (type, payload = {}, options = {}) {
