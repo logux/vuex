@@ -510,6 +510,13 @@
   dependencies:
     nanoevents "^5.1.7"
 
+"@logux/core@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@logux/core/-/core-0.6.1.tgz#694757d4a616be6694d8a45739485934823820b9"
+  integrity sha512-4gobJaTcbdVyaynmUov2sP9au2/2xD7bOVfAQrnVMhE64WXaieD6D6nDrRGVGTWFJ0m7j28Xk4UqQplb+sz97w==
+  dependencies:
+    nanoevents "^5.1.8"
+
 "@logux/eslint-config@^39.0.3":
   version "39.0.3"
   resolved "https://registry.yarnpkg.com/@logux/eslint-config/-/eslint-config-39.0.3.tgz#9b592a631bc02cb430d39eefcc8a3b0013a8f6c6"
