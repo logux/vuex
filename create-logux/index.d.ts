@@ -25,7 +25,7 @@ export interface LoguxVuexCommit extends VuexCommit {
    * This action will be visible only for server and all browser tabs.
    *
    * ```js
-   * this.$logux.sync(
+   * store.commit.sync(
    *   { type: 'CHANGE_NAME', name },
    *   { reasons: ['lastName'] }
    * ).then(meta => {
@@ -50,7 +50,7 @@ export interface LoguxVuexCommit extends VuexCommit {
    * This action will be visible only for all tabs.
    *
    * ```js
-   * this.$logux.crossTab(
+   * store.commit.crossTab(
    *   { type: 'CHANGE_FAVICON', favicon },
    *   { reasons: ['lastFavicon'] }
    * ).then(meta => {
@@ -76,7 +76,7 @@ export interface LoguxVuexCommit extends VuexCommit {
    *
    * ```js
    *
-   * this.$logux.local(
+   * store.commit.local(
    *   { type: 'OPEN_MENU' },
    *   { reasons: ['lastMenu'] }
    * ).then(meta => {
@@ -116,7 +116,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * This action will be visible only for server and all browser tabs.
    *
    * ```js
-   * this.$logux.sync(
+   * store.commit.sync(
    *   { type: 'CHANGE_NAME', name },
    *   { reasons: ['lastName'] }
    * ).then(meta => {
@@ -141,7 +141,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * This action will be visible only for all tabs.
    *
    * ```js
-   * this.$logux.crossTab(
+   * store.commit.crossTab(
    *   { type: 'CHANGE_FAVICON', favicon },
    *   { reasons: ['lastFavicon'] }
    * ).then(meta => {
@@ -167,7 +167,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    *
    * ```js
    *
-   * this.$logux.local(
+   * store.commit.local(
    *   { type: 'OPEN_MENU' },
    *   { reasons: ['lastMenu'] }
    * ).then(meta => {
@@ -193,7 +193,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * * `change`: when store was changed by action.
    *
    * ```js
-   * this.$logux.on('change', (state, prevState, action, meta) => {
+   * store.on('change', (state, prevState, action, meta) => {
    *   console.log(state, prevState, action, meta)
    * })
    * ```
