@@ -22,6 +22,10 @@ function createLogux (config = {}) {
   let Store = function Store (vuexConfig) {
     let store = new Vuex.Store(deepCopy(vuexConfig))
     let mutations = collectMutations(deepCopy(vuexConfig))
+
+    store._actions = Object.create(null)
+    installModule(store, store._modules.root.state, [], store._modules.root)
+
     let emitter = createNanoEvents()
 
     let historyCleaned = false
@@ -333,6 +337,92 @@ function createLogux (config = {}) {
   }
 
   return { Store }
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function installModule (store, rootState, path, module) {
+  let namespace = store._modules.getNamespace(path)
+  let local = modifyLocalContext(store, namespace, module.context)
+
+  module.forEachAction((action, key) => {
+    let type = action.root ? key : namespace + key
+    let handler = action.handler || action
+    registerAction(store, type, handler, local)
+  })
+
+  module.forEachChild((child, key) => {
+    installModule(store, rootState, path.concat(key), child)
+  })
+}
+
+function modifyLocalContext (store, namespace, context) {
+  let noNamespace = namespace === ''
+
+  context.commit = (_type, _payload, _options) => {
+    let { action, options } = unifyCommitArgs(_type, _payload, _options)
+    if (!noNamespace) {
+      if (!options || !options.root) {
+        action.type = namespace + action.type
+      }
+    }
+    store.commit(action, options)
+  }
+
+  context.commit.sync = (_type, _payload, _meta) => {
+    let { action, meta } = unifyCommitArgs(_type, _payload, _meta)
+    action.type = noNamespace ? action.type : namespace + action.type
+    return store.commit.sync(action, meta)
+  }
+
+  context.commit.local = (_type, _payload, _meta) => {
+    let { action, meta } = unifyCommitArgs(_type, _payload, _meta)
+    action.type = noNamespace ? action.type : namespace + action.type
+    return store.commit.local(action, meta)
+  }
+
+  context.commit.crossTab = (_type, _payload, _meta) => {
+    let { action, meta } = unifyCommitArgs(_type, _payload, _meta)
+    action.type = noNamespace ? action.type : namespace + action.type
+    return store.commit.crossTab(action, meta)
+  }
+
+  context.sync = context.commit.sync
+  context.local = context.commit.local
+  context.crossTab = context.commit.crossTab
+
+  return context
+}
+
+function registerAction (store, type, handler, local) {
+  let entry = store._actions[type] || (store._actions[type] = [])
+  function wrappedActionHandler (payload) {
+    let res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      local: local.local,
+      sync: local.sync,
+      crossTab: local.crossTab,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload)
+    if (!isPromise(res)) {
+      res = Promise.resolve(res)
+    }
+    if (store._devtoolHook) {
+      return res.catch(err => {
+        store._devtoolHook.emit('vuex:error', err)
+        throw err
+      })
+    } else {
+      return res
+    }
+  }
+  entry.push(wrappedActionHandler)
 }
 
 function hasSimplePayload (action) {
