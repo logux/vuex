@@ -566,32 +566,32 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@size-limit/dual-publish@^4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@size-limit/dual-publish/-/dual-publish-4.5.2.tgz#f3f195756f9c0824ae84f3893fee117a23952162"
-  integrity sha512-JdwfaF2WEx7KaJZFDi0cyXALgogQGUgRgRPa0XUUTHwF7+CIcRLYsBB3ZVw6XFiMuiSvTnMMGKaFOY3+YyyiSQ==
+"@size-limit/dual-publish@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@size-limit/dual-publish/-/dual-publish-4.5.3.tgz#e1a1902009bad952efa168da70bfe70c654a4733"
+  integrity sha512-jvp6hnqfrbGbppqjQ0LicFurVVdDsVG4DNFUJHbXonOX8QQ4hnMACegdmHKHDbSYwuudE9OID4OyH3Y0mqMSFA==
   dependencies:
     rimraf "^3.0.2"
 
-"@size-limit/file@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@size-limit/file/-/file-4.5.2.tgz#c904c08bed011c297f62637c1c86c6c2c5375185"
-  integrity sha512-t8IS2TOs2mm35HHIvH8rG596XZy77121LuIDbRpYbokVygN4EUMmxaV9iteQgpTuhRN4CUbJZJvAi55RMv3K7w==
+"@size-limit/file@4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@size-limit/file/-/file-4.5.3.tgz#f73afcdca4186255bb512630286de77589b7c756"
+  integrity sha512-QOvyhO4MyzYRjZLu0XYXdnun8aMOfea8uC6u46FsvvnWEnSL1LebeB1UKtk2zWGC9MYrv6c9IZvV11tbopeSjQ==
   dependencies:
     semver "7.3.2"
 
-"@size-limit/preset-small-lib@^4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@size-limit/preset-small-lib/-/preset-small-lib-4.5.2.tgz#7977d0dfe65d5bb535c2a4fd738806e786b8c8f2"
-  integrity sha512-6msDVypvfYm+3oJ5uOPM3AwQyeogL4wUjqxzwNkG1BkNZLhHyFNjf6X7TNylyiABbHB7IXH6x+EA2u7Kt9ymSg==
+"@size-limit/preset-small-lib@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@size-limit/preset-small-lib/-/preset-small-lib-4.5.3.tgz#de6f0e67b713ba2806770c2fc4cb0baa92e4df67"
+  integrity sha512-J5o2q75xQtzXddXLaacI5jIZaXfk7W8U5dSFAKuYMXYD4Qo116Jpkzs+/lQN+OSSJDMydSWUBnX0DWib4HsjSg==
   dependencies:
-    "@size-limit/file" "4.5.2"
-    "@size-limit/webpack" "4.5.2"
+    "@size-limit/file" "4.5.3"
+    "@size-limit/webpack" "4.5.3"
 
-"@size-limit/webpack@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@size-limit/webpack/-/webpack-4.5.2.tgz#68fd089834175874972a04e6240912c2e462efed"
-  integrity sha512-liqD+N3EQXjMyoZ0UmlTdwo8pBj5ORHkebTmCAYPAfS/P46JEVDUi47Q6s+dzOVY9O/JgSGUyf3VrP/Er7gJ0g==
+"@size-limit/webpack@4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@size-limit/webpack/-/webpack-4.5.3.tgz#ff0a9efd7799dc4ecbb3df525c824e82895258dd"
+  integrity sha512-Uw2ZgEM81RaHE9UjDGrjHyLLA1ngpWTNWU1wJmXpGHXq4F8I1wV5rLdAzWZO8F137LhK66hpYoaAk0y2w/wy2w==
   dependencies:
     css-loader "^3.6.0"
     escape-string-regexp "^4.0.0"
@@ -2641,10 +2641,10 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-dual-publish@^0.10.6:
-  version "0.10.6"
-  resolved "https://registry.yarnpkg.com/dual-publish/-/dual-publish-0.10.6.tgz#0cd1cf0535e10f5dcff44842b8ccd56375a9b838"
-  integrity sha512-Akk5BNtfnidTSmncEvr88lqSj0nOHz7oYUD/ZR6SYyclfJ8SagR3HZ7h59viqrb3RE3G6aCUnGwKQIvj/rsQmw==
+dual-publish@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/dual-publish/-/dual-publish-0.11.0.tgz#497d777407c7dd3c35699004c1c0b919b5d71e69"
+  integrity sha512-nDaLFplyBeYQanGidwiDatQz3vfLgE10rSGK3ahA0abJk6+4nuwKxsJD573+Xcl79j6TVHsJBRhTY7gHaTDsGg==
   dependencies:
     clean-publish "^1.1.7"
     colorette "^1.2.0"
@@ -7533,10 +7533,10 @@ sisteransi@^1.0.4:
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
 
-size-limit@^4.5.2:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/size-limit/-/size-limit-4.5.2.tgz#7448e2a41ad1d335143010409446684819cbcc8a"
-  integrity sha512-5UFx+Y7Yo6PkUxwQCigcT/1TrbPqThdD5uoAy1p2Q3ajBRzWdKb+pK2k+/p8D8pEbFIh4JFN+m5fwdPpgAJ1yQ==
+size-limit@^4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/size-limit/-/size-limit-4.5.3.tgz#7534fc36695e0b526206c706a8a8353ba4f4d58d"
+  integrity sha512-i5zOu9qN+X+eKeBSkVZCFqXtwd4CjgMrRWimB3uA5FW2JM4oCa0qv+CBIb/oNfdMsghrrD3HjSb8pn15XlOu3A==
   dependencies:
     bytes "^3.1.0"
     chokidar "^3.4.0"
