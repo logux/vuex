@@ -106,7 +106,6 @@ export default {
     </div>
     <div v-else>
       <h1>{{ user.name }}</h1>
-      <button @click="increment" />
     </div>
   </logux-component>
 </template>
@@ -119,13 +118,11 @@ export default {
   components: {
     loguxComponent
   },
-  props: {
-    userId: String
-  },
+  props: ['userId'],
   computed: {
-    // Retrieve counter state from store
+    // Retrieve user state from store
     user () {
-      return this.$store.state.user
+      return this.$store.state.user[this.userId]
     }
   }
 }
