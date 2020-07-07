@@ -34,15 +34,13 @@ export interface loguxMixinComponent {
  * export default {
  *   name: 'UserProfile',
  *   mixins: [loguxMixin],
- *   props: {
- *     userId: String
- *   },
+ *   props: ['userId'],
  *   computed: {
  *     user () {
- *       return this.$store.state.user
+ *       return this.$store.state.user[this.userId]
  *     },
  *     channels () {
- *       return [`user/${ userId }`]
+ *       return [`user/${ this.userId }`]
  *     }
  *   }
  * }
@@ -52,9 +50,6 @@ export interface loguxMixinComponent {
 export const loguxMixin: ExtendedVue<
   Vue,
   {
-    /**
-     * Indicates loading state.
-     */
     isSubscribing: boolean
     $_logux_ignoreResponse: {
       [id: string]: boolean

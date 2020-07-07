@@ -13,12 +13,8 @@ import { Channel, Subscription } from '../mixin'
  * ```html
  * <template>
  *   <logux-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
- *     <div v-if="isSubscribing">
- *       <h1>Loading</h1>
- *     </div>
- *     <div v-else>
- *       <h1>{{ user.name }}</h1>
- *     </div>
+ *     <h1 v-if="isSubscribing">Loading</h1>
+ *     <h1 v-else>{{ user.name }}</h1>
  *   </logux-component>
  * </template>
  *
@@ -30,12 +26,10 @@ import { Channel, Subscription } from '../mixin'
  *   components: {
  *     loguxComponent
  *   },
- *   props: {
- *     userId: String
- *   },
+ *   props: ['userId'],
  *   computed: {
  *     user () {
- *       return this.$store.state.user
+ *       return this.$store.state.user[this.userId]
  *     }
  *   }
  * }
