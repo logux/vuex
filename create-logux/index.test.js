@@ -104,6 +104,47 @@ it('commit mutation with prefixed name', async () => {
   expect(store.state.value).toBe(0)
 })
 
+it('commit from action context', () => {
+  let Logux = initLogux()
+  let mutations = { increment }
+  let actions = {
+    INC ({ commit }) {
+      commit('increment')
+      commit.local('increment')
+      commit.sync('increment')
+      commit.crossTab('increment')
+    }
+  }
+  let store = new Logux.Store({
+    state: { value: 0 },
+    mutations,
+    actions,
+    modules: {
+      A: {
+        namespaced: true,
+        state: { value: 0 },
+        mutations,
+        actions: {
+          ...actions,
+          'ROOT_INC': {
+            root: true,
+            handler ({ commit }) {
+              commit('increment')
+            }
+          }
+        }
+      }
+    }
+  })
+
+  store.dispatch('INC')
+  store.dispatch('ROOT_INC')
+  store.dispatch('A/INC')
+
+  expect(store.state).toEqual({ value: 1, A: { value: 2 } })
+  expect(store.log.entries()).toHaveLength(9)
+})
+
 it('commit root mutation in namespaced module', () => {
   let Logux = createLogux({
     server: 'wss://localhost:1337',
