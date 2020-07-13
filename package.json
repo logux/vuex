@@ -90,7 +90,7 @@
   "size-limit": [
     {
       "import": "{ createLogux, loguxMixin, loguxComponent }",
-      "limit": "10 KB"
+      "limit": "10.5 KB"
     }
   ],
   "yaspeller": {
