@@ -3,7 +3,11 @@ let { CrossTabClient } = require('@logux/client/cross-tab-client')
 let { isFirstOlder } = require('@logux/core/is-first-older')
 let Vuex = require('vuex')
 
-let { deepCopy, forEachValue } = require('../utils')
+let {
+  deepCopy,
+  isPromise,
+  forEachValue
+} = require('../utils')
 
 function createLogux (config = {}) {
   let reasonlessHistory = config.reasonlessHistory || 1000
@@ -338,10 +342,6 @@ function createLogux (config = {}) {
   }
 
   return { Store }
-}
-
-function isPromise (val) {
-  return val && typeof val.then === 'function'
 }
 
 function installModule (store, rootState, path, module) {
