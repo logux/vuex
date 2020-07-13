@@ -21,9 +21,9 @@ function createLogux (config = {}) {
 
   let Store = function Store (vuexConfig) {
     let store = new Vuex.Store(deepCopy(vuexConfig))
-    let mutations = collectMutations(deepCopy(vuexConfig))
 
     store._actions = Object.create(null)
+    store._pureMutations = Object.create(null)
     installModule(store, store._modules.root.state, [], store._modules.root)
 
     let emitter = createNanoEvents()
@@ -121,6 +121,7 @@ function createLogux (config = {}) {
       let newState = actions.reduceRight((prev, [action, id]) => {
         let changed = deepCopy(prev)
 
+        let mutations = store._pureMutations
         if (action.type in mutations) {
           mutations[action.type].forEach(mutation => {
             let mutationState = changed
@@ -134,7 +135,7 @@ function createLogux (config = {}) {
             if (hasSimplePayload(action)) {
               mutationPayload = action.payload
             }
-            mutation.fn(mutationState, mutationPayload)
+            mutation.handler(mutationState, mutationPayload)
           })
         }
 
@@ -347,6 +348,12 @@ function installModule (store, rootState, path, module) {
   let namespace = store._modules.getNamespace(path)
   let local = modifyLocalContext(store, namespace, module.context)
 
+  module.forEachMutation((mutation, key) => {
+    let type = namespace + key
+    let entry = store._pureMutations[type] || (store._pureMutations[type] = [])
+    entry.push({ handler: mutation, path })
+  })
+
   module.forEachAction((action, key) => {
     let type = action.root ? key : namespace + key
     let handler = action.handler || action
@@ -466,34 +473,6 @@ function collectState (store) {
   }
   collectModuleState(store, false, state)
   return state
-}
-
-function collectMutations (store) {
-  let mutations = []
-  function collectModuleMutations (module, moduleName, _namespace, _path) {
-    let namespace = _namespace || ''
-    let path = _path || []
-    if (moduleName) {
-      if (module.namespaced) {
-        namespace = _namespace + moduleName + '/'
-      }
-      path = [..._path, moduleName]
-    }
-    if (module.mutations) {
-      forEachValue(module.mutations, (mutation, _type) => {
-        let type = namespace + _type
-        let entry = mutations[type] || (mutations[type] = [])
-        entry.push({ fn: mutation, path })
-      })
-    }
-    if (module.modules) {
-      forEachValue(module.modules, (childModule, childModuleName) => {
-        collectModuleMutations(childModule, childModuleName, namespace, path)
-      })
-    }
-  }
-  collectModuleMutations(store)
-  return mutations
 }
 
 module.exports = { createLogux }
