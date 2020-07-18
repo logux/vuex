@@ -91,12 +91,12 @@
     {
       "name": "Logux Vuex",
       "import": "{ createLogux }",
-      "limit": "10.5 KB"
+      "limit": "10 KB"
     },
     {
       "name": "Helpers",
       "import": "{ loguxMixin, loguxComponent }",
-      "limit": "10.5 KB"
+      "limit": "1 KB"
     }
   ],
   "yaspeller": {
