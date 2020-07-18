@@ -1,7 +1,7 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.8.0-beta.1
+## 0.8.0
  * Add logux `commit` to vuex `action` context  ([#31](https://github.com/logux/vuex/issues/31))
  * Update dependencies
 
