@@ -89,7 +89,13 @@
   },
   "size-limit": [
     {
-      "import": "{ createLogux, loguxMixin, loguxComponent }",
+      "name": "Logux Vuex",
+      "import": "{ createLogux }",
+      "limit": "10.5 KB"
+    },
+    {
+      "name": "Helpers",
+      "import": "{ loguxMixin, loguxComponent }",
       "limit": "10.5 KB"
     }
   ],
