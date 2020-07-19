@@ -35,7 +35,7 @@
     "@logux/sharec-config": "^0.6.2",
     "@size-limit/dual-publish": "^4.5.5",
     "@size-limit/preset-small-lib": "^4.5.5",
-    "@vue/test-utils": "^1.0.3",
+    "@vue/test-utils": "^2.0.0-beta.0",
     "check-dts": "^0.3.2",
     "docdash": "^1.2.0",
     "dual-publish": "^0.11.0",
