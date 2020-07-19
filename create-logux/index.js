@@ -1,7 +1,7 @@
 let { createNanoEvents } = require('nanoevents')
 let { CrossTabClient } = require('@logux/client/cross-tab-client')
 let { isFirstOlder } = require('@logux/core/is-first-older')
-let Vuex = require('vuex')
+let { createStore } = require('vuex')
 
 let {
   deepCopy,
@@ -24,7 +24,7 @@ function createLogux (config = {}) {
   let log = client.log
 
   let Store = function Store (vuexConfig) {
-    let store = new Vuex.Store(deepCopy(vuexConfig))
+    let store = createStore(deepCopy(vuexConfig))
 
     store._actions = Object.create(null)
     store._pureMutations = Object.create(null)
