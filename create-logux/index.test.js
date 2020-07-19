@@ -1,13 +1,7 @@
-let Vue = require('vue')
-let Vuex = require('vuex')
 let { TestPair, TestTime } = require('@logux/core')
 let { delay } = require('nanodelay')
 
 let { createLogux } = require('..')
-
-Vue.config.productionTip = false
-Vue.config.devtools = false
-Vue.use(Vuex)
 
 function initLogux (opts = {}) {
   if (!opts.server) opts.server = 'wss://localhost:1337'
@@ -102,72 +96,6 @@ it('commit mutation with prefixed name', async () => {
   await store.crossTab('increment')
   store.commit('utils/clean')
   expect(store.state.value).toBe(0)
-})
-
-it('commit from action context', () => {
-  let Logux = initLogux()
-  let mutations = { increment }
-  let actions = {
-    INC ({ commit }) {
-      commit('increment')
-      commit.local('increment')
-      commit.sync('increment')
-      commit.crossTab('increment')
-    }
-  }
-  let store = new Logux.Store({
-    state: { value: 0 },
-    mutations,
-    actions,
-    modules: {
-      A: {
-        namespaced: true,
-        state: { value: 0 },
-        mutations,
-        actions: {
-          ...actions,
-          'ROOT_INC': {
-            root: true,
-            handler ({ commit }) {
-              commit('increment')
-            }
-          }
-        }
-      }
-    }
-  })
-
-  store.dispatch('INC')
-  store.dispatch('ROOT_INC')
-  store.dispatch('A/INC')
-
-  expect(store.state).toEqual({ value: 1, A: { value: 2 } })
-  expect(store.log.entries()).toHaveLength(9)
-})
-
-// https://github.com/vuejs/vuex/blob/dev/test/unit/store.spec.js#L164
-it('vuex: detecting action Promise errors', () => {
-  let Logux = initLogux()
-  let error = new Error('no')
-  let store = new Logux.Store({
-    actions: {
-      'TEST' () {
-        return Promise.reject(error)
-      }
-    }
-  })
-  let spy = jest.fn()
-  store._devtoolHook = {
-    emit: spy
-  }
-  let thenSpy = jest.fn()
-  store.dispatch('TEST')
-    .then(thenSpy)
-    .catch(err => {
-      expect(thenSpy).not.toHaveBeenCalled()
-      expect(err).toBe(error)
-      expect(spy).toHaveBeenCalledWith('vuex:error', error)
-    })
 })
 
 it('commit root mutation in namespaced module', () => {
