@@ -77,7 +77,12 @@
       "global": {
         "statements": 100
       }
-    }
+    },
+    "testPathIgnorePatterns": [
+      "mixin",
+      "install",
+      "component"
+    ]
   },
   "eslintConfig": {
     "extends": "@logux/eslint-config",
