@@ -80,8 +80,7 @@
     },
     "testPathIgnorePatterns": [
       "mixin",
-      "install",
-      "component"
+      "install"
     ]
   },
   "eslintConfig": {
