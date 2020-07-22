@@ -1,6 +1,9 @@
 import { Ref, ComputedRef } from 'vue'
 
-import { Channel } from '..'
+export type Channel = string | {
+  channel: string
+  [key: string]: any
+}
 
 export type Channels = ComputedRef<Channel[]> | Channel[]
 
