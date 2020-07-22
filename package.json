@@ -79,8 +79,7 @@
       }
     },
     "testPathIgnorePatterns": [
-      "mixin",
-      "install"
+      "mixin"
     ]
   },
   "eslintConfig": {
