@@ -18,7 +18,7 @@ export type Channels = ComputedRef<Channel[]> | Channel[]
  * </template>
  *
  * <script>
- * import { toRefs } from 'vue
+ * import { toRefs } from 'vue'
  * import { useStore, useSubscription } from '@logux/vuex'
  *
  * export default {
