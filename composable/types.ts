@@ -21,14 +21,15 @@ defineComponent({
   },
   setup (props) {
     let { id } = toRefs(props)
+
     useSubscription([
       { channel: 'users' },
-      { channel: `user/${id}` }
+      { channel: `users/${id}`, fields: ['name'] }
     ])
 
     let channels = computed(() => [
       { channel: 'users' },
-      { channel: `user/${id}` }
+      { channel: `users/${id}`, fields: ['name'] }
     ])
     useSubscription(channels)
   }
