@@ -1,13 +1,7 @@
-let Vue = require('vue')
-let Vuex = require('vuex')
 let { TestPair, TestTime } = require('@logux/core')
 let { delay } = require('nanodelay')
 
 let { createLogux } = require('..')
-
-Vue.config.productionTip = false
-Vue.config.devtools = false
-Vue.use(Vuex)
 
 function initLogux (opts = {}) {
   if (!opts.server) opts.server = 'wss://localhost:1337'
