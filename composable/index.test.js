@@ -239,7 +239,6 @@ it('reports about subscription end', async () => {
   let nodeId = component.client.nodeId
   let log = component.client.log
 
-  await nextTick()
   expect(isSubscribing()).toBe("true")
 
   component.trigger('click', { id: '1' })
