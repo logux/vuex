@@ -87,20 +87,20 @@ function createLogux (config = {}) {
       saveHistory(meta)
     }
 
-    store.local = (type, payload, _meta) => {
+    store.commit.local = (type, payload, _meta) => {
       let { action, meta } = unifyCommitArgs(type, payload, _meta)
       meta.tab = client.tabId
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
       return log.add(action, meta)
     }
 
-    store.crossTab = (type, payload, _meta) => {
+    store.commit.crossTab = (type, payload, _meta) => {
       let { action, meta } = unifyCommitArgs(type, payload, _meta)
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
       return log.add(action, meta)
     }
 
-    store.sync = (type, payload, _meta) => {
+    store.commit.sync = (type, payload, _meta) => {
       let { action, meta } = unifyCommitArgs(type, payload, _meta)
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
 
@@ -116,9 +116,9 @@ function createLogux (config = {}) {
       })
     }
 
-    store.commit.local = store.local
-    store.commit.crossTab = store.crossTab
-    store.commit.sync = store.sync
+    // store.commit.local = store.local
+    // store.commit.crossTab = store.crossTab
+    // store.commit.sync = store.sync
 
     function replaceState (state, actions, pushHistory) {
       let last = actions.length ? actions[actions.length - 1][1] : ''
@@ -396,9 +396,9 @@ function modifyLocalContext (store, namespace, context) {
     return store.commit.crossTab(action, meta)
   }
 
-  context.sync = context.commit.sync
-  context.local = context.commit.local
-  context.crossTab = context.commit.crossTab
+  // context.sync = context.commit.sync
+  // context.local = context.commit.local
+  // context.crossTab = context.commit.crossTab
 
   return context
 }
