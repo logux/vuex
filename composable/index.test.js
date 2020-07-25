@@ -11,7 +11,7 @@ let { TestTime } = require('@logux/core')
 
 let { createLogux, useSubscription } = require('..')
 
-function createComponent (component) {
+function createComponent (component, options) {
   let Logux = createLogux({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
@@ -20,6 +20,7 @@ function createComponent (component) {
   })
   let store = new Logux.Store({})
   let wrapper = mount(component, {
+    ...options,
     global: {
       plugins: [store],
       components: {
@@ -303,4 +304,31 @@ it('works on channels size changes', async () => {
   component.trigger('click', { ids: [1, 2] })
   await nextTick()
   expect(console.error).not.toHaveBeenCalled()
+})
+
+it('avoid the same channels', async () => {
+  let component = createComponent({
+    props: {
+      ids: Array
+    },
+    setup (props) {
+      let { ids } = toRefs(props)
+
+      let channels = computed(() => {
+        return ids.value.map(id => `users/${id}`)
+      })
+      useSubscription(channels)
+
+      return () => h('div')
+    }
+  }, {
+    props: {
+      ids: ['1']
+    }
+  })
+
+  await component.setProps({ ids: ['1'] })
+  expect(component.client.log.actions()).toEqual([
+    { type: 'logux/subscribe', channel: 'users/1' }
+  ])
 })
