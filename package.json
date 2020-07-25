@@ -77,10 +77,7 @@
       "global": {
         "statements": 100
       }
-    },
-    "testPathIgnorePatterns": [
-      "mixin"
-    ]
+    }
   },
   "eslintConfig": {
     "extends": "@logux/eslint-config",
@@ -98,7 +95,7 @@
     },
     {
       "name": "Helpers",
-      "import": "{ loguxMixin, loguxComponent }",
+      "import": "{ loguxComponent }",
       "limit": "1 KB"
     }
   ],
