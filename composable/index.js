@@ -1,8 +1,10 @@
 let { useStore } = require('vuex')
 let {
   ref,
+  unref,
   isRef,
   watch,
+  computed,
   onBeforeUnmount
 } = require('vue')
 
@@ -18,28 +20,22 @@ function useSubscription (channels) {
   let store = useStore()
 
   if (isRef(channels)) {
-    watch(channels, (newChannels, oldChannels, onInvalidate) => {
-      let subscriptions = unifyChannelsObject(newChannels)
-      let oldSubscriptions = unifyChannelsObject(oldChannels)
+    let subscriptions = computed(() => unifyChannelsObject(channels.value))
+    let id = computed(() => subscriptionsId(subscriptions.value))
 
-      let id = subscriptionsId(subscriptions)
-      let oldId = subscriptionsId(oldSubscriptions)
+    watch(id, (newId, oldId, onInvalidate) => {
+      let ignoreResponse = false
+      let oldSubscriptions = unref(subscriptions)
 
-      let ignoreResponse
-
-      if (id !== oldId) {
-        ignoreResponse = false
-
-        subscribe(store, subscriptions).then(() => {
-          if (!ignoreResponse) {
-            isSubscribing.value = false
-          }
-        })
-      }
+      subscribe(store, subscriptions.value).then(() => {
+        if (!ignoreResponse) {
+          isSubscribing.value = false
+        }
+      })
 
       onInvalidate(() => {
         ignoreResponse = true
-        unsubscribe(store, subscriptions)
+        unsubscribe(store, oldSubscriptions)
       })
     }, { immediate: true })
   } else {
