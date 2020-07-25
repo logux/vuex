@@ -1,4 +1,3 @@
-// export { loguxMixin, Channel, Subscription, loguxMixinComponent } from './mixin'
 export { useSubscription, Channel, Channels } from './composable'
 export { loguxComponent } from './component'
 export { createLogux } from './create-logux'
