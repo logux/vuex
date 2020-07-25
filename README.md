@@ -14,7 +14,10 @@ between client, server, and other clients.
 * **[Projects](https://logux.io/guide/architecture/parts/)**
   inside Logux ecosystem
 
-This repository contains [Vuex] compatible API on top of [Logux Client].
+This repository contains [Vuex] compatible API on top of the [Logux Client].
+
+The current version is for Vue 3 and Vuex 4. It doesn’t work with Vue 2.
+But if you still need for Vue 2 support, use [0.8 version from a separate branch](https://github.com/logux/vuex/tree/0.8).
 
 [Vuex]: https://vuex.vuejs.org
 [Logux Client]: https://github.com/logux/client
