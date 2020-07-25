@@ -3,7 +3,8 @@ let {
   ref,
   toRefs,
   computed,
-  nextTick
+  nextTick,
+  Fragment
 } = require('vue')
 let { delay } = require('nanodelay')
 let { mount } = require('@vue/test-utils')
@@ -304,6 +305,46 @@ it('works on channels size changes', async () => {
   component.trigger('click', { ids: [1, 2] })
   await nextTick()
   expect(console.error).not.toHaveBeenCalled()
+})
+
+it('reports about subscription end with non-reactive channels', async () => {
+  let User = {
+    props: {
+      id: String
+    },
+    setup ({ id }) {
+      let isSubscribing = useSubscription([`users/${id}`])
+      return () => h('div', {
+        isSubscribing: isSubscribing.value
+      })
+    }
+  }
+  let component = createComponent({
+    props: {
+      ids: Array
+    },
+    setup (props) {
+      let { ids } = toRefs(props)
+      return () => h(Fragment, ids.value.map(id => h(User, { id })))
+    }
+  }, {
+    props: {
+      ids: ['1', '2', '3']
+    }
+  })
+
+  let isSubscribing = () => component.findAll('div').map(el => el.attributes('issubscribing'))
+  let nodeId = component.client.nodeId
+  let log = component.client.log
+
+  expect(isSubscribing()).toEqual(["true", "true", "true"])
+
+  log.add({ type: 'logux/processed', id: `2 ${nodeId} 0` })
+  await delay(10)
+  expect(isSubscribing()).toEqual(["true", "false", "true"])
+
+  await component.setProps({ ids: ['1', '2'] })
+  expect(isSubscribing()).toEqual(["true", "false"])
 })
 
 it('avoid the same channels', async () => {
