@@ -1,11 +1,15 @@
 import { Ref, ComputedRef } from 'vue'
 
-export type Channel = string | {
-  channel: string
-  [key: string]: any
-}
+export type Channel =
+  | string
+  | {
+      channel: string
+      [key: string]: any
+    }
 
-export type Channels = ComputedRef<Channel[]> | Channel[]
+export type Channels =
+  | ComputedRef<Channel[]>
+  | Channel[]
 
 /**
  * Composable function to subscribe for channels during component render
