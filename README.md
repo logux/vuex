@@ -37,16 +37,13 @@ See [documentation] for Logux API.
 [documentation]: https://github.com/logux/docs
 
 ```js
-import Vue from 'vue'
-import { LoguxVuex, createLogux } from '@logux/vuex'
-
-Vue.use(LoguxVuex)
+import { createLogux } from '@logux/vuex'
 
 const Logux = createLogux({
-  subprotocol: '1.0.0',
   server: process.env.NODE_ENV === 'development'
     ? 'ws://localhost:31337'
     : 'wss://logux.example.com',
+  subprotocol: '1.0.0',
   userId: 'anonymous',
   token: ''
 })
@@ -62,67 +59,36 @@ store.client.start()
 
 export default store
 ```
+
 ```html
 <template>
-  <div v-if="isSubscribing">
-    <h1>Loading</h1>
-  </div>
-  <div v-else>
-    <h1>{{ counter }}</h1>
-    <button @click="increment" />
-  </div>
-</template>
-
-<script>
-import { loguxMixin } from '@logux/vuex'
-
-export default {
-  name: 'Counter',
-  mixins: [loguxMixin],
-  computed: {
-    // Retrieve counter state from store
-    counter () {
-      return this.$store.state.counter
-    },
-    // Load current counter from server and subscribe to counter changes
-    channels () {
-      return ['counter']
-    }
-  },
-  methods: {
-    increment () {
-      // Send action to the server and all tabs in this browser
-      this.$store.commit.sync({ type: 'INC' })
-    }
-  }
-}
-</script>
-```
-```html
-<template>
-  <logux-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
-    <div v-if="isSubscribing">
-      <h1>Loading</h1>
-    </div>
-    <div v-else>
-      <h1>{{ user.name }}</h1>
-    </div>
+  <logux-component :channels="channels" v-slot="{ isSubscribing }">
+    <h1 v-if="isSubscribing">Loading</h1>
+    <h1 v-else>{{ user.name }}</h1>
   </logux-component>
 </template>
 
 <script>
-import { loguxComponent } from '@logux/vuex'
+import { toRefs, computed } from 'vue'
+import { useStore, loguxComponent } from '@logux/vuex'
 
 export default {
-  name: 'UserProfile',
   components: {
     loguxComponent
   },
-  props: ['userId'],
-  computed: {
-    // Retrieve user state from store
-    user () {
-      return this.$store.state.user[this.userId]
+  props: {
+    userId: String
+  },
+  setup (props) {
+    let store = useStore()
+    let { userId } = toRefs(props)
+
+    let user = computed(() => store.state.users[userId])
+    let channels = computed(() => [`users/${ userId }`])
+
+    return {
+      user,
+      channels
     }
   }
 }
