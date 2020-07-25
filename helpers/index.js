@@ -1,7 +1,4 @@
 function unifyChannelsObject (channels) {
-  if (!channels) {
-    return [[{}, '']]
-  }
   return channels.map(i => {
     let subscription = typeof i === 'string' ? { channel: i } : i
     return [subscription, JSON.stringify(subscription)]
