@@ -1,6 +1,13 @@
-import type { ExtendedVue, Vue } from 'vue/types/vue'
+import { VNodeProps } from 'vue'
 
-import { Channel, Subscription } from '../mixin'
+import {
+  Channels,
+  loguxComponent as loguxComponentImpl
+} from '..'
+
+export interface loguxComponentProps {
+  channels: Channels
+}
 
 /**
  * Component with scoped slots,
@@ -36,24 +43,8 @@ import { Channel, Subscription } from '../mixin'
  * </script>
  * ```
  */
-export const loguxComponent: ExtendedVue<
-  Vue,
-  {
-    /**
-     * Indicates loading state.
-     */
-    isSubscribing: boolean
-    ignoreResponse: {
-      [id: string]: boolean
-    }
-  },
-  {
-    subscribe(subscriptions: Subscription[]): Promise<void>
-    unsubscribe(subscriptions: Subscription[]): void
-  },
-  {},
-  {
-    tag: string
-    channels: Channel[]
+export const loguxComponent = (loguxComponentImpl as any) as {
+  new (): {
+    $props: VNodeProps & loguxComponentProps
   }
->
+}
