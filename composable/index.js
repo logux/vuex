@@ -40,16 +40,12 @@ function useSubscription (channels) {
     }, { immediate: true })
   } else {
     let subscriptions = unifyChannelsObject(channels)
-    let ignoreResponse = false
 
     subscribe(store, subscriptions).then(() => {
-      if (!ignoreResponse) {
-        isSubscribing.value = false
-      }
+      isSubscribing.value = false
     })
 
     onBeforeUnmount(() => {
-      ignoreResponse = true
       unsubscribe(store, subscriptions)
     })
   }
