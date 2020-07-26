@@ -10,9 +10,9 @@ export interface loguxComponentProps {
 }
 
 /**
- * Component with scoped slots,
- * which takes care of subscribtions and unsubscribtions
- * during the life cycle.
+ * Component-wrapper that subscribes
+ * for channels during component initialization
+ * and unsubscribes on unmount.
  *
  * It watches for `channels` changes
  * and `isSubscribing` indicates loading state.
