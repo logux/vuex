@@ -63,6 +63,44 @@ store.client.start()
 export default store
 ```
 
+## Subscription
+
+### `useSubscription`
+
+```html
+<template>
+  <h1 v-if="isSubscribing">Loading</h1>
+  <h1 v-else>{{ user.name }}</h1>
+</template>
+
+<script>
+import { toRefs, computed } from 'vue'
+import { useStore, useSubscription } from '@logux/vuex'
+
+export default {
+  props: {
+    userId: String
+  },
+  setup (props) {
+    let store = useStore()
+    let { userId } = toRefs(props)
+
+    let channels = computed(() => [`user/${userId}`])
+    let isSubscribing = useSubscription(channels)
+
+    let user = computed(() => store.state.users[userId])
+
+    return {
+      user,
+      isSubscribing
+    }
+  }
+})
+</script>
+```
+
+### `loguxComponent`
+
 ```html
 <template>
   <logux-component :channels="channels" v-slot="{ isSubscribing }">
