@@ -19,24 +19,33 @@ export interface loguxComponentProps {
  *
  * ```html
  * <template>
- *   <logux-component :channels="[`user/${ userId }`]" v-slot="{ isSubscribing }">
+ *   <logux-component :channels="channels" v-slot="{ isSubscribing }">
  *     <h1 v-if="isSubscribing">Loading</h1>
  *     <h1 v-else>{{ user.name }}</h1>
  *   </logux-component>
  * </template>
  *
  * <script>
- * import { loguxComponent } from '@logux/vuex'
+ * import { toRefs, computed } from 'vue'
+ * import { useStore, loguxComponent } from '@logux/vuex'
  *
  * export default {
- *   name: 'UserProfile',
  *   components: {
  *     loguxComponent
  *   },
- *   props: ['userId'],
- *   computed: {
- *     user () {
- *       return this.$store.state.user[this.userId]
+ *   props: {
+ *     userId: String
+ *   },
+ *   setup (props) {
+ *     let store = useStore()
+ *     let { userId } = toRefs(props)
+ *
+ *     let user = computed(() => store.state.users[userId])
+ *     let channels = computed(() => [`users/${ userId }`])
+ *
+ *     return {
+ *       user,
+ *       channels
  *     }
  *   }
  * }
