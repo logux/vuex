@@ -8,9 +8,13 @@
     "noUnusedLocals": true,
     "stripInternal": true,
     "allowJs": true,
-    "target": "ES5",
+    "target": "esnext",
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "module": "commonjs"
+  },
+  "exclude": [
+    "**/errors.ts"
+  ]
 }
