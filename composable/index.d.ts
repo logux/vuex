@@ -12,8 +12,12 @@ export type Channels =
   | Channel[]
 
 /**
- * Composable function to subscribe for channels during component render
- * and unsubscribe on component unmount.
+ * Composable function that subscribes
+ * for channels during component initialization
+ * and unsubscribes on unmount.
+ *
+ * It watches for `channels` changes
+ * and returns `isSubscribing` flag that indicates loading state.
  *
  * ```html
  * <template>
