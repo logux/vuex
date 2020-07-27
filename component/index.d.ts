@@ -52,8 +52,6 @@ export interface loguxComponentProps {
  * </script>
  * ```
  */
-export const loguxComponent = (loguxComponentImpl as any) as {
-  new (): {
+export const loguxComponent: new () => {
     $props: VNodeProps & loguxComponentProps
-  }
 }
