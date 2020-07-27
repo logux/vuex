@@ -119,10 +119,6 @@ function createLogux (config = {}) {
       })
     }
 
-    // store.commit.local = store.local
-    // store.commit.crossTab = store.crossTab
-    // store.commit.sync = store.sync
-
     function replaceState (state, actions, pushHistory) {
       let last = actions.length ? actions[actions.length - 1][1] : ''
       let newState = actions.reduceRight((prev, [action, id]) => {
@@ -399,10 +395,6 @@ function modifyLocalContext (store, namespace, context) {
     return store.commit.crossTab(action, meta)
   }
 
-  // context.sync = context.commit.sync
-  // context.local = context.commit.local
-  // context.crossTab = context.commit.crossTab
-
   return context
 }
 
@@ -412,9 +404,6 @@ function registerAction (store, type, handler, local) {
     let res = handler.call(store, {
       dispatch: local.dispatch,
       commit: local.commit,
-      local: local.local,
-      sync: local.sync,
-      crossTab: local.crossTab,
       getters: local.getters,
       state: local.state,
       rootGetters: store.getters,
