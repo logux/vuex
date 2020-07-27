@@ -1,7 +1,10 @@
 let { createNanoEvents } = require('nanoevents')
 let { CrossTabClient } = require('@logux/client/cross-tab-client')
 let { isFirstOlder } = require('@logux/core/is-first-older')
-let { createStore } = require('vuex')
+let {
+  useStore,
+  createStore
+} = require('vuex')
 
 let {
   deepCopy,
@@ -475,4 +478,7 @@ function collectState (store) {
   return state
 }
 
-module.exports = { createLogux }
+module.exports = {
+  useStore,
+  createLogux
+}
