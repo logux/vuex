@@ -194,3 +194,5 @@ export type LoguxConfig = ClientOptions & {
 export function createLogux(config: LoguxConfig): {
   Store: typeof LoguxVuexStore
 }
+
+export function useStore<S = any>(): LoguxVuexStore<S>
