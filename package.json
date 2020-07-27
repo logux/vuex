@@ -87,7 +87,7 @@
   "size-limit": [
     {
       "name": "Logux Vuex",
-      "import": "{ createLogux }",
+      "import": "{ createLogux, useStore }",
       "limit": "10 KB"
     },
     {
