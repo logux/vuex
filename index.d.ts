@@ -1,6 +1,7 @@
 export {
   useStore,
-  createLogux
+  createLogux,
+  LoguxVuexStore
 } from './create-logux'
 export { loguxComponent } from './component'
 export {
