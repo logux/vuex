@@ -135,3 +135,24 @@ export default {
 }
 </script>
 ```
+
+## Using with Typescript
+
+Place the following code in your project to allow this.$store to be typed correctly:
+
+```ts
+// shims-vuex.d.ts
+
+import { LoguxVuexStore } from '@logux/vuex'
+
+declare module '@vue/runtime-core' {
+  // Declare your own store states.
+  interface State {
+    count: number
+  }
+
+  interface ComponentCustomProperties {
+    $store: LoguxVuexStore<State>
+  }
+}
+```
