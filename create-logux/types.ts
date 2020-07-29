@@ -1,18 +1,24 @@
-import { createLogux } from '..'
-
-let opts = {
-  server: 'wss://localhost:1337',
-  subprotocol: '1.0.0',
-  userId: '10',
-}
+import {
+  CrossTabClient,
+  createStoreCreator
+} from '..'
 
 interface RootState {
   value: number
 }
 
-let Logux = createLogux(opts)
-let store = new Logux.Store<RootState>({
-  state: { value: 0 },
+let client = new CrossTabClient({
+  server: 'wss://localhost:1337',
+  subprotocol: '1.0.0',
+  userId: '10',
+})
+
+let createStore = createStoreCreator(client)
+
+let store = createStore<RootState>({
+  state: {
+    value: 0
+  },
   mutations: {
     increment(state) {
       state.value = state.value + 1

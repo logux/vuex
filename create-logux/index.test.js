@@ -1,30 +1,37 @@
 let { TestPair, TestTime } = require('@logux/core')
 let { delay } = require('nanodelay')
 
-let { createLogux } = require('..')
+let {
+  CrossTabClient,
+  createStoreCreator
+} = require('..')
 
-function initLogux (opts = {}) {
+function createClient (opts = {}) {
   if (!opts.server) opts.server = 'wss://localhost:1337'
   opts.subprotocol = '1.0.0'
   opts.userId = '10'
   opts.time = new TestTime()
 
-  return createLogux(opts)
+  let client = new CrossTabClient(opts)
+  return client
 }
 
-function createStore (mutations, opts) {
-  let Logux = initLogux(opts)
-  let store = new Logux.Store({ state: { value: 0 }, mutations })
-  return store
-}
+function createStore (mutations, opts = {}, modules = {}) {
+  let creatorOptions = {
+    reasonlessHistory: opts.reasonlessHistory || 1000,
+    saveStateEvery: opts.saveStateEvery || 50,
+    onMissedHistory: opts.onMissedHistory,
+    cleanEvery: opts.cleanEvery || 25
+  }
 
-function createStoreWithModule (namespaced, mutations, opts) {
-  let Logux = initLogux(opts)
-  let store = new Logux.Store({
-    modules: {
-      user: { namespaced, state: { value: 0 }, mutations }
-    }
-  })
+  delete opts.reasonlessHistory
+  delete opts.saveStateEvery
+  delete opts.onMissedHistory
+  delete opts.cleanEvery
+
+  let client = createClient(opts)
+  let _createStore = createStoreCreator(client, creatorOptions)
+  let store = _createStore({ state: { value: 0 }, mutations, modules })
   return store
 }
 
@@ -39,12 +46,6 @@ function historyLine (state, payload) {
     state.value = state.value + payload
   }
 }
-
-it('throws error on missed config', () => {
-  expect(() => {
-    createLogux()
-  }).toThrow('Missed server option in Logux client')
-})
 
 it('creates Vuex store', () => {
   let store = createStore({ increment })
@@ -99,7 +100,8 @@ it('commit mutation with prefixed name', async () => {
 })
 
 it('commit from action context', () => {
-  let Logux = initLogux()
+  let client = createClient()
+  let _createStore = createStoreCreator(client)
   let mutations = { increment }
   let actions = {
     INC ({ commit }) {
@@ -109,7 +111,7 @@ it('commit from action context', () => {
       commit.crossTab('increment')
     }
   }
-  let store = new Logux.Store({
+  let store = _createStore({
     state: { value: 0 },
     mutations,
     actions,
@@ -141,9 +143,10 @@ it('commit from action context', () => {
 
 // https://github.com/vuejs/vuex/blob/dev/test/unit/store.spec.js#L164
 it('vuex: detecting action Promise errors', () => {
-  let Logux = initLogux()
+  let client = createClient()
+  let _createStore = createStoreCreator(client)
   let error = new Error('no')
-  let store = new Logux.Store({
+  let store = _createStore({
     actions: {
       'TEST' () {
         return Promise.reject(error)
@@ -165,13 +168,14 @@ it('vuex: detecting action Promise errors', () => {
 })
 
 it('commit root mutation in namespaced module', () => {
-  let Logux = createLogux({
+  let client = createClient({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
     userId: '10',
     time: new TestTime()
   })
-  let store = new Logux.Store({
+  let _createStore = createStoreCreator(client)
+  let store = _createStore({
     state: { value: 0 },
     mutations: { increment },
     modules: {
@@ -682,10 +686,18 @@ it('applies old actions from store', async () => {
 })
 
 it('applies old actions from store in modules', async () => {
-  let store1 = createStoreWithModule(
-    false,
-    { 'user/historyLine': historyLine },
-    { reasonlessHistory: 2 }
+  let store1 = createStore(
+    {},
+    { reasonlessHistory: 2 },
+    {
+      user: {
+        namespaced: false,
+        state: { value: 0 },
+        mutations: {
+          'user/historyLine': historyLine
+        }
+      }
+    }
   )
   let store2
 
@@ -715,10 +727,18 @@ it('applies old actions from store in modules', async () => {
       { id: '0 10:x 6', reasons: ['test'] }
     )
   ])
-  store2 = createStoreWithModule(
-    false,
-    { 'user/historyLine': historyLine },
-    { store: store1.log.store }
+  store2 = createStore(
+    {},
+    { store: store1.log.store },
+    {
+      user: {
+        namespaced: false,
+        state: { value: 0 },
+        mutations: {
+          'user/historyLine': historyLine
+        }
+      }
+    }
   )
 
   store2.commit({ type: 'user/historyLine', value: 'a' })
@@ -735,10 +755,16 @@ it('applies old actions from store in modules', async () => {
 })
 
 it('applies old actions from store in namespaced modules', async () => {
-  let store1 = createStoreWithModule(
-    true,
-    { historyLine },
-    { reasonlessHistory: 2 }
+  let store1 = createStore(
+    {},
+    { reasonlessHistory: 2 },
+    {
+      user: {
+        namespaced: true,
+        state: { value: 0 },
+        mutations: { historyLine }
+      }
+    }
   )
   let store2
 
@@ -768,10 +794,16 @@ it('applies old actions from store in namespaced modules', async () => {
       { id: '0 10:x 6', reasons: ['test'] }
     )
   ])
-  store2 = createStoreWithModule(
-    true,
-    { historyLine },
-    { store: store1.log.store }
+  store2 = createStore(
+    {},
+    { store: store1.log.store },
+    {
+      user: {
+        namespaced: true,
+        state: { value: 0 },
+        mutations: { historyLine }
+      }
+    }
   )
 
   store2.commit({ type: 'user/historyLine', value: 'a' })
@@ -788,8 +820,9 @@ it('applies old actions from store in namespaced modules', async () => {
 })
 
 it('applies old actions from store in nested modules', async () => {
-  let Logux1 = initLogux()
-  let store1 = new Logux1.Store({
+  let client1 = createClient()
+  let _createStore1 = createStoreCreator(client1)
+  let store1 = _createStore1({
     state: { value: 0 },
     mutations: { historyLine },
     modules: {
@@ -833,8 +866,9 @@ it('applies old actions from store in nested modules', async () => {
     })
   ])
 
-  let Logux2 = initLogux({ store: store1.log.store })
-  let store2 = new Logux2.Store({
+  let client2 = createClient({ store: store1.log.store })
+  let _createStore2 = createStoreCreator(client2)
+  let store2 = _createStore2({
     state: { value: 0 },
     mutations: { historyLine },
     modules: {

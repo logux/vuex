@@ -10,16 +10,21 @@ let { delay } = require('nanodelay')
 let { mount } = require('@vue/test-utils')
 let { TestTime } = require('@logux/core')
 
-let { createLogux, useSubscription } = require('..')
+let {
+  CrossTabClient,
+  useSubscription,
+  createStoreCreator
+} = require('..')
 
 function createComponent (component, options) {
-  let Logux = createLogux({
+  let client = new CrossTabClient({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
     userId: '10',
     time: new TestTime()
   })
-  let store = new Logux.Store({})
+  let createStore = createStoreCreator(client)
+  let store = createStore()
   let wrapper = mount(component, {
     ...options,
     global: {
