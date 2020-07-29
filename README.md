@@ -40,9 +40,9 @@ See [documentation] for Logux API.
 [documentation]: https://github.com/logux/docs
 
 ```js
-import { createLogux } from '@logux/vuex'
+import { CrossTabClient, createStoreCreator } from '@logux/vuex'
 
-const Logux = createLogux({
+const client = new CrossTabClient({
   server: process.env.NODE_ENV === 'development'
     ? 'ws://localhost:31337'
     : 'wss://logux.example.com',
@@ -51,7 +51,9 @@ const Logux = createLogux({
   token: ''
 })
 
-const store = new Logux.Store({
+const createStore = createStoreCreator(client)
+
+const store = createStore({
   state: {},
   mutations: {},
   actions: {},

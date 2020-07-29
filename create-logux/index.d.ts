@@ -1,6 +1,7 @@
 import { Unsubscribe } from 'nanoevents'
 import { Action, Log } from '@logux/core'
 import {
+  Client,
   ClientMeta,
   ClientOptions,
   CrossTabClient
@@ -13,6 +14,11 @@ import {
   StoreOptions as VuexStoreOptions,
   Dispatch as VuexDispatch
 } from 'vuex'
+
+export {
+  Client,
+  CrossTabClient
+} from '@logux/client'
 
 export type LoguxVuexAction = Action & VuexPayload
 
@@ -139,7 +145,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
   log: Log<ClientMeta>
 }
 
-export type LoguxConfig = ClientOptions & {
+export type LoguxVuexOptions = {
   /**
    * How many actions without `meta.reasons` will be kept for time travel.
    * Default is `1000`.
@@ -163,13 +169,17 @@ export type LoguxConfig = ClientOptions & {
   cleanEvery?: number
 }
 
+export interface createStore {
+  <S>(options: VuexStoreOptions<S>): LoguxVuexStore<S>
+}
+
 /**
- * Creates Logux client and attach it to Vuex instance.
+ * Connects Logux client to Vuex’s `createStore` function.
  *
  * ```js
- * import { createLogux } from '@logux/vuex'
+ * import { CrossTabClient, createStoreCreator } from '@logux/vuex'
  *
- * const Logux = createLogux({
+ * const client = new CrossTabClient({
  *   subprotocol: '1.0.0',
  *   server: process.env.NODE_ENV === 'development'
  *     ? 'ws://localhost:31337'
@@ -178,21 +188,38 @@ export type LoguxConfig = ClientOptions & {
  *   token: ''
  * })
  *
- * const store = new Logux.Store({
- *  state: {},
- *  mutations: {},
- *  actions: {},
- *  modules: {}
+ * const createStore = createStoreCreator(client)
+ *
+ * const store = createStore({
+ *   state: {},
+ *   mutations: {},
+ *   actions: {},
+ *   modules: {}
  * })
  *
  * store.client.start()
  * ```
  *
- * @param config Logux Client config.
- * @returns Logux Vuex instance
+ * @param client Logux Client.
+ * @param options Logux Vuex options.
+ * @returns Vuex’s `createStore` compatible function.
  */
-export function createLogux(config: LoguxConfig): {
-  Store: typeof LoguxVuexStore
-}
+export function createStoreCreator(client: Client | CrossTabClient, options?: LoguxVuexOptions): createStore
 
+/**
+ * Composable function that injects store into the component.
+ *
+ * ```js
+ * import { useStore } from '@logux/vuex'
+ *
+ * export default {
+ *   setup () {
+ *     let store = useStore()
+ *     store.commit.sync('user/rename')
+ *   }
+ * }
+ * ```
+ *
+ * @returns Store instance.
+ */
 export function useStore<S = any>(): LoguxVuexStore<S>
