@@ -88,15 +88,15 @@ let SubscribeUserPhoto = {
 
 it('throw empty scoped slot', () => {
   jest.spyOn(console, 'warn').mockImplementation()
-  let error = jest.spyOn(console, 'error').mockImplementation()
+  jest.spyOn(console, 'error').mockImplementation()
 
-  createComponent(loguxComponent, {
-    props: {
-      channels: ['users']
-    }
-  })
-
-  expect(error).toHaveBeenCalledTimes(1)
+  expect(() => {
+    createComponent(loguxComponent, {
+      props: {
+        channels: ['users']
+      }
+    })
+  }).toThrow('Provided scoped slot is empty')
 })
 
 it('returns wrapped component', async () => {
