@@ -1,12 +1,9 @@
 let { useStore } = require('vuex')
+let { Client, CrossTabClient } = require('@logux/client')
 
 let { loguxComponent } = require('./component')
 let { useSubscription } = require('./composable')
-let {
-  Client,
-  CrossTabClient,
-  createStoreCreator
-} = require('./store')
+let { createStoreCreator } = require('./store')
 
 module.exports = {
   Client,
