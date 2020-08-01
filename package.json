@@ -86,14 +86,14 @@
   },
   "size-limit": [
     {
-      "name": "Logux Vuex",
-      "import": "{ createLogux, useStore }",
+      "name": "Store",
+      "import": "{ Client, CrossTabClient, createStoreCreator, useStore }",
       "limit": "10 KB"
     },
     {
-      "name": "Helpers",
-      "import": "{ loguxComponent, useSubscription }",
-      "limit": "1 KB"
+      "name": "Store + Helpers",
+      "import": "{ Client, CrossTabClient, createStoreCreator, useStore, useSubscription, loguxComponent }",
+      "limit": "11 KB"
     }
   ],
   "yaspeller": {
