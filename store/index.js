@@ -1,13 +1,6 @@
 let { createNanoEvents } = require('nanoevents')
 let { isFirstOlder } = require('@logux/core/is-first-older')
-let {
-  Client,
-  CrossTabClient
-} = require('@logux/client')
-let {
-  useStore,
-  createStore: createVuexStore
-} = require('vuex')
+let { createStore: createVuexStore } = require('vuex')
 
 let {
   deepCopy,
@@ -464,9 +457,4 @@ function collectState (store) {
   return state
 }
 
-module.exports = {
-  Client,
-  useStore,
-  CrossTabClient,
-  createStoreCreator
-}
+module.exports = { createStoreCreator }

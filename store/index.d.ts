@@ -15,11 +15,6 @@ import {
   Dispatch as VuexDispatch
 } from 'vuex'
 
-export {
-  Client,
-  CrossTabClient
-} from '@logux/client'
-
 export type LoguxVuexAction = Action & VuexPayload
 
 export interface LoguxVuexCommit extends VuexCommit {
@@ -205,21 +200,3 @@ export interface createStore {
  * @returns Vuex’s `createStore` compatible function.
  */
 export function createStoreCreator(client: Client | CrossTabClient, options?: LoguxVuexOptions): createStore
-
-/**
- * Composable function that injects store into the component.
- *
- * ```js
- * import { useStore } from '@logux/vuex'
- *
- * export default {
- *   setup () {
- *     let store = useStore()
- *     store.commit.sync('user/rename')
- *   }
- * }
- * ```
- *
- * @returns Store instance.
- */
-export function useStore<S = any>(): LoguxVuexStore<S>
