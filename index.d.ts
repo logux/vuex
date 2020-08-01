@@ -10,4 +10,4 @@ export {
   LoguxVuexStore,
   CrossTabClient,
   createStoreCreator
-} from './create-logux'
+} from './store'
