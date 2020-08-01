@@ -1,6 +1,18 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.0
+ * Add Vue 3 support
+ * Add `useSubscription` composable function
+ * Add `useStore`shortcut from Vuex
+ * Fix Typescript support
+ * Update dependencies
+ * Refactor helpers
+ * Remove Vue 2 support
+ * Remove `loguxMixin` mixin
+ * Remove `LoguxVuex` plugin API
+ * Remove `store.local`, `store.crossTab` and `store.sync` aliases
+
 ## 0.8.0
  * Add logux `commit` to vuex `action` context  ([#31](https://github.com/logux/vuex/issues/31))
  * Update dependencies
