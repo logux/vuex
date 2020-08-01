@@ -6,7 +6,7 @@ let {
   Client,
   CrossTabClient,
   createStoreCreator
-} = require('./create-logux')
+} = require('./store')
 
 module.exports = {
   Client,
