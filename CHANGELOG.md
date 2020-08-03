@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.1
+ * Fix Typescript exports
+
 ## 0.9.0
  * Add Vue 3 support
  * Add `useSubscription` composable function
