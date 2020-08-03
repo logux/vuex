@@ -92,7 +92,7 @@
     },
     {
       "name": "Store + Helpers",
-      "import": "{ Client, CrossTabClient, createStoreCreator, useStore, useSubscription, loguxComponent }",
+      "import": "{ Client, CrossTabClient, createStoreCreator, useStore, useSubscription, Subscribe }",
       "limit": "11 KB"
     }
   ],

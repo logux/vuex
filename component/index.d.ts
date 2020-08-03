@@ -2,10 +2,10 @@ import { VNodeProps } from 'vue'
 
 import {
   Channels,
-  loguxComponent as loguxComponentImpl
+  Subscribe as SubscribeImpl
 } from '..'
 
-export interface loguxComponentProps {
+export interface SubscribeProps {
   channels: Channels
 }
 
@@ -19,19 +19,19 @@ export interface loguxComponentProps {
  *
  * ```html
  * <template>
- *   <logux-component :channels="channels" v-slot="{ isSubscribing }">
+ *   <subscribe :channels="channels" v-slot="{ isSubscribing }">
  *     <h1 v-if="isSubscribing">Loading</h1>
  *     <h1 v-else>{{ user.name }}</h1>
- *   </logux-component>
+ *   </subscribe>
  * </template>
  *
  * <script>
  * import { toRefs, computed } from 'vue'
- * import { useStore, loguxComponent } from '@logux/vuex'
+ * import { useStore, Subscribe } from '@logux/vuex'
  *
  * export default {
  *   components: {
- *     loguxComponent
+ *     Subscribe
  *   },
  *   props: {
  *     userId: String
@@ -41,7 +41,7 @@ export interface loguxComponentProps {
  *     let { userId } = toRefs(props)
  *
  *     let user = computed(() => store.state.users[userId])
- *     let channels = computed(() => [`users/${ userId }`])
+ *     let channels = computed(() => [`users/${userId}`])
  *
  *     return {
  *       user,
@@ -52,6 +52,6 @@ export interface loguxComponentProps {
  * </script>
  * ```
  */
-export const loguxComponent: new () => {
-    $props: VNodeProps & loguxComponentProps
+export const Subscribe: new () => {
+  $props: VNodeProps & SubscribeProps
 }

@@ -20,7 +20,7 @@ export function useStore<S = any>(): LoguxVuexStore<S>
 
 export { Client, CrossTabClient } from '@logux/client'
 
-export { loguxComponent } from './component'
+export { Subscribe } from './component'
 export {
   Channel,
   Channels,

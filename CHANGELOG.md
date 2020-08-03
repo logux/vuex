@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  * Fix Typescript support
  * Update dependencies
  * Refactor helpers
+ * Rename `loguxComponent` to `Subscribe`
  * Remove Vue 2 support
  * Remove `loguxMixin` mixin
  * Remove `LoguxVuex` plugin API

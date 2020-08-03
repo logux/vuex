@@ -5,11 +5,11 @@ import {
   defineComponent
 } from 'vue'
 
-import { loguxComponent } from '..'
+import { Subscribe } from '..'
 
 defineComponent({
   setup () {
-    return () => h(loguxComponent, {
+    return () => h(Subscribe, {
       channels: ['users']
     })
   },
@@ -22,7 +22,7 @@ defineComponent({
   setup (props) {
     let { id } = toRefs(props)
 
-    return () => h(loguxComponent, {
+    return () => h(Subscribe, {
       channels: [
         { channel: 'users' },
         { channel: `users/${id}`, fields: ['name'] }
@@ -45,7 +45,7 @@ defineComponent({
       ]
     })
 
-    return () => h(loguxComponent, {
+    return () => h(Subscribe, {
       channels: channels.value
     })
   },
