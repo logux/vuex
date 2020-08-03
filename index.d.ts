@@ -27,7 +27,6 @@ export {
   useSubscription
 } from './composable'
 export {
-  useStore,
   LoguxVuexStore,
   createStoreCreator
 } from './store'
