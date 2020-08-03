@@ -3,11 +3,11 @@ import {
   defineComponent
 } from 'vue'
 
-import { loguxComponent } from '..'
+import { Subscribe } from '..'
 
 defineComponent({
   setup () {
-    return () => h(loguxComponent, {
+    return () => h(Subscribe, {
       // THROWS No overload matches this call.
       channels: 'users'
     })

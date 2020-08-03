@@ -9,7 +9,7 @@ let { mount } = require('@vue/test-utils')
 let { TestTime } = require('@logux/core')
 
 let {
-  loguxComponent,
+  Subscribe,
   CrossTabClient,
   createStoreCreator
 } = require('..')
@@ -28,8 +28,8 @@ function createComponent (component, options) {
     global: {
       plugins: [store],
       components: {
+        Subscribe,
         UserPhoto,
-        loguxComponent,
         SubscribeUserPhoto
       }
     }
@@ -77,12 +77,12 @@ let SubscribeUserPhoto = {
     }
   },
   template: `
-    <logux-component :channels="channels" v-slot="{ isSubscribing }">
+    <subscribe :channels="channels" v-slot="{ isSubscribing }">
       <user-photo
         :id="id"
         :isSubscribing="isSubscribing.value"
       ></user-photo>
-    </logux-component>
+    </subscribe>
   `
 }
 
@@ -91,7 +91,7 @@ it('throw empty scoped slot', () => {
   jest.spyOn(console, 'error').mockImplementation()
 
   expect(() => {
-    createComponent(loguxComponent, {
+    createComponent(Subscribe, {
       props: {
         channels: ['users']
       }
@@ -123,7 +123,7 @@ it('subscribes', async () => {
       }
     },
     template: `
-      <logux-component :channels="channels"><div></div></logux-component>
+      <subscribe :channels="channels"><div></div></subscribe>
     `
   }
   let component = createComponent({
@@ -144,7 +144,7 @@ it('subscribes', async () => {
 it('subscribes by channel name', async () => {
   let SubscribeUser = {
     template: `
-      <logux-component :channels="['users']"><div></div></logux-component>
+      <subscribe :channels="['users']"><div></div></subscribe>
     `
   }
   let component = createComponent({
@@ -290,7 +290,7 @@ it('supports multiple channels', async () => {
       return { channels }
     },
     template: `
-      <logux-component :channels="channels"><div></div></logux-component>
+      <subscribe :channels="channels"><div></div></subscribe>
     `
   }
   let component = createComponent({

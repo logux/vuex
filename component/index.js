@@ -5,8 +5,8 @@ let {
 
 let { useSubscription } = require('../composable')
 
-let loguxComponent = defineComponent({
-  name: 'LoguxComponent',
+let Subscribe = defineComponent({
+  name: 'LoguxSubscribe',
   props: {
     channels: {
       type: Array,
@@ -28,4 +28,4 @@ let loguxComponent = defineComponent({
   }
 })
 
-module.exports = { loguxComponent }
+module.exports = { Subscribe }

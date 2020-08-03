@@ -16,8 +16,8 @@ between client, server, and other clients.
 
 This repository contains [Vuex] compatible API on top of the [Logux Client].
 
-The current version is for Vue 3 and Vuex 4. It doesn’t work with Vue 2.
-But if you still need for Vue 2 support, use [0.8 version from a separate branch](https://github.com/logux/vuex/tree/0.8).
+The current version is for Vue 3 and Vuex 4.
+For Vue 2 support, we have [0.8 version from a separate branch](https://github.com/logux/vuex/tree/0.8).
 
 [Vuex]: https://vuex.vuejs.org
 [Logux Client]: https://github.com/logux/client
@@ -69,6 +69,8 @@ export default store
 
 ### `useSubscription`
 
+Composable function that subscribes for channels during component initialization and unsubscribes on unmount.
+
 ```html
 <template>
   <h1 v-if="isSubscribing">Loading</h1>
@@ -101,23 +103,25 @@ export default {
 </script>
 ```
 
-### `loguxComponent`
+### `Subscribe`
+
+Component-wrapper that subscribes for channels during component initialization and unsubscribes on unmount.
 
 ```html
 <template>
-  <logux-component :channels="channels" v-slot="{ isSubscribing }">
+  <subscribe :channels="channels" v-slot="{ isSubscribing }">
     <h1 v-if="isSubscribing">Loading</h1>
     <h1 v-else>{{ user.name }}</h1>
-  </logux-component>
+  </subscribe>
 </template>
 
 <script>
 import { toRefs, computed } from 'vue'
-import { useStore, loguxComponent } from '@logux/vuex'
+import { Subscribe, useStore } from '@logux/vuex'
 
 export default {
   components: {
-    loguxComponent
+    Subscribe
   },
   props: {
     userId: String
@@ -127,7 +131,7 @@ export default {
     let { userId } = toRefs(props)
 
     let user = computed(() => store.state.users[userId])
-    let channels = computed(() => [`users/${ userId }`])
+    let channels = computed(() => [`users/${userId}`])
 
     return {
       user,
