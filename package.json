@@ -119,7 +119,8 @@
       "ES",
       "roadmap",
       "refactor",
-      "composable"
+      "composable",
+      "unsubscribes"
     ]
   },
   "sharec": {
