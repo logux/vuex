@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.9.0
  * Add Vue 3 support
  * Add `useSubscription` composable function
- * Add `useStore`shortcut from Vuex
+ * Add `useStore` shortcut from Vuex
  * Fix Typescript support
  * Update dependencies
  * Refactor helpers
