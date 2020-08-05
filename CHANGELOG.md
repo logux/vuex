@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.2
+ * `useSubscription`’s argument `channels` can be a getter function
+
 ## 0.9.1
  * Fix Typescript exports
 
