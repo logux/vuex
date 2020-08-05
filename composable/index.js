@@ -8,12 +8,16 @@ let {
   onBeforeUnmount
 } = require('vue')
 
+let { isFunction } = require('../utils')
+
 function useSubscription (channels) {
   let isSubscribing = ref(true)
   let store = useStore()
 
-  if (isRef(channels)) {
-    let subscriptions = computed(() => unifyChannelsObject(channels.value))
+  if (isRef(channels) || isFunction(channels)) {
+    let channelsRef = isFunction(channels) ? computed(channels) : channels
+
+    let subscriptions = computed(() => unifyChannelsObject(channelsRef.value))
     let id = computed(() => subscriptionsId(subscriptions.value))
 
     watch(id, (newId, oldId, onInvalidate) => {

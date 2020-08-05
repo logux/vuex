@@ -16,6 +16,15 @@ defineComponent({
     // THROWS Type 'number' is not assignable to type 'string'.
     useSubscription([{ channel: 1 }])
 
+    // THROWS Argument of type '() => string' is not assignable to parameter of type 'Channels'.
+    useSubscription(() => 'users')
+
+    // THROWS Argument of type '() => number[]' is not assignable to parameter of type 'Channels'.
+    useSubscription(() => [1])
+
+    // THROWS Argument of type '() => { channel: number; }[]' is not assignable to parameter of type 'Channels'.
+    useSubscription(() => [{ channel: 1 }])
+
     let channels = ref([
       { channel: 'user/1' }
     ])

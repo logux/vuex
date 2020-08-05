@@ -78,7 +78,7 @@ Composable function that subscribes for channels during component initialization
 </template>
 
 <script>
-import { toRefs, computed } from 'vue'
+import { toRefs } from 'vue'
 import { useStore, useSubscription } from '@logux/vuex'
 
 export default {
@@ -88,9 +88,7 @@ export default {
   setup (props) {
     let store = useStore()
     let { userId } = toRefs(props)
-
-    let channels = computed(() => [`user/${userId}`])
-    let isSubscribing = useSubscription(channels)
+    let isSubscribing = useSubscription(() => [`user/${userId}`])
 
     let user = computed(() => store.state.users[userId])
 

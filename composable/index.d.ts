@@ -1,4 +1,8 @@
-import { Ref, ComputedRef } from 'vue'
+import {
+  Ref,
+  ComputedGetter,
+  ComputedRef
+} from '@vue/reactivity'
 
 export type Channel =
   | string
@@ -8,6 +12,7 @@ export type Channel =
     }
 
 export type Channels =
+  | ComputedGetter<Channel[]>
   | ComputedRef<Channel[]>
   | Channel[]
 
@@ -36,9 +41,7 @@ export type Channels =
  *   setup (props) {
  *     let store = useStore()
  *     let { userId } = toRefs(props)
- *
- *     let channels = computed(() => [`user/${userId}`])
- *     let isSubscribing = useSubscription(channels)
+ *     let isSubscribing = useSubscription(() => [`user/${userId}`])
  *
  *     let user = computed(() => store.state.users[userId])
  *
