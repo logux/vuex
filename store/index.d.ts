@@ -199,4 +199,7 @@ export interface createStore {
  * @param options Logux Vuex options.
  * @returns Vuex’s `createStore` compatible function.
  */
-export function createStoreCreator(client: Client | CrossTabClient, options?: LoguxVuexOptions): createStore
+export function createStoreCreator(
+  client: Client | CrossTabClient,
+  options?: LoguxVuexOptions
+): createStore

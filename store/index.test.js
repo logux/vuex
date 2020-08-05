@@ -19,14 +19,14 @@ function createClient (opts = {}) {
 function createStore (mutations, opts = {}, modules = {}) {
   let creatorOptions = {
     reasonlessHistory: opts.reasonlessHistory || 1000,
-    saveStateEvery: opts.saveStateEvery || 50,
     onMissedHistory: opts.onMissedHistory,
+    saveStateEvery: opts.saveStateEvery || 50,
     cleanEvery: opts.cleanEvery || 25
   }
 
   delete opts.reasonlessHistory
-  delete opts.saveStateEvery
   delete opts.onMissedHistory
+  delete opts.saveStateEvery
   delete opts.cleanEvery
 
   let client = createClient(opts)

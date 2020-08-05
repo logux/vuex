@@ -8,11 +8,11 @@ let {
   forEachValue
 } = require('../utils')
 
-function createStoreCreator (client, config = {}) {
-  let reasonlessHistory = config.reasonlessHistory || 1000
-  let saveStateEvery = config.saveStateEvery || 50
-  let onMissedHistory = config.onMissedHistory
-  let cleanEvery = config.cleanEvery || 25
+function createStoreCreator (client, options = {}) {
+  let reasonlessHistory = options.reasonlessHistory || 1000
+  let onMissedHistory = options.onMissedHistory
+  let saveStateEvery = options.saveStateEvery || 50
+  let cleanEvery = options.cleanEvery || 25
 
   let log = client.log
 
@@ -49,22 +49,22 @@ function createStoreCreator (client, config = {}) {
     let prevMeta
     let storeCommit = store.commit
 
-    function originCommit (action, options) {
+    function originCommit (action, opts) {
       if (action.type === 'logux/state') {
         store.replaceState(action.state)
         return
       }
       if (action.type in store._mutations) {
         if (hasSimplePayload(action)) {
-          storeCommit(action.type, action.payload, options)
+          storeCommit(action.type, action.payload, opts)
           return
         }
-        storeCommit(action, options)
+        storeCommit(action, opts)
       }
     }
 
     store.commit = (type, payload, _options) => {
-      let { action, options } = unifyCommitArgs(type, payload, _options)
+      let { action, options: commitOpts } = unifyCommitArgs(type, payload, _options)
       let meta = {
         id: log.generateId(),
         tab: store.client.tabId,
@@ -75,7 +75,7 @@ function createStoreCreator (client, config = {}) {
       log.add(action, meta)
       prevMeta = meta
       let prevState = deepCopy(store.state)
-      originCommit(action, options)
+      originCommit(action, commitOpts)
       emitter.emit('change', deepCopy(store.state), prevState, action, meta)
       saveHistory(meta)
     }
