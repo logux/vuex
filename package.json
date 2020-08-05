@@ -87,12 +87,12 @@
   "size-limit": [
     {
       "name": "Store",
-      "import": "{ Client, CrossTabClient, createStoreCreator, useStore }",
+      "import": "{ CrossTabClient, createStoreCreator, useStore }",
       "limit": "10 KB"
     },
     {
       "name": "Store + Helpers",
-      "import": "{ Client, CrossTabClient, createStoreCreator, useStore, useSubscription, Subscribe }",
+      "import": "{ CrossTabClient, createStoreCreator, useStore, useSubscription, Subscribe }",
       "limit": "11 KB"
     }
   ],
