@@ -40,8 +40,8 @@ export interface SubscribeProps {
  *     let store = useStore()
  *     let { userId } = toRefs(props)
  *
- *     let user = computed(() => store.state.users[userId])
- *     let channels = computed(() => [`users/${userId}`])
+ *     let user = computed(() => store.state.users[userId.value])
+ *     let channels = computed(() => [`users/${userId.value}`])
  *
  *     return {
  *       user,
