@@ -30,12 +30,8 @@ export interface SubscribeProps {
  * import { useStore, Subscribe } from '@logux/vuex'
  *
  * export default {
- *   components: {
- *     Subscribe
- *   },
- *   props: {
- *     userId: String
- *   },
+ *   components: { Subscribe },
+ *   props: ['userId'],
  *   setup (props) {
  *     let store = useStore()
  *     let { userId } = toRefs(props)

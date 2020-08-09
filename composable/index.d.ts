@@ -35,9 +35,7 @@ export type Channels =
  * import { useStore, useSubscription } from '@logux/vuex'
  *
  * export default {
- *   props: {
- *     userId: String
- *   },
+ *   props: ['userId'],
  *   setup (props) {
  *     let store = useStore()
  *     let { userId } = toRefs(props)

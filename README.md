@@ -82,9 +82,7 @@ import { toRefs } from 'vue'
 import { useStore, useSubscription } from '@logux/vuex'
 
 export default {
-  props: {
-    userId: String
-  },
+  props: ['userId'],
   setup (props) {
     let store = useStore()
     let { userId } = toRefs(props)
@@ -118,12 +116,8 @@ import { toRefs, computed } from 'vue'
 import { Subscribe, useStore } from '@logux/vuex'
 
 export default {
-  components: {
-    Subscribe
-  },
-  props: {
-    userId: String
-  },
+  components: { Subscribe },
+  props: ['userId'],
   setup (props) {
     let store = useStore()
     let { userId } = toRefs(props)
