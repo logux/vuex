@@ -1,3 +1,5 @@
+import { InjectionKey } from 'vue'
+
 import { LoguxVuexStore } from './store'
 
 /**
@@ -16,7 +18,7 @@ import { LoguxVuexStore } from './store'
  *
  * @returns Store instance.
  */
-export function useStore<S = any>(): LoguxVuexStore<S>
+export function useStore<S = any>(injectKey?: InjectionKey<LoguxVuexStore<S>> | string): LoguxVuexStore<S>
 
 export { Client, CrossTabClient } from '@logux/client'
 
