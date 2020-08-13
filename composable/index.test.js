@@ -46,11 +46,6 @@ let UserPhoto = {
     let { id } = toRefs(props)
     let src = computed(() => `${id.value}.jpg`)
 
-    // let channels = computed(() => {
-    //   return [
-    //     { channel: `users/${id.value}`, fields: ['photo'] }
-    //   ]
-    // })
     let isSubscribing = useSubscription(() => {
       return [
         { channel: `users/${id.value}`, fields: ['photo'] }
@@ -277,10 +272,6 @@ it('works on channels size changes', async () => {
     setup (props) {
       let { ids } = toRefs(props)
 
-      // let channels = computed(() => {
-      //   return ids.value.map(id => `users/${id}`)
-      // })
-
       let isSubscribing = useSubscription(() => {
         return ids.value.map(id => `users/${id}`)
       })
@@ -365,9 +356,6 @@ it('avoid the same channels', async () => {
     setup (props) {
       let { ids } = toRefs(props)
 
-      // let channels = computed(() => {
-      //   return ids.value.map(id => `users/${id}`)
-      // })
       useSubscription(() => {
         return ids.value.map(id => `users/${id}`)
       })
