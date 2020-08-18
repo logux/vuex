@@ -164,6 +164,12 @@ export type LoguxVuexOptions = {
   cleanEvery?: number
 }
 
+/**
+ * Vuex’s `createStore` function, compatible with Logux Client.
+ *
+ * @param options Vuex store options.
+ * @returns Vuex store, compatible with Logux Client.
+ */
 export interface createStore {
   <S>(options: VuexStoreOptions<S>): LoguxVuexStore<S>
 }
@@ -197,7 +203,7 @@ export interface createStore {
  *
  * @param client Logux Client.
  * @param options Logux Vuex options.
- * @returns Vuex’s `createStore` compatible function.
+ * @returns Vuex’s `createStore` function, compatible with Logux Client.
  */
 export function createStoreCreator(
   client: Client | CrossTabClient,
