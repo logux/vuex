@@ -348,27 +348,22 @@ it('reports about subscription end with non-reactive channels', async () => {
   expect(isSubscribing()).toEqual(["true", "false"])
 })
 
-it('avoid the same channels', async () => {
+it('don’t resubscribe on the same channel', async () => {
   let component = createComponent({
     props: {
-      ids: Array
+      id: Number
     },
     setup (props) {
-      let { ids } = toRefs(props)
-
-      useSubscription(() => {
-        return ids.value.map(id => `users/${id}`)
-      })
-
+      useSubscription(() => [`users/${props.id}`])
       return () => h('div')
     }
   }, {
     props: {
-      ids: ['1']
+      id: 1
     }
   })
 
-  await component.setProps({ ids: ['1'] })
+  await component.setProps({ id: 1 })
   expect(component.client.log.actions()).toEqual([
     { type: 'logux/subscribe', channel: 'users/1' }
   ])
