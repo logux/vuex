@@ -26,11 +26,11 @@ For Vue 2 support, we have [0.8 version from a separate branch](https://github.c
 ## Install
 
 ```sh
-npm install @logux/vuex vuex
+npm install @logux/vuex vuex@next
 ```
 or
 ```sh
-yarn add @logux/vuex vuex
+yarn add @logux/vuex vuex@next
 ```
 
 ## Usage
