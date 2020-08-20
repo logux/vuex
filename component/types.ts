@@ -16,9 +16,7 @@ defineComponent({
 })
 
 defineComponent({
-  props: {
-    id: String
-  },
+  props: ['id'],
   setup (props) {
     let { id } = toRefs(props)
 
@@ -32,9 +30,7 @@ defineComponent({
 })
 
 defineComponent({
-  props: {
-    id: String
-  },
+  props: ['id'],
   setup (props) {
     let { id } = toRefs(props)
 

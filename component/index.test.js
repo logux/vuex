@@ -40,10 +40,7 @@ function createComponent (component, options) {
 
 let UserPhoto = {
   name: 'UserPhoto',
-  props: {
-    id: String,
-    isSubscribing: Boolean
-  },
+  props: ['id', 'isSubscribing'],
   setup (props) {
     let {
       id,
@@ -61,9 +58,7 @@ let UserPhoto = {
 }
 
 let SubscribeUserPhoto = {
-  props: {
-    id: String
-  },
+  props: ['id'],
   setup (props) {
     let { id } = toRefs(props)
     let channels = computed(() => {
@@ -109,9 +104,7 @@ it('returns wrapped component', async () => {
 
 it('subscribes', async () => {
   let SubscribeUser = {
-    props: {
-      id: String
-    },
+    props: ['id'],
     setup (props) {
       let { id } = toRefs(props)
       let channels = computed(() => {
@@ -276,9 +269,7 @@ it('does not resubscribe on non-relevant props changes', async () => {
 
 it('supports multiple channels', async () => {
   let SubscribeUser = {
-    props: {
-      id: String
-    },
+    props: ['id'],
     setup (props) {
       let { id } = toRefs(props)
       let channels = computed(() => {
@@ -335,21 +326,21 @@ it('reports about subscription end', async () => {
   let log = component.client.log
 
   await nextTick()
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   component.trigger('click', { id: '1' })
   await nextTick()
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   component.trigger('click', { id: '2' })
   await nextTick()
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   log.add({ type: 'logux/processed', id: `1 ${nodeId} 0` })
   await delay(10)
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   log.add({ type: 'logux/processed', id: `3 ${nodeId} 0` })
   await delay(10)
-  expect(isSubscribing()).toBe("false")
+  expect(isSubscribing()).toBe('false')
 })

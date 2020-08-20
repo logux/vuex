@@ -39,9 +39,7 @@ function createComponent (component, options) {
 }
 
 let UserPhoto = {
-  props: {
-    id: String
-  },
+  props: ['id'],
   setup (props) {
     let { id } = toRefs(props)
     let src = computed(() => `${id.value}.jpg`)
@@ -81,9 +79,7 @@ it('subscribes', async () => {
 
 it('accepts channel names', async () => {
   let User = {
-    props: {
-      id: String
-    },
+    props: ['id'],
     setup ({ id }) {
       useSubscription([`users/${id}`, `users/${id}/comments`])
       return () => h('div')
@@ -243,32 +239,30 @@ it('reports about subscription end', async () => {
   let nodeId = component.client.nodeId
   let log = component.client.log
 
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   component.trigger('click', { id: '1' })
   await nextTick()
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   component.trigger('click', { id: '2' })
   await nextTick()
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   log.add({ type: 'logux/processed', id: `1 ${nodeId} 0` })
   await delay(10)
-  expect(isSubscribing()).toBe("true")
+  expect(isSubscribing()).toBe('true')
 
   log.add({ type: 'logux/processed', id: `3 ${nodeId} 0` })
   await delay(10)
-  expect(isSubscribing()).toBe("false")
+  expect(isSubscribing()).toBe('false')
 })
 
 it('works on channels size changes', async () => {
   jest.spyOn(console, 'error')
 
   let UserList = {
-    props: {
-      ids: Array
-    },
+    props: ['ids'],
     setup (props) {
       let { ids } = toRefs(props)
 
@@ -310,9 +304,7 @@ it('works on channels size changes', async () => {
 
 it('reports about subscription end with non-reactive channels', async () => {
   let User = {
-    props: {
-      id: String
-    },
+    props: ['id'],
     setup ({ id }) {
       let isSubscribing = useSubscription([`users/${id}`])
       return () => h('div', {
@@ -321,9 +313,7 @@ it('reports about subscription end with non-reactive channels', async () => {
     }
   }
   let component = createComponent({
-    props: {
-      ids: Array
-    },
+    props: ['ids'],
     setup (props) {
       let { ids } = toRefs(props)
       return () => h(Fragment, ids.value.map(id => h(User, { id })))
@@ -338,21 +328,19 @@ it('reports about subscription end with non-reactive channels', async () => {
   let nodeId = component.client.nodeId
   let log = component.client.log
 
-  expect(isSubscribing()).toEqual(["true", "true", "true"])
+  expect(isSubscribing()).toEqual(['true', 'true', 'true'])
 
   log.add({ type: 'logux/processed', id: `2 ${nodeId} 0` })
   await delay(10)
-  expect(isSubscribing()).toEqual(["true", "false", "true"])
+  expect(isSubscribing()).toEqual(['true', 'false', 'true'])
 
   await component.setProps({ ids: ['1', '2'] })
-  expect(isSubscribing()).toEqual(["true", "false"])
+  expect(isSubscribing()).toEqual(['true', 'false'])
 })
 
 it('don’t resubscribe on the same channel', async () => {
   let component = createComponent({
-    props: {
-      id: Number
-    },
+    props: ['id'],
     setup (props) {
       useSubscription(() => [`users/${props.id}`])
       return () => h('div')
