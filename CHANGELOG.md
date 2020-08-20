@@ -1,6 +1,12 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.3
+ * Fix `useStore` types, add lost `key` argument
+ * Update dependencies
+   * Logux Client to 0.9.2
+   * Vue to release candidate 6
+
 ## 0.9.2
  * `useSubscription`’s argument `channels` can be a getter function
 
