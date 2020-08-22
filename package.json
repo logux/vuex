@@ -22,7 +22,7 @@
     "node": ">=10.0.0"
   },
   "peerDependencies": {
-    "vue": ">=3.0.0-rc.6",
+    "vue": ">=3.0.0-rc.7",
     "vuex": ">=4.0.0-beta.4"
   },
   "dependencies": {
@@ -56,7 +56,7 @@
     "rimraf": "^3.0.2",
     "size-limit": "^4.5.7",
     "typescript": "^4.0.2",
-    "vue": "^3.0.0-rc.6",
+    "vue": "^3.0.0-rc.7",
     "vuex": "^4.0.0-beta.4",
     "yaspeller": "^7.0.0"
   },
