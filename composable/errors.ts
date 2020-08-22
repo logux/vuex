@@ -7,7 +7,7 @@ import { useSubscription } from '..'
 
 defineComponent({
   setup () {
-    // THROWS Argument of type '"users"' is not assignable to parameter of type 'Channels'.
+    // THROWS Argument of type 'string' is not assignable to parameter of type 'Channels'.
     let isSubscribing = useSubscription('users')
 
     // THROWS Type 'number' is not assignable to type 'Channel'.
