@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.5
+ * Update Vue to release candidate 8
+
 ## 0.9.4
  * Update Vue to release candidate 7
 
