@@ -2,6 +2,7 @@ import {
   ref,
   defineComponent
 } from 'vue'
+import { useStore } from 'vuex'
 
 import { useSubscription } from '..'
 
@@ -18,6 +19,10 @@ defineComponent({
 
     // THROWS Argument of type '() => string' is not assignable to parameter of type 'Channels'.
     useSubscription(() => 'users')
+
+    let store = useStore()
+    // THROWS Type 'Store<any>' is missing the following properties from type 'LoguxVuexStore<any>': on, client, log
+    useSubscription(() => ['users'], { store })
 
     // THROWS Argument of type '() => number[]' is not assignable to parameter of type 'Channels'.
     useSubscription(() => [1])

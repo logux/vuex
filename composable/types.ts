@@ -4,13 +4,16 @@ import {
   defineComponent
 } from 'vue'
 
-import { useSubscription } from '..'
+import { useSubscription, useStore } from '..'
 
 defineComponent({
   setup () {
     useSubscription(['users'])
 
     useSubscription(() => ['users'])
+
+    let store = useStore()
+    useSubscription(() => ['users'], { store })
 
     let channels = computed(() => ['users'])
     useSubscription(channels)
