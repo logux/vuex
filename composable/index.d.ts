@@ -4,6 +4,8 @@ import {
   ComputedRef
 } from '@vue/reactivity'
 
+import { LoguxVuexStore } from '..'
+
 export type Channel =
   | string
   | {
@@ -15,6 +17,13 @@ export type Channels =
   | ComputedGetter<Channel[]>
   | ComputedRef<Channel[]>
   | Channel[]
+
+export type useSubscriptionOptions = {
+  /**
+   * Logux Vuex store.
+   */
+  store: LoguxVuexStore
+}
 
 /**
  * Composable function that subscribes
@@ -50,8 +59,10 @@ export type Channels =
  *
  * ```
  * @param channels Channels to subscribe.
+ * @param opts Options.
  * @return `true` during data loading.
  */
 export function useSubscription (
-  channels: Channels
+  channels: Channels,
+  options: useSubscriptionOptions
 ): Ref<boolean>

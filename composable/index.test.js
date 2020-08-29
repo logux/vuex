@@ -11,6 +11,7 @@ let { mount } = require('@vue/test-utils')
 let { TestTime } = require('@logux/core')
 
 let {
+  useStore,
   CrossTabClient,
   useSubscription,
   createStoreCreator
@@ -354,5 +355,26 @@ it('don’t resubscribe on the same channel', async () => {
   await component.setProps({ id: 1 })
   expect(component.client.log.actions()).toEqual([
     { type: 'logux/subscribe', channel: 'users/1' }
+  ])
+})
+
+it('supports different store sources', async () => {
+  let component = createComponent({
+    setup () {
+      let store = useStore()
+
+      async function subscribe () {
+        await nextTick()
+        useSubscription(() => ['users'], { store })
+      }
+      subscribe()
+
+      return () => h('div')
+    }
+  })
+
+  await delay(10)
+  expect(component.client.log.actions()).toEqual([
+    { type: 'logux/subscribe', channel: 'users' }
   ])
 })

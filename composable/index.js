@@ -10,9 +10,9 @@ let {
 
 let { isFunction } = require('../utils')
 
-function useSubscription (channels) {
+function useSubscription (channels, options = {}) {
   let isSubscribing = ref(true)
-  let store = useStore()
+  let store = options.store || useStore()
 
   if (isRef(channels) || isFunction(channels)) {
     let channelsRef = isFunction(channels) ? computed(channels) : channels
