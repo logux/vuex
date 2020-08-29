@@ -59,7 +59,7 @@ export type useSubscriptionOptions = {
  *
  * ```
  * @param channels Channels to subscribe.
- * @param opts Options.
+ * @param options Options.
  * @return `true` during data loading.
  */
 export function useSubscription (
