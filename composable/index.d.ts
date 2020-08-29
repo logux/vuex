@@ -64,5 +64,5 @@ export type useSubscriptionOptions = {
  */
 export function useSubscription (
   channels: Channels,
-  options: useSubscriptionOptions
+  options?: useSubscriptionOptions
 ): Ref<boolean>
