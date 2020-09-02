@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.9
+ * Fix `useSubscription` subscribing on the same channels.
+
 ## 0.9.8
  * Fix `useSubscription` types, `options` argument can be undefined.
 
