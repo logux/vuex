@@ -1,6 +1,12 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.2
+ * Fix broken state after second logux/undo
+ * Update dependencies
+   * Logux Client to 0.9.2
+   * Vue to 2.6.12
+
 ## 0.8.1
  * Update dependencies
 
