@@ -327,7 +327,9 @@ it('changes history', async () => {
 })
 
 it('undoes actions', async () => {
-  let store = createStore({ historyLine })
+  let store = createStore({ historyLine }, {
+    saveStateEvery: 1
+  })
   let nodeId = store.client.nodeId
 
   await Promise.all([
@@ -339,11 +341,23 @@ it('undoes actions', async () => {
       { type: 'historyLine', value: 'c' }, { reasons: ['test'] })
   ])
   expect(store.state.value).toEqual('0abc')
-  store.commit.crossTab(
-    { type: 'logux/undo', id: `2 ${nodeId} 0` }, { reasons: ['test'] }
+
+  await store.commit.crossTab(
+    { type: 'logux/undo', id: `3 ${nodeId} 0` }, { reasons: ['test'] }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0ac')
+  expect(store.state.value).toEqual('0ab')
+
+  await store.commit.crossTab(
+    { type: 'historyLine', value: 'd' }, { reasons: ['test'] }
+  )
+  expect(store.state.value).toEqual('0abd')
+
+  await store.commit.crossTab(
+    { type: 'logux/undo', id: `5 ${nodeId} 0` }, { reasons: ['test'] }
+  )
+  await delay(1)
+  expect(store.state.value).toEqual('0ab')
 })
 
 it('ignores cleaned history from non-legacy actions', async () => {
