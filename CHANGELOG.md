@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.10
+ * Fix broken state after second logux/undo
+ * Update Vue to release candidate 10
+ * Update dependencies
+
 ## 0.9.9
  * Fix `useSubscription` subscribing on the same channels.
 
