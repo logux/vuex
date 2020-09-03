@@ -184,7 +184,8 @@ function createLogux (config = {}) {
             return true
           } else {
             replayed = true
-            replaceState(stateHistory[meta.id], actions)
+            let stateFromHistory = deepCopy(stateHistory[meta.id])
+            replaceState(stateFromHistory, actions)
             return false
           }
         }).then(() => {
@@ -197,8 +198,9 @@ function createLogux (config = {}) {
                 let id = actions[i][1]
                 if (stateHistory[id]) {
                   replayed = true
+                  let stateFromHistory = deepCopy(stateHistory[id])
                   replaceState(
-                    stateHistory[id],
+                    stateFromHistory,
                     actions.slice(0, i).concat([[newAction, actionId]]),
                     id
                   )
