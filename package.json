@@ -51,7 +51,7 @@
     "eslint-plugin-unicorn": "^21.0.0",
     "husky": "^4.2.5",
     "jest": "^26.4.2",
-    "lint-staged": "^10.2.13",
+    "lint-staged": "^10.3.0",
     "nanodelay": "^1.0.3",
     "rimraf": "^3.0.2",
     "size-limit": "^4.5.7",
