@@ -31,7 +31,7 @@
     "nanoevents": "^5.1.8"
   },
   "devDependencies": {
-    "@logux/eslint-config": "^40.0.3",
+    "@logux/eslint-config": "^40.0.4",
     "@logux/sharec-config": "^0.7.4",
     "@size-limit/dual-publish": "^4.5.7",
     "@size-limit/preset-small-lib": "^4.5.7",
@@ -41,7 +41,7 @@
     "eslint": "^7.8.1",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-jest": "^24.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^1.0.2",
     "eslint-plugin-prettierx": "^0.14.0",
