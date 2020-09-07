@@ -48,12 +48,8 @@ export interface DevtoolsOptions {
  * import { createApp } from 'vue'
  * import { devtools } from '@logux/vuex'
  *
- * import App from './App.vue'
- * import { store } from './store'
- * …
- * let app = createApp(App)
+ * let app = createApp(…)
  *
- * app.use(store)
  * app.use(devtools, store.client, {
  *   layers: {
  *     state: false
