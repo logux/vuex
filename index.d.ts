@@ -23,6 +23,7 @@ export function useStore<S = any>(injectKey?: InjectionKey<LoguxVuexStore<S>> | 
 export { Client, CrossTabClient } from '@logux/client'
 
 export { Subscribe } from './component'
+export { devtools } from './devtools'
 export {
   Channel,
   Channels,
