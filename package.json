@@ -103,7 +103,7 @@
     {
       "name": "Devtools",
       "import": "{ devtools }",
-      "limit": "1 KB"
+      "limit": "2 KB"
     }
   ],
   "yaspeller": {

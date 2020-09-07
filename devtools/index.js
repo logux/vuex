@@ -296,4 +296,4 @@ function devtools (app, client, options = {}) {
   )
 }
 
-module.exports = devtools
+module.exports = { devtools }
