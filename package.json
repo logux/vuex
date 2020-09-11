@@ -130,7 +130,8 @@
       "roadmap",
       "refactor",
       "composable",
-      "unsubscribes"
+      "unsubscribes",
+      "devtools"
     ]
   },
   "sharec": {
