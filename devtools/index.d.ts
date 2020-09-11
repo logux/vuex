@@ -42,11 +42,13 @@ export interface DevtoolsOptions {
 }
 
 /**
- * Vue Devtools plugin that add Logux events to the timeline.
+ * Vue Devtools plugin that adds Logux events to the timeline.
  *
  * ```js
  * import { createApp } from 'vue'
  * import { devtools } from '@logux/vuex'
+ *
+ * import { store } from './store'
  *
  * let app = createApp(…)
  *
