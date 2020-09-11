@@ -154,3 +154,23 @@ declare module '@vue/runtime-core' {
   }
 }
 ```
+
+## Devtools
+
+Vue Devtools plugin that adds Logux events to the timeline.
+
+```js
+import { createApp } from 'vue'
+import { devtools } from '@logux/vuex'
+
+import { store } from './store'
+
+let app = createApp(…)
+
+app.use(devtools, store.client, {
+  layers: {
+    state: false
+  },
+  ignoreActions: ['user/add']
+})
+```
