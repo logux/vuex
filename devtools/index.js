@@ -13,6 +13,17 @@ function devtools (app, client, options = {}) {
   let layers = options.layers || {}
   let ignoreActions = options.ignoreActions || []
 
+  let node = client.node
+
+  let sent = {}
+  let cleaned = {}
+  let subscribing = {}
+  let prevConnected = false
+  let ignore = ignoreActions.reduce((all, i) => {
+    all[i] = true
+    return all
+  }, {})
+
   setupDevtoolsPlugin(
     {
       id: 'logux',
@@ -20,16 +31,6 @@ function devtools (app, client, options = {}) {
       app
     },
     api => {
-      let node = client.node
-
-      let sent = {}
-      let cleaned = {}
-      let prevConnected = false
-      let ignore = (ignoreActions || []).reduce((all, i) => {
-        all[i] = true
-        return all
-      }, {})
-
       if (layers.state !== false) {
         api.addTimelineLayer({
           id: stateLayerId,
@@ -115,183 +116,210 @@ function devtools (app, client, options = {}) {
         })
       }
 
-      client.on('role', () => {
-        api.addTimelineEvent({
-          layerId: roleLayerId,
-          event: {
-            time: Date.now(),
-            data: {
-              role: client.role
+      if (layers.role !== false) {
+        client.on('role', () => {
+          api.addTimelineEvent({
+            layerId: roleLayerId,
+            event: {
+              time: Date.now(),
+              data: {
+                role: client.role
+              }
+            }
+          })
+        })
+      }
+
+      if (layers.subscription !== false) {
+        client.on('add', (action, meta) => {
+          if (
+            action.type !== 'logux/subscribe' &&
+            action.type !== 'logux/unsubscribe' &&
+            action.type !== 'logux/processed'
+          ) return
+
+          if (meta.tab && meta.tab !== client.tabId) return
+          if (ignore[action.type]) return
+          subscribing[meta.id] = action
+
+          let time = Date.now()
+
+          if (action.type === 'logux/subscribe') {
+            let data = {
+              type: 'subscribing',
+              channel: action.channel
+            }
+
+            if (Object.keys(action).length === 2) {
+              data.action = action
+            }
+
+            api.addTimelineEvent({
+              layerId: subscriptionLayerId,
+              event: { time, data }
+            })
+          } else if (action.type === 'logux/unsubscribe') {
+            let data = {
+              type: 'unsubscribed',
+              channel: action.channel
+            }
+
+            if (Object.keys(action).length === 2) {
+              data.action = action
+            }
+
+            api.addTimelineEvent({
+              layerId: subscriptionLayerId,
+              event: { time, data }
+            })
+          } else if (action.type === 'logux/processed') {
+            if (subscribing[action.id]) {
+              let processed = subscribing[action.id]
+              if (processed.type === 'logux/subscribe') {
+                api.addTimelineEvent({
+                  layerId: subscriptionLayerId,
+                  event: {
+                    time,
+                    data: {
+                      type: 'subscribed',
+                      channel: processed.channel,
+                      action: processed
+                    }
+                  }
+                })
+                delete subscribing[action.id]
+              }
+              if (processed.type === 'logux/unsubscribe') {
+                delete subscribing[action.id]
+              }
             }
           }
         })
-      })
+      }
 
-      client.on('add', (action, meta) => {
-        let time = Date.now()
+      if (layers.action !== false) {
+        client.on('add', (action, meta) => {
+          if (meta.tab && meta.tab !== client.tabId) return
+          if (ignore[action.type]) return
+          if (meta.sync) sent[meta.id] = action
 
-        if (meta.tab && meta.tab !== client.tabId) return
-        if (ignore[action.type]) return
-        if (meta.sync) sent[meta.id] = action
+          let time = Date.now()
 
-        if (action.type === 'logux/subscribe') {
-          let data = {
-            type: 'subscribing',
-            channel: action.channel
-          }
-
-          if (Object.keys(action).length === 2) {
-            data.action = action
-          }
-
-          api.addTimelineEvent({
-            layerId: subscriptionLayerId,
-            event: { time, data }
-          })
-        } else if (action.type === 'logux/unsubscribe') {
-          let data = {
-            type: 'unsubscribed',
-            channel: action.channel
-          }
-
-          if (Object.keys(action).length === 2) {
-            data.action = action
-          }
-
-          api.addTimelineEvent({
-            layerId: subscriptionLayerId,
-            event: { time, data }
-          })
-        } else if (action.type === 'logux/processed') {
-          if (sent[action.id]) {
-            let processed = sent[action.id]
-            if (processed.type === 'logux/subscribe') {
-              api.addTimelineEvent({
-                layerId: subscriptionLayerId,
-                event: {
-                  time,
-                  data: {
-                    type: 'subscribed',
-                    channel: processed.channel,
-                    action: processed
-                  }
+          if (
+            action.type !== 'logux/subscribe' &&
+            action.type !== 'logux/unsubscribe'
+          ) {
+            if (action.type === 'logux/processed') {
+              if (sent[action.id]) {
+                let processed = sent[action.id]
+                if (processed.type !== 'logux/subscribe') {
+                  api.addTimelineEvent({
+                    layerId: actionLayerId,
+                    event: {
+                      time,
+                      data: {
+                        type: 'processed',
+                        action: processed
+                      }
+                    }
+                  })
                 }
-              })
-            } else {
+                delete sent[action.id]
+              } else {
+                api.addTimelineEvent({
+                  layerId: actionLayerId,
+                  event: {
+                    time,
+                    data: {
+                      type: 'processed',
+                      action
+                    }
+                  }
+                })
+              }
+            } else if (action.type === 'logux/undo') {
+              let data = {
+                type: 'undid',
+                actionId: action.id,
+                reason: action.reason
+              }
+
+              if (sent[action.id]) {
+                data.details = {
+                  action: sent[action.id]
+                }
+                delete sent[action.id]
+              }
+
+              if (Object.keys(action).length > 3) {
+                if (!data.details) data.details = {}
+                data.details.undo = action
+              }
+
               api.addTimelineEvent({
                 layerId: actionLayerId,
-                event: {
-                  time,
-                  data: {
-                    type: 'processed',
-                    action: processed
-                  }
-                }
+                event: { time, data }
               })
-            }
-            delete sent[action.id]
-          } else {
-            api.addTimelineEvent({
-              layerId: actionLayerId,
-              event: {
-                time,
-                data: {
-                  type: 'processed',
-                  action
-                }
-              }
-            })
-          }
-        } else if (action.type === 'logux/undo') {
-          let data = {
-            type: 'undid',
-            actionId: action.id,
-            reason: action.reason
-          }
-
-          if (sent[action.id]) {
-            data.details = {
-              action: sent[action.id]
-            }
-            delete sent[action.id]
-          }
-
-          if (Object.keys(action).length > 3) {
-            if (!data.details) data.details = {}
-            data.details.undo = action
-          }
-
-          api.addTimelineEvent({
-            layerId: actionLayerId,
-            event: { time, data }
-          })
-        } else {
-          let data = {
-            type: 'added',
-            action,
-            meta
-          }
-
-          if (meta.reasons.length === 0) {
-            cleaned[meta.id] = true
-            data.type = 'added and cleaned'
-          }
-
-          let { nodeId } = parseId(meta.id)
-          if (nodeId !== node.localNodeId) {
-            data.from = nodeId
-          }
-
-          api.addTimelineEvent({
-            layerId: actionLayerId,
-            event: {
-              time,
-              data: {
+            } else {
+              let data = {
                 type: 'added',
                 action,
                 meta
               }
+
+              if (meta.reasons.length === 0) {
+                cleaned[meta.id] = true
+                data.type += ' and cleaned'
+              }
+
+              let { nodeId } = parseId(meta.id)
+              if (nodeId !== node.localNodeId) {
+                data.from = nodeId
+              }
+
+              api.addTimelineEvent({
+                layerId: actionLayerId,
+                event: { time, data }
+              })
+            }
+          }
+        })
+      }
+
+      if (layers.user !== false) {
+        client.on('user', userId => {
+          api.addTimelineEvent({
+            layerId: userLayerId,
+            event: {
+              time: Date.now(),
+              data: {
+                userId,
+                nodeId: client.nodeId
+              }
             }
           })
-        }
-      })
+        })
+      }
 
-      api.addTimelineLayer({
-        id: userLayerId,
-        label: 'Logux User',
-        color
-      })
+      if (layers.clean !== false) {
+        client.on('clean', (action, meta) => {
+          if (cleaned[meta.id]) {
+            delete cleaned[meta.id]
+            return
+          }
+          if (meta.tab && meta.tab !== client.id) return
+          if (ignore[action.type]) return
+          if (action.type.startsWith('logux/')) return
 
-      client.on('user', userId => {
-        api.addTimelineEvent({
-          layerId: userLayerId,
-          event: {
-            time: Date.now(),
-            data: {
-              userId,
-              nodeId: client.nodeId
+          api.addTimelineEvent({
+            layerId: cleanLayerId,
+            event: {
+              time: Date.now(),
+              data: { action, meta }
             }
-          }
+          })
         })
-      })
-
-      client.on('clean', (action, meta) => {
-        if (cleaned[meta.id]) {
-          delete cleaned[meta.id]
-          return
-        }
-        if (meta.tab && meta.tab !== client.id) return
-        if (ignore[action.type]) return
-        if (action.type.startsWith('logux/')) return
-
-        api.addTimelineEvent({
-          layerId: cleanLayerId,
-          event: {
-            time: Date.now(),
-            data: { action, meta }
-          }
-        })
-      })
+      }
     }
   )
 }
