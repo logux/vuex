@@ -73,6 +73,7 @@
     "*.js": "eslint"
   },
   "jest": {
+    "preset": "ts-jest",
     "coverageThreshold": {
       "global": {
         "statements": 100
