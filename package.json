@@ -35,7 +35,7 @@
     "@logux/sharec-config": "^0.7.4",
     "@size-limit/dual-publish": "^4.6.0",
     "@size-limit/preset-small-lib": "^4.6.0",
-    "@vue/test-utils": "^2.0.0-beta.3",
+    "@vue/test-utils": "^2.0.0-beta.4",
     "check-dts": "^0.3.3",
     "dual-publish": "^0.11.0",
     "eslint": "^7.9.0",
