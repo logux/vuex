@@ -137,7 +137,11 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
   /**
    * The Logux log.
    */
-  log: Log<ClientMeta>
+
+  /**
+   * Promise until loading the state from log store.
+   */
+  initialize: Promise<void>
 }
 
 export type LoguxVuexOptions = {
