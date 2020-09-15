@@ -35,6 +35,8 @@
     "@logux/sharec-config": "^0.7.4",
     "@size-limit/dual-publish": "^4.6.0",
     "@size-limit/preset-small-lib": "^4.6.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
     "@vue/test-utils": "^2.0.0-beta.3",
     "check-dts": "^0.3.3",
     "dual-publish": "^0.11.0",
@@ -78,13 +80,18 @@
     }
   },
   "eslintConfig": {
-    "extends": "@logux/eslint-config",
+    "extends": "@logux/eslint-config/ts",
     "rules": {
       "prettierx/options": [
         0
-      ]
+      ],
+      "@typescript-eslint/no-var-requires": "off",
+      "@typescript-eslint/no-explicit-any": "off"
     }
   },
+  "eslintIgnore": [
+    "**/errors.ts"
+  ],
   "size-limit": [
     {
       "name": "Store",
