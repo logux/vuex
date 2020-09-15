@@ -12,7 +12,8 @@ import {
   Commit as VuexCommit,
   Payload as VuexPayload,
   Dispatch as VuexDispatch,
-  StoreOptions as VuexStoreOptions
+  StoreOptions as VuexStoreOptions,
+  ActionContext as VuexActionContext
 } from 'vuex'
 
 export type LoguxVuexAction = Action & VuexPayload
@@ -102,12 +103,40 @@ interface StateListener<S> {
   <A extends LoguxVuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
 }
 
+export interface LoguxVuexActionContext<S, R> extends VuexActionContext<S, R> {
+  commit: LoguxVuexCommit
+}
+
+export type LoguxVuexActionHandler<S, R> = (
+  this: LoguxVuexStore<R>,
+  injectee: LoguxVuexActionContext<S, R>,
+  payload?: any
+) => any
+
+export interface LoguxVuexActionObject<S, R> {
+  root?: boolean
+  handler: LoguxVuexActionHandler<S, R>
+}
+
+export type LoguxVuexNativeAction<S, R> =
+  | LoguxVuexActionHandler<S, R>
+  | LoguxVuexActionObject<S, R>
+
+export interface LoguxVuexActionTree<S, R> {
+  [key: string]: LoguxVuexNativeAction<S, R>
+}
+
+export interface LoguxVuexStoreOptions<S>
+  extends Omit<VuexStoreOptions<S>, 'actions'> {
+  actions?: LoguxVuexActionTree<S, S>
+}
+
 export class LoguxVuexStore<
   S = any,
   C extends Client = Client<{}, Log<ClientMeta>>,
   L extends Log = Log<ClientMeta>
 > extends VuexStore<S> {
-  constructor (options: VuexStoreOptions<S>)
+  constructor (options: LoguxVuexStoreOptions<S>)
 
   dispatch: VuexDispatch
 
@@ -183,7 +212,7 @@ export interface createStore<
   C extends Client = Client<{}, Log<ClientMeta>>,
   L extends Log = Log<ClientMeta>
 > {
-  <S>(options: VuexStoreOptions<S>): LoguxVuexStore<S, C, L>
+  <S>(options: LoguxVuexStoreOptions<S>): LoguxVuexStore<S, C, L>
 }
 
 /**
