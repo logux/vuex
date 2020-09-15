@@ -8,11 +8,11 @@ import {
 } from '@logux/client'
 import {
   CommitOptions,
-  Payload as VuexPayload,
-  Commit as VuexCommit,
   Store as VuexStore,
-  StoreOptions as VuexStoreOptions,
-  Dispatch as VuexDispatch
+  Commit as VuexCommit,
+  Payload as VuexPayload,
+  Dispatch as VuexDispatch,
+  StoreOptions as VuexStoreOptions
 } from 'vuex'
 
 export type LoguxVuexAction = Action & VuexPayload
@@ -102,7 +102,11 @@ interface StateListener<S> {
   <A extends LoguxVuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
 }
 
-export class LoguxVuexStore<S = any> extends VuexStore<S> {
+export class LoguxVuexStore<
+  S = any,
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> extends VuexStore<S> {
   constructor (options: VuexStoreOptions<S>)
 
   dispatch: VuexDispatch
@@ -132,11 +136,12 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
   /**
    * Logux synchronization client.
    */
-  client: CrossTabClient
+  client: C
 
   /**
    * The Logux log.
    */
+  log: L
 
   /**
    * Promise until loading the state from log store.
@@ -174,8 +179,11 @@ export type LoguxVuexOptions = {
  * @param options Vuex store options.
  * @returns Vuex store, compatible with Logux Client.
  */
-export interface createStore {
-  <S>(options: VuexStoreOptions<S>): LoguxVuexStore<S>
+export interface createStore<
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> {
+  <S>(options: VuexStoreOptions<S>): LoguxVuexStore<S, C, L>
 }
 
 /**
@@ -209,7 +217,10 @@ export interface createStore {
  * @param options Logux Vuex options.
  * @returns Vuex’s `createStore` function, compatible with Logux Client.
  */
-export function createStoreCreator (
+export function createStoreCreator<
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> (
   client: Client | CrossTabClient,
   options?: LoguxVuexOptions
-): createStore
+): createStore<C, L>
