@@ -5,14 +5,14 @@ import {
   defineComponent
 } from 'vue'
 
-import { Subscribe } from '..'
+import { Subscribe } from '../index.js'
 
 defineComponent({
   setup () {
     return () => h(Subscribe, {
       channels: ['users']
     })
-  },
+  }
 })
 
 defineComponent({
@@ -26,7 +26,7 @@ defineComponent({
         { channel: `users/${id}`, fields: ['name'] }
       ]
     })
-  },
+  }
 })
 
 defineComponent({
@@ -44,5 +44,5 @@ defineComponent({
     return () => h(Subscribe, {
       channels: channels.value
     })
-  },
+  }
 })

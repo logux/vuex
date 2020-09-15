@@ -127,7 +127,7 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * @param listener The listener function.
    * @returns Unbind listener from event.
    */
-  on(event: 'change', listener: StateListener<S>): Unsubscribe
+  on (event: 'change', listener: StateListener<S>): Unsubscribe
 
   /**
    * Logux synchronization client.
@@ -205,7 +205,7 @@ export interface createStore {
  * @param options Logux Vuex options.
  * @returns Vuex’s `createStore` function, compatible with Logux Client.
  */
-export function createStoreCreator(
+export function createStoreCreator (
   client: Client | CrossTabClient,
   options?: LoguxVuexOptions
 ): createStore

@@ -1,7 +1,7 @@
 import {
   CrossTabClient,
   createStoreCreator
-} from '..'
+} from '../index.js'
 
 interface RootState {
   value: number
@@ -10,7 +10,7 @@ interface RootState {
 let client = new CrossTabClient({
   server: 'wss://localhost:1337',
   subprotocol: '1.0.0',
-  userId: '10',
+  userId: '10'
 })
 
 let createStore = createStoreCreator(client)
@@ -20,7 +20,7 @@ let store = createStore<RootState>({
     value: 0
   },
   mutations: {
-    increment(state) {
+    increment (state) {
       state.value = state.value + 1
     }
   }

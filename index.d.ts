@@ -1,6 +1,6 @@
 import { InjectionKey } from 'vue'
 
-import { LoguxVuexStore } from './store'
+import { LoguxVuexStore } from './store/index.js'
 
 /**
  * Composable function that injects store into the component.
@@ -18,17 +18,17 @@ import { LoguxVuexStore } from './store'
  *
  * @returns Store instance.
  */
-export function useStore<S = any>(injectKey?: InjectionKey<LoguxVuexStore<S>> | string): LoguxVuexStore<S>
+export function useStore<S = any> (injectKey?: InjectionKey<LoguxVuexStore<S>> | string): LoguxVuexStore<S>
 
 export { Client, CrossTabClient } from '@logux/client'
 
-export { Subscribe } from './component'
+export { Subscribe } from './component/index.js'
 export {
   Channel,
   Channels,
   useSubscription
-} from './composable'
+} from './composable/index.js'
 export {
   LoguxVuexStore,
   createStoreCreator
-} from './store'
+} from './store/index.js'
