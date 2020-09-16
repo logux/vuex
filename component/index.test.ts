@@ -1,29 +1,40 @@
-let {
+import {
   ref,
   toRefs,
+  reactive,
   nextTick,
-  computed
-} = require('vue')
-let { delay } = require('nanodelay')
-let { mount } = require('@vue/test-utils')
-let { TestTime } = require('@logux/core')
+  computed,
+  defineComponent,
+  ComponentPublicInstance
+} from 'vue'
+import { mount, VueWrapper } from '@vue/test-utils'
+import { TestLog, TestTime } from '@logux/core'
+import { ClientMeta } from '@logux/client'
+import { delay } from 'nanodelay'
 
-let {
+import {
   Subscribe,
   CrossTabClient,
   createStoreCreator
-} = require('..')
+} from '../index.js'
 
-function createComponent (component, options) {
+interface ExtendedComponent<Props> extends VueWrapper<ComponentPublicInstance<Props>> {
+  client?: any
+}
+
+function createComponent <Props> (component: any, options?: any): ExtendedComponent<Props> {
   let client = new CrossTabClient({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
     userId: '10',
     time: new TestTime()
   })
-  let createStore = createStoreCreator(client)
-  let store = createStore()
-  let wrapper = mount(component, {
+  let createStore = createStoreCreator<
+    CrossTabClient<{}, TestLog<ClientMeta>>,
+    TestLog<ClientMeta>
+  >(client)
+  let store = createStore({})
+  let wrapper: ExtendedComponent<Props> = mount(component, {
     ...options,
     global: {
       plugins: [store],
@@ -38,9 +49,12 @@ function createComponent (component, options) {
   return wrapper
 }
 
-let UserPhoto = {
+let UserPhoto = defineComponent({
   name: 'UserPhoto',
-  props: ['id', 'isSubscribing'],
+  props: {
+    id: { type: String, required: true },
+    isSubscribing: { type: Boolean, required: true }
+  },
   setup (props) {
     let {
       id,
@@ -55,10 +69,12 @@ let UserPhoto = {
   template: `
     <img :issubscribing="isSubscribing" :src="src" />
   `
-}
+})
 
-let SubscribeUserPhoto = {
-  props: ['id'],
+let SubscribeUserPhoto = defineComponent({
+  props: {
+    id: { type: String, required: true }
+  },
   setup (props) {
     let { id } = toRefs(props)
     let channels = computed(() => {
@@ -79,7 +95,7 @@ let SubscribeUserPhoto = {
       ></user-photo>
     </subscribe>
   `
-}
+})
 
 it('throw empty scoped slot', () => {
   jest.spyOn(console, 'warn').mockImplementation()
@@ -103,8 +119,10 @@ it('returns wrapped component', async () => {
 })
 
 it('subscribes', async () => {
-  let SubscribeUser = {
-    props: ['id'],
+  let SubscribeUser = defineComponent({
+    props: {
+      id: { type: String, required: true }
+    },
     setup (props) {
       let { id } = toRefs(props)
       let channels = computed(() => {
@@ -118,7 +136,7 @@ it('subscribes', async () => {
     template: `
       <subscribe :channels="channels"><div></div></subscribe>
     `
-  }
+  })
   let component = createComponent({
     components: { SubscribeUser },
     template: `
@@ -156,14 +174,15 @@ it('subscribes by channel name', async () => {
 it('unsubscribes', async () => {
   let UserList = {
     setup () {
-      let users = ref({ a: '1', b: '1', c: '2' })
+      let state = reactive({ users: {} })
+      state.users = { a: '1', b: '1', c: '2' }
 
-      function change (e) {
-        users.value = e.users
+      function change (e: Event & { users: string }) {
+        state.users = e.users
       }
 
       return {
-        users,
+        ...toRefs(state),
         change
       }
     },
@@ -207,7 +226,7 @@ it('changes subscription', async () => {
     setup () {
       let id = ref('1')
 
-      function change ({ id: newId }) {
+      function change ({ id: newId }: { id: string }) {
         id.value = newId
       }
 
@@ -241,7 +260,7 @@ it('does not resubscribe on non-relevant props changes', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e) {
+      function change (e: Event & { id: string }) {
         id.value = e.id
       }
 
@@ -268,8 +287,10 @@ it('does not resubscribe on non-relevant props changes', async () => {
 })
 
 it('supports multiple channels', async () => {
-  let SubscribeUser = {
-    props: ['id'],
+  let SubscribeUser = defineComponent({
+    props: {
+      id: { type: String, required: true }
+    },
     setup (props) {
       let { id } = toRefs(props)
       let channels = computed(() => {
@@ -283,7 +304,7 @@ it('supports multiple channels', async () => {
     template: `
       <subscribe :channels="channels"><div></div></subscribe>
     `
-  }
+  })
   let component = createComponent({
     components: { SubscribeUser },
     template: `
@@ -305,7 +326,7 @@ it('reports about subscription end', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e) {
+      function change (e: Event & { id: string }) {
         id.value = e.id
       }
 
