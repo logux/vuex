@@ -21,11 +21,11 @@ import {
   createStoreCreator
 } from '../index.js'
 
-interface ExtendedComponent<Props> extends VueWrapper<ComponentPublicInstance<Props>> {
+interface ExtendedComponent extends VueWrapper<ComponentPublicInstance> {
   client?: any
 }
 
-function createComponent <Props> (component: any, options?: any): ExtendedComponent<Props> {
+function createComponent (component: any, options?: any): ExtendedComponent {
   let client = new CrossTabClient({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
@@ -37,7 +37,7 @@ function createComponent <Props> (component: any, options?: any): ExtendedCompon
     TestLog<ClientMeta>
   >(client)
   let store = createStore({})
-  let wrapper: ExtendedComponent<Props> = mount(component, {
+  let wrapper: ExtendedComponent = mount(component, {
     ...options,
     global: {
       plugins: [store],
@@ -330,7 +330,8 @@ it('reports about subscription end with non-reactive channels', async () => {
       })
     }
   })
-  let component = createComponent(defineComponent({
+
+  let List = defineComponent({
     props: {
       ids: { type: Array, required: true }
     },
@@ -338,7 +339,9 @@ it('reports about subscription end with non-reactive channels', async () => {
       let { ids } = toRefs(props)
       return () => h(Fragment, ids.value.map(id => h(User, { id })))
     }
-  }), {
+  })
+
+  let component = createComponent(List, {
     props: {
       ids: ['1', '2', '3']
     }
@@ -359,7 +362,7 @@ it('reports about subscription end with non-reactive channels', async () => {
 })
 
 it('don’t resubscribe on the same channel', async () => {
-  let component = createComponent(defineComponent({
+  let List = defineComponent({
     props: {
       ids: { type: Array, required: true }
     },
@@ -367,7 +370,9 @@ it('don’t resubscribe on the same channel', async () => {
       useSubscription(() => props.ids.map(id => `users/${id}`))
       return () => h('div')
     }
-  }), {
+  })
+
+  let component = createComponent(List, {
     props: {
       ids: [0, 1, 2]
     }

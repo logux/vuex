@@ -18,11 +18,11 @@ import {
   createStoreCreator
 } from '../index.js'
 
-interface ExtendedComponent<Props> extends VueWrapper<ComponentPublicInstance<Props>> {
+interface ExtendedComponent extends VueWrapper<ComponentPublicInstance> {
   client?: any
 }
 
-function createComponent <Props> (component: any, options?: any): ExtendedComponent<Props> {
+function createComponent (component: any, options?: any): ExtendedComponent {
   let client = new CrossTabClient({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
@@ -34,7 +34,7 @@ function createComponent <Props> (component: any, options?: any): ExtendedCompon
     TestLog<ClientMeta>
   >(client)
   let store = createStore({})
-  let wrapper: ExtendedComponent<Props> = mount(component, {
+  let wrapper: ExtendedComponent = mount(component, {
     ...options,
     global: {
       plugins: [store],
