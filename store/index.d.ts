@@ -1,3 +1,4 @@
+import { InjectionKey } from 'vue'
 import { Unsubscribe } from 'nanoevents'
 import { Action, Log } from '@logux/core'
 import {
@@ -253,3 +254,25 @@ export function createStoreCreator<
   client: Client | CrossTabClient,
   options?: LoguxVuexOptions
 ): createStore<C, L>
+
+/**
+ * Composable function that injects store into the component.
+ *
+ * ```js
+ * import { useStore } from '@logux/vuex'
+ *
+ * export default {
+ *   setup () {
+ *     let store = useStore()
+ *     store.commit.sync('user/rename')
+ *   }
+ * }
+ * ```
+ *
+ * @returns Store instance.
+ */
+export function useStore<
+  S = any,
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> (injectKey?: InjectionKey<LoguxVuexStore<S, C, L>> | string): LoguxVuexStore<S, C, L>
