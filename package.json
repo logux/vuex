@@ -70,7 +70,8 @@
   },
   "lint-staged": {
     "*.md": "yaspeller",
-    "*.js": "eslint"
+    "*.js": "eslint",
+    "*.ts": "eslint"
   },
   "jest": {
     "preset": "ts-jest",
