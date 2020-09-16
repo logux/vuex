@@ -9,10 +9,9 @@ import {
   defineComponent,
   ComponentPublicInstance
 } from 'vue'
-import { VueWrapper } from '@vue/test-utils/dist/vueWrapper'
+import { mount, VueWrapper } from '@vue/test-utils'
 import { TestLog, TestTime } from '@logux/core'
 import { ClientMeta } from '@logux/client'
-import { mount } from '@vue/test-utils'
 import { delay } from 'nanodelay'
 
 import {
