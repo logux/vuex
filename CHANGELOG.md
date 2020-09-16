@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.12
+ * Rewrite tests with TypeScript
+ * Extend `useStore` typings
+
 ## 0.9.11
  * Update Vue to release candidate 11
  * Update dependencies
