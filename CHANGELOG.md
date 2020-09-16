@@ -1,6 +1,18 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.13
+ * Update Vue to release candidate 12
+ * Update dependencies
+
+## 0.9.12
+ * Rewrite tests with TypeScript
+ * Extend `useStore` typings
+
+## 0.9.11
+ * Update Vue to release candidate 11
+ * Update dependencies
+
 ## 0.9.10
  * Fix broken state after second logux/undo
  * Update Vue to release candidate 10

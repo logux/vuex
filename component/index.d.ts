@@ -3,7 +3,7 @@ import { VNodeProps } from 'vue'
 import {
   Channels,
   Subscribe as SubscribeImpl
-} from '..'
+} from '../index.js'
 
 export interface SubscribeProps {
   channels: Channels

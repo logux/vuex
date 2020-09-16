@@ -1,27 +1,46 @@
-let { TestPair, TestTime } = require('@logux/core')
-let { delay } = require('nanodelay')
+import { Action, TestLog, TestPair, TestTime } from '@logux/core'
+import { ModuleTree, Mutation, MutationTree } from 'vuex'
+import { ClientMeta, ClientOptions } from '@logux/client'
+import { delay } from 'nanodelay'
 
-let {
+import {
+  LoguxVuexOptions,
+  LoguxVuexAction,
+  LoguxVuexActionTree
+} from '../store/index.js'
+import {
   CrossTabClient,
   createStoreCreator
-} = require('..')
+} from '../index.js'
 
-function createClient (opts = {}) {
-  if (!opts.server) opts.server = 'wss://localhost:1337'
-  opts.subprotocol = '1.0.0'
-  opts.userId = '10'
-  opts.time = new TestTime()
+interface State {
+  value: number | string
+  user?: {
+    value: number | string
+  }
+}
 
-  let client = new CrossTabClient(opts)
+function createClient (opts: Partial<ClientOptions> = {}) {
+  let client = new CrossTabClient({
+    server: 'wss://localhost:1337',
+    subprotocol: '1.0.0',
+    userId: '10',
+    time: new TestTime(),
+    ...opts
+  })
   return client
 }
 
-function createStore (mutations, opts = {}, modules = {}) {
+function createStore (
+  mutations: MutationTree<State>,
+  opts: Partial<ClientOptions & Partial<LoguxVuexOptions>> = {},
+  modules: ModuleTree<State> = {}
+) {
   let creatorOptions = {
-    reasonlessHistory: opts.reasonlessHistory || 1000,
+    reasonlessHistory: opts.reasonlessHistory,
     onMissedHistory: opts.onMissedHistory,
-    saveStateEvery: opts.saveStateEvery || 50,
-    cleanEvery: opts.cleanEvery || 25
+    saveStateEvery: opts.saveStateEvery,
+    cleanEvery: opts.cleanEvery
   }
 
   delete opts.reasonlessHistory
@@ -30,21 +49,28 @@ function createStore (mutations, opts = {}, modules = {}) {
   delete opts.cleanEvery
 
   let client = createClient(opts)
-  let _createStore = createStoreCreator(client, creatorOptions)
+  let _createStore = createStoreCreator<
+    CrossTabClient<{}, TestLog<ClientMeta>>,
+    TestLog<ClientMeta>
+  >(client, creatorOptions)
   let store = _createStore({ state: { value: 0 }, mutations, modules })
   return store
 }
 
-function increment (state) {
-  state.value = state.value + 1
+function increment (state: State) {
+  state.value = state.value as number + 1
 }
 
-function historyLine (state, payload) {
+function historyLine (state: State, payload: LoguxVuexAction) {
   if (typeof payload === 'object') {
-    state.value = state.value + payload.value
+    state.value = `${state.value}${payload.value}`
   } else {
-    state.value = state.value + payload
+    state.value = `${state.value}${payload}`
   }
+}
+
+function emit (obj: any, event: string, ...args: any[]) {
+  obj.emitter.emit(event, ...args)
 }
 
 it('creates Vuex store', () => {
@@ -54,9 +80,9 @@ it('creates Vuex store', () => {
 })
 
 it('unify commit arguments', async () => {
-  let store = createStore({ historyLine })
-  store.commit('historyLine', 1)
-  store.commit({ type: 'historyLine', value: 1 })
+  let store = createStore({ increment, historyLine })
+  store.commit('increment', 1)
+  store.commit({ type: 'increment', value: 1 })
   expect(store.state).toEqual({ value: 2 })
 
   store.commit.sync('historyLine', 1, { reasons: ['test1'] })
@@ -101,9 +127,9 @@ it('commit mutation with prefixed name', async () => {
 
 it('commit from action context', () => {
   let client = createClient()
-  let _createStore = createStoreCreator(client)
+  let _createStore = createStoreCreator<CrossTabClient<{}, TestLog<ClientMeta>>, TestLog<ClientMeta>>(client)
   let mutations = { increment }
-  let actions = {
+  let actions: LoguxVuexActionTree<State, State> = {
     INC ({ commit }) {
       commit('increment')
       commit.local('increment')
@@ -154,6 +180,7 @@ it('vuex: detecting action Promise errors', () => {
     }
   })
   let spy = jest.fn()
+  // @ts-ignore
   store._devtoolHook = {
     emit: spy
   }
@@ -168,13 +195,8 @@ it('vuex: detecting action Promise errors', () => {
 })
 
 it('commit root mutation in namespaced module', () => {
-  let client = createClient({
-    server: 'wss://localhost:1337',
-    subprotocol: '1.0.0',
-    userId: '10',
-    time: new TestTime()
-  })
-  let _createStore = createStoreCreator(client)
+  let client = createClient()
+  let _createStore = createStoreCreator<CrossTabClient<{}, TestLog<ClientMeta>>, TestLog<ClientMeta>>(client)
   let store = _createStore({
     state: { value: 0 },
     mutations: { increment },
@@ -224,7 +246,7 @@ it('has shortcut for add', async () => {
 
 it('listen for action from other tabs', () => {
   let store = createStore({ increment })
-  store.client.emitter.emit('add', { type: 'increment' }, { id: '1 t 0' })
+  emit(store.client, 'add', { type: 'increment' }, { id: '1 t 0' })
   expect(store.state).toEqual({ value: 1 })
 })
 
@@ -236,7 +258,7 @@ it('saves previous states', async () => {
     }
   })
 
-  let promise = Promise.resolve()
+  let promise: Promise<void | ClientMeta> = Promise.resolve()
   for (let i = 0; i < 60; i++) {
     if (i % 2 === 0) {
       promise = promise.then(() => {
@@ -392,8 +414,8 @@ it('ignores cleaned history from non-legacy actions', async () => {
 })
 
 it('does not replays actions on logux/ actions', async () => {
-  let commited = []
-  let saveCommited = (state, action) => commited.push(action.type)
+  let commited: string[] = []
+  let saveCommited: Mutation<State> = (state, action) => commited.push(action.type)
   let store = createStore({
     'A': saveCommited,
     'B': saveCommited,
@@ -530,7 +552,7 @@ it('cleans action added without reason', async () => {
   store.commit.local({ type: 'historyLine', value: 0 }, { reasons: ['test'] })
   expect(store.log.entries()[0][1].reasons).toEqual(['test'])
 
-  function add (index) {
+  function add (index: number) {
     return () => {
       store.commit({ type: 'historyLine', value: 4 * index - 3 })
       store.commit.local({ type: 'historyLine', value: 4 * index - 2 })
@@ -586,6 +608,7 @@ it('copies reasons to undo action', async () => {
     { type: 'logux/undo', id: `1 ${nodeId} 0` }, { reasons: [] }
   )
   let result = await store.log.byId(`2 ${nodeId} 0`)
+  if (result[0] === null) throw new Error('Action was not found')
   expect(result[0].type).toEqual('logux/undo')
   expect(result[1].reasons).toEqual(['a', 'b'])
 })
@@ -762,6 +785,7 @@ it('applies old actions from store in modules', async () => {
   )
   store2.commit({ type: 'user/historyLine', value: 'd' })
   store2.commit({ type: 'user/historyLine', value: 'e' })
+  if (typeof store2.state.user === 'undefined') throw new Error('user is undefined')
   expect(store2.state.user.value).toEqual('0abde')
 
   await store2.initialize
@@ -827,6 +851,7 @@ it('applies old actions from store in namespaced modules', async () => {
   )
   store2.commit({ type: 'user/historyLine', value: 'd' })
   store2.commit({ type: 'user/historyLine', value: 'e' })
+  if (typeof store2.state.user === 'undefined') throw new Error('user is undefined')
   expect(store2.state.user.value).toEqual('0abde')
 
   await store2.initialize
@@ -882,7 +907,24 @@ it('applies old actions from store in nested modules', async () => {
 
   let client2 = createClient({ store: store1.log.store })
   let _createStore2 = createStoreCreator(client2)
-  let store2 = _createStore2({
+
+  interface Store2State {
+    value: number | string
+    a?: {
+      value: number | string
+      b: {
+        value: number | string
+        c: {
+          value: number | string
+          d: {
+            value: number | string
+          }
+        }
+      }
+    }
+  }
+
+  let store2 = _createStore2<Store2State>({
     state: { value: 0 },
     mutations: { historyLine },
     modules: {
@@ -915,6 +957,7 @@ it('applies old actions from store in nested modules', async () => {
   })
 
   store2.commit('historyLine', 'a')
+  if (typeof store2.state.a === 'undefined') throw new Error('a is undefined')
   expect(store2.state.value).toBe('0a')
   expect(store2.state.a.value).toBe(0)
   expect(store2.state.a.b.value).toBe(0)
@@ -942,14 +985,14 @@ it('applies old actions from store in nested modules', async () => {
 
 it('waits for replaying', async () => {
   let store = createStore({ historyLine })
-  let run
+  let run: undefined | (() => void)
   let waiting = new Promise(resolve => {
     run = resolve
   })
 
   let first = true
   let originEach = store.log.each
-  store.log.each = async function (...args) {
+  store.log.each = async function (...args: any) {
     let result = originEach.apply(this, args)
     if (first) {
       first = false
@@ -975,6 +1018,7 @@ it('waits for replaying', async () => {
   delay(1)
   expect(store.state.value).toEqual('0b')
   store.log.removeReason('o')
+  if (typeof run === 'undefined') throw new Error('run was not set')
   run()
   await delay(10)
   expect(store.state.value).toEqual('0abd')
@@ -987,7 +1031,7 @@ it('emits change event', async () => {
     meta.reasons.push('test')
   })
 
-  let calls = []
+  let calls: [State, State, Action][] = []
   store.on('change', (state, prevState, action, meta) => {
     expect(typeof meta.id).toEqual('string')
     calls.push([state, prevState, action])
@@ -1026,7 +1070,7 @@ it('warns about undoes cleaned action', async () => {
 })
 
 it('does not put reason on request', async () => {
-  let store = createStore(increment)
+  let store = createStore({})
 
   await store.commit.crossTab({ type: 'A' }, { noAutoReason: true })
   await store.commit.crossTab({ type: 'B' })

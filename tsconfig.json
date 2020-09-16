@@ -1,18 +1,11 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "strictFunctionTypes": false,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "stripInternal": true,
-    "allowJs": true,
+    "module": "commonjs",
     "target": "esnext",
+    "allowJs": true,
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true,
-    "module": "commonjs"
+    "skipLibCheck": true
   },
   "exclude": [
     "**/errors.ts"

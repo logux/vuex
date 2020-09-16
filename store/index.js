@@ -1,6 +1,6 @@
-let { createNanoEvents } = require('nanoevents')
-let { isFirstOlder } = require('@logux/core/is-first-older')
 let { createStore: createVuexStore } = require('vuex')
+let { createNanoEvents } = require('nanoevents')
+let { isFirstOlder } = require('@logux/core')
 
 let {
   deepCopy,

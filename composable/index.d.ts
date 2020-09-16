@@ -4,7 +4,7 @@ import {
   ComputedRef
 } from '@vue/reactivity'
 
-import { LoguxVuexStore } from '..'
+import { LoguxVuexStore } from '../index.js'
 
 export type Channel =
   | string

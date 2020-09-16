@@ -1,3 +1,4 @@
+import { InjectionKey } from 'vue'
 import { Unsubscribe } from 'nanoevents'
 import { Action, Log } from '@logux/core'
 import {
@@ -8,11 +9,12 @@ import {
 } from '@logux/client'
 import {
   CommitOptions,
-  Payload as VuexPayload,
-  Commit as VuexCommit,
   Store as VuexStore,
+  Commit as VuexCommit,
+  Payload as VuexPayload,
+  Dispatch as VuexDispatch,
   StoreOptions as VuexStoreOptions,
-  Dispatch as VuexDispatch
+  ActionContext as VuexActionContext
 } from 'vuex'
 
 export type LoguxVuexAction = Action & VuexPayload
@@ -102,8 +104,40 @@ interface StateListener<S> {
   <A extends LoguxVuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
 }
 
-export class LoguxVuexStore<S = any> extends VuexStore<S> {
-  constructor (options: VuexStoreOptions<S>)
+export interface LoguxVuexActionContext<S, R> extends VuexActionContext<S, R> {
+  commit: LoguxVuexCommit
+}
+
+export type LoguxVuexActionHandler<S, R> = (
+  this: LoguxVuexStore<R>,
+  injectee: LoguxVuexActionContext<S, R>,
+  payload?: any
+) => any
+
+export interface LoguxVuexActionObject<S, R> {
+  root?: boolean
+  handler: LoguxVuexActionHandler<S, R>
+}
+
+export type LoguxVuexNativeAction<S, R> =
+  | LoguxVuexActionHandler<S, R>
+  | LoguxVuexActionObject<S, R>
+
+export interface LoguxVuexActionTree<S, R> {
+  [key: string]: LoguxVuexNativeAction<S, R>
+}
+
+export interface LoguxVuexStoreOptions<S>
+  extends Omit<VuexStoreOptions<S>, 'actions'> {
+  actions?: LoguxVuexActionTree<S, S>
+}
+
+export class LoguxVuexStore<
+  S = any,
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> extends VuexStore<S> {
+  constructor (options: LoguxVuexStoreOptions<S>)
 
   dispatch: VuexDispatch
 
@@ -127,17 +161,22 @@ export class LoguxVuexStore<S = any> extends VuexStore<S> {
    * @param listener The listener function.
    * @returns Unbind listener from event.
    */
-  on(event: 'change', listener: StateListener<S>): Unsubscribe
+  on (event: 'change', listener: StateListener<S>): Unsubscribe
 
   /**
    * Logux synchronization client.
    */
-  client: CrossTabClient
+  client: C
 
   /**
    * The Logux log.
    */
-  log: Log<ClientMeta>
+  log: L
+
+  /**
+   * Promise until loading the state from log store.
+   */
+  initialize: Promise<void>
 }
 
 export type LoguxVuexOptions = {
@@ -170,8 +209,11 @@ export type LoguxVuexOptions = {
  * @param options Vuex store options.
  * @returns Vuex store, compatible with Logux Client.
  */
-export interface createStore {
-  <S>(options: VuexStoreOptions<S>): LoguxVuexStore<S>
+export interface createStore<
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> {
+  <S>(options: LoguxVuexStoreOptions<S>): LoguxVuexStore<S, C, L>
 }
 
 /**
@@ -205,7 +247,32 @@ export interface createStore {
  * @param options Logux Vuex options.
  * @returns Vuex’s `createStore` function, compatible with Logux Client.
  */
-export function createStoreCreator(
+export function createStoreCreator<
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> (
   client: Client | CrossTabClient,
   options?: LoguxVuexOptions
-): createStore
+): createStore<C, L>
+
+/**
+ * Composable function that injects store into the component.
+ *
+ * ```js
+ * import { useStore } from '@logux/vuex'
+ *
+ * export default {
+ *   setup () {
+ *     let store = useStore()
+ *     store.commit.sync('user/rename')
+ *   }
+ * }
+ * ```
+ *
+ * @returns Store instance.
+ */
+export function useStore<
+  S = any,
+  C extends Client = Client<{}, Log<ClientMeta>>,
+  L extends Log = Log<ClientMeta>
+> (injectKey?: InjectionKey<LoguxVuexStore<S, C, L>> | string): LoguxVuexStore<S, C, L>
