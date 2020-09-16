@@ -1,32 +1,43 @@
-let {
+import {
   h,
   ref,
   toRefs,
+  reactive,
   computed,
   nextTick,
-  Fragment
-} = require('vue')
-let { delay } = require('nanodelay')
-let { mount } = require('@vue/test-utils')
-let { TestTime } = require('@logux/core')
+  Fragment,
+  defineComponent,
+  ComponentPublicInstance
+} from 'vue'
+import { mount, VueWrapper } from '@vue/test-utils'
+import { TestLog, TestTime } from '@logux/core'
+import { ClientMeta } from '@logux/client'
+import { delay } from 'nanodelay'
 
-let {
+import {
   useStore,
   CrossTabClient,
   useSubscription,
   createStoreCreator
-} = require('..')
+} from '../index.js'
 
-function createComponent (component, options) {
+interface ExtendedComponent extends VueWrapper<ComponentPublicInstance> {
+  client?: any
+}
+
+function createComponent (component: any, options?: any): ExtendedComponent {
   let client = new CrossTabClient({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
     userId: '10',
     time: new TestTime()
   })
-  let createStore = createStoreCreator(client)
-  let store = createStore()
-  let wrapper = mount(component, {
+  let createStore = createStoreCreator<
+    CrossTabClient<{}, TestLog<ClientMeta>>,
+    TestLog<ClientMeta>
+  >(client)
+  let store = createStore({})
+  let wrapper: ExtendedComponent = mount(component, {
     ...options,
     global: {
       plugins: [store],
@@ -39,8 +50,10 @@ function createComponent (component, options) {
   return wrapper
 }
 
-let UserPhoto = {
-  props: ['id'],
+let UserPhoto = defineComponent({
+  props: {
+    id: { type: String, required: true }
+  },
   setup (props) {
     let { id } = toRefs(props)
     let src = computed(() => `${id.value}.jpg`)
@@ -59,7 +72,7 @@ let UserPhoto = {
   template: `
     <img :issubscribing="isSubscribing" :src="src" />
   `
-}
+})
 
 it('subscribes', async () => {
   let component = createComponent({
@@ -79,13 +92,13 @@ it('subscribes', async () => {
 })
 
 it('accepts channel names', async () => {
-  let User = {
+  let User = defineComponent({
     props: ['id'],
     setup ({ id }) {
       useSubscription([`users/${id}`, `users/${id}/comments`])
       return () => h('div')
     }
-  }
+  })
   let component = createComponent({
     render () {
       return h('div', [h(User, { id: '1' })])
@@ -99,16 +112,19 @@ it('accepts channel names', async () => {
 })
 
 it('unsubscribes', async () => {
-  let UserList = {
+  let UserList = defineComponent({
     setup () {
-      let users = ref({ a: '1', b: '1', c: '2' })
+      let state = reactive({
+        users: {}
+      })
+      state.users = { a: '1', b: '1', c: '2' }
 
-      function change (e) {
-        users.value = e.users
+      function change (e: Event & { users: string }) {
+        state.users = e.users
       }
 
       return {
-        users,
+        ...toRefs(state),
         change
       }
     },
@@ -121,7 +137,7 @@ it('unsubscribes', async () => {
         ></user-photo>
       </div>
     `
-  }
+  })
 
   let component = createComponent(UserList)
   let log = component.client.log
@@ -152,7 +168,7 @@ it('changes subscription', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e) {
+      function change (e: Event & { id: string }) {
         id.value = e.id
       }
 
@@ -189,7 +205,7 @@ it('does not resubscribe on non-relevant props changes', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e) {
+      function change (e: Event & { id: string }) {
         id.value = e.id
       }
 
@@ -220,7 +236,7 @@ it('reports about subscription end', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e) {
+      function change (e: Event & { id: string }) {
         id.value = e.id
       }
 
@@ -262,27 +278,28 @@ it('reports about subscription end', async () => {
 it('works on channels size changes', async () => {
   jest.spyOn(console, 'error')
 
-  let UserList = {
+  let UserList = defineComponent({
     props: ['ids'],
     setup (props) {
       let { ids } = toRefs(props)
 
       let isSubscribing = useSubscription(() => {
-        return ids.value.map(id => `users/${id}`)
+        if (typeof ids === 'undefined') return []
+        return ids.value.map((id: string) => `users/${id}`)
       })
 
       return () => h('div', {
         isSubscribing: isSubscribing.value
       })
     }
-  }
+  })
 
   let component = createComponent({
     components: { UserList },
     setup () {
       let ids = ref([1])
 
-      function change (e) {
+      function change (e: Event & { ids: number[] }) {
         ids.value = e.ids
       }
 
@@ -304,7 +321,7 @@ it('works on channels size changes', async () => {
 })
 
 it('reports about subscription end with non-reactive channels', async () => {
-  let User = {
+  let User = defineComponent({
     props: ['id'],
     setup ({ id }) {
       let isSubscribing = useSubscription([`users/${id}`])
@@ -312,14 +329,19 @@ it('reports about subscription end with non-reactive channels', async () => {
         isSubscribing: isSubscribing.value
       })
     }
-  }
-  let component = createComponent({
-    props: ['ids'],
+  })
+
+  let List = defineComponent({
+    props: {
+      ids: { type: Array, required: true }
+    },
     setup (props) {
       let { ids } = toRefs(props)
       return () => h(Fragment, ids.value.map(id => h(User, { id })))
     }
-  }, {
+  })
+
+  let component = createComponent(List, {
     props: {
       ids: ['1', '2', '3']
     }
@@ -340,13 +362,17 @@ it('reports about subscription end with non-reactive channels', async () => {
 })
 
 it('don’t resubscribe on the same channel', async () => {
-  let component = createComponent({
-    props: ['ids'],
+  let List = defineComponent({
+    props: {
+      ids: { type: Array, required: true }
+    },
     setup (props) {
       useSubscription(() => props.ids.map(id => `users/${id}`))
       return () => h('div')
     }
-  }, {
+  })
+
+  let component = createComponent(List, {
     props: {
       ids: [0, 1, 2]
     }

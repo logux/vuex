@@ -21,7 +21,7 @@ defineComponent({
     useSubscription(() => 'users')
 
     let store = useStore()
-    // THROWS Type 'Store<any>' is missing the following properties from type 'LoguxVuexStore<any>': on, client, log
+    // THROWS Type 'Store<any>' is missing the following properties from type 'LoguxVuexStore<any, Client<{}, Log<ClientMeta, LogStore>>, Log<ClientMeta, LogStore>>': on, client, log, initialize
     useSubscription(() => ['users'], { store })
 
     // THROWS Argument of type '() => number[]' is not assignable to parameter of type 'Channels'.

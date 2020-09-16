@@ -4,7 +4,7 @@ import {
   defineComponent
 } from 'vue'
 
-import { useSubscription, useStore } from '..'
+import { useSubscription, useStore } from '../index.js'
 
 defineComponent({
   setup () {
