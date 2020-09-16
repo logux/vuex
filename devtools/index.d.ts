@@ -3,39 +3,39 @@ import { App } from '@vue/devtools-api'
 import { Client, CrossTabClient } from '@logux/vuex'
 
 export interface DevtoolsOptions {
-	layers?: {
-		/**
-		 * Disable connection state layer.
-		 */
-		state?: boolean
+  layers?: {
+    /**
+     * Disable connection state layer.
+     */
+    state?: boolean
 
-		/**
-		 * Disable tab role layer.
-		 */
-		role?: boolean
+    /**
+     * Disable tab role layer.
+     */
+    role?: boolean
 
-		/**
-		 * Disable action layer.
-		 */
-		action?: boolean
+    /**
+     * Disable action layer.
+     */
+    action?: boolean
 
-		/**
-		 * Disable subscription layer.
-		 */
-		subscription?: boolean
+    /**
+     * Disable subscription layer.
+     */
+    subscription?: boolean
 
-		/**
-		 * Disable user layer.
-		 */
-		user?: boolean
+    /**
+     * Disable user layer.
+     */
+    user?: boolean
 
-		/**
-		 * Disable action cleaned layer.
-		 */
-		clean?: boolean
-	}
+    /**
+     * Disable action cleaned layer.
+     */
+    clean?: boolean
+  }
 
-	/**
+  /**
    * Disable action messages with specific types.
    */
   ignoreActions?: string[]
@@ -65,7 +65,7 @@ export interface DevtoolsOptions {
  * @param options Disable specific layers or action types.
  */
 export function devtools (
-	app: App,
-	client: Client | CrossTabClient,
-	options?: DevtoolsOptions
+  app: App,
+  client: Client | CrossTabClient,
+  options?: DevtoolsOptions
 ): void
