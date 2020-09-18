@@ -1,6 +1,14 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.15
+ * Update Vue to 3.0.0 One Piece
+ * Update dependencies
+
+## 0.9.14
+ * Update Vue to release candidate 13
+ * Update dependencies
+
 ## 0.9.13
  * Update Vue to release candidate 12
  * Update dependencies
