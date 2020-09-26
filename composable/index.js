@@ -27,6 +27,8 @@ function useSubscription (channels, options = {}) {
       let ignoreResponse = false
       let { subscriptions: oldSubscriptions } = state
 
+      isSubscribing.value = true
+
       subscribe(store, state.subscriptions).then(() => {
         if (!ignoreResponse) {
           isSubscribing.value = false

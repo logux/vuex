@@ -273,6 +273,14 @@ it('reports about subscription end', async () => {
   log.add({ type: 'logux/processed', id: `3 ${nodeId} 0` })
   await delay(10)
   expect(isSubscribing()).toBe('false')
+
+  component.trigger('click', { id: '3' })
+  await nextTick()
+  expect(isSubscribing()).toBe('true')
+
+  log.add({ type: 'logux/processed', id: `7 ${nodeId} 0` })
+  await delay(10)
+  expect(isSubscribing()).toBe('false')
 })
 
 it('works on channels size changes', async () => {
