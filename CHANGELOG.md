@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.16
+ * Fix eternal `false` loading indication on `channels` changes
+ * Update dependencies
+
 ## 0.9.15
  * Update Vue to 3.0.0 One Piece
  * Update dependencies
