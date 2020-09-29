@@ -29,6 +29,11 @@ function useSubscription (channels, options = {}) {
       let ignoreResponse = false
       let { subscriptions: oldSubscriptions } = state
 
+      function resetTimeout () {
+        clearTimeout(timeout)
+        timeout = null
+      }
+
       if (debounce > 0) {
         timeout = setTimeout(() => {
           isSubscribing.value = true
@@ -38,7 +43,7 @@ function useSubscription (channels, options = {}) {
       }
 
       subscribe(store, state.subscriptions).then(() => {
-        timeout && clearTimeout(timeout)
+        if (timeout) resetTimeout(timeout)
         if (!ignoreResponse) {
           isSubscribing.value = false
         }
@@ -47,7 +52,7 @@ function useSubscription (channels, options = {}) {
       onInvalidate(() => {
         ignoreResponse = true
         unsubscribe(store, oldSubscriptions)
-        timeout && clearTimeout(timeout)
+        if (timeout) resetTimeout(timeout)
       })
     }, { immediate: true })
   } else {
