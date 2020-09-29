@@ -52,17 +52,18 @@ function createComponent (component: any, options?: any): ExtendedComponent {
 
 let UserPhoto = defineComponent({
   props: {
-    id: { type: String, required: true }
+    id: { type: String, required: true },
+    debounce: { type: Number, default: 0 }
   },
   setup (props) {
-    let { id } = toRefs(props)
+    let { id, debounce } = toRefs(props)
     let src = computed(() => `${id.value}.jpg`)
 
     let isSubscribing = useSubscription(() => {
       return [
         { channel: `users/${id.value}`, fields: ['photo'] }
       ]
-    })
+    }, { debounce: debounce.value })
 
     return {
       src,
@@ -247,7 +248,7 @@ it('reports about subscription end', async () => {
     },
     template: `
       <div @click="change">
-        <user-photo :id="id"></user-photo>
+        <user-photo :id="id" :debounce="250"></user-photo>
       </div>
     `
   })
@@ -276,9 +277,28 @@ it('reports about subscription end', async () => {
 
   component.trigger('click', { id: '3' })
   await nextTick()
-  expect(isSubscribing()).toBe('true')
+  expect(isSubscribing()).toBe('false')
 
   log.add({ type: 'logux/processed', id: `7 ${nodeId} 0` })
+  await delay(10)
+  expect(isSubscribing()).toBe('false')
+
+  component.trigger('click', { id: '4' })
+  await nextTick()
+  expect(isSubscribing()).toBe('false')
+
+  component.trigger('click', { id: '5' })
+  await nextTick()
+  expect(isSubscribing()).toBe('false')
+
+  await delay(250)
+  expect(isSubscribing()).toBe('true')
+
+  log.add({ type: 'logux/processed', id: `10 ${nodeId} 0` })
+  await delay(10)
+  expect(isSubscribing()).toBe('true')
+
+  log.add({ type: 'logux/processed', id: `12 ${nodeId} 0` })
   await delay(10)
   expect(isSubscribing()).toBe('false')
 })
