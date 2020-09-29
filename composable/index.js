@@ -12,6 +12,7 @@ let { isFunction } = require('../utils')
 
 function useSubscription (channels, options = {}) {
   let isSubscribing = ref(true)
+  let debounce = options.debounce || 0
   let store = options.store || useStore()
 
   let channelsIsFunction = isFunction(channels)
@@ -24,12 +25,25 @@ function useSubscription (channels, options = {}) {
     })
 
     watch(() => state.id, (newId, oldId, onInvalidate) => {
+      let timeout
       let ignoreResponse = false
       let { subscriptions: oldSubscriptions } = state
 
-      isSubscribing.value = true
+      function resetTimeout () {
+        clearTimeout(timeout)
+        timeout = null
+      }
+
+      if (debounce > 0) {
+        timeout = setTimeout(() => {
+          isSubscribing.value = true
+        }, debounce)
+      } else {
+        isSubscribing.value = true
+      }
 
       subscribe(store, state.subscriptions).then(() => {
+        if (timeout) resetTimeout(timeout)
         if (!ignoreResponse) {
           isSubscribing.value = false
         }
@@ -38,6 +52,7 @@ function useSubscription (channels, options = {}) {
       onInvalidate(() => {
         ignoreResponse = true
         unsubscribe(store, oldSubscriptions)
+        if (timeout) resetTimeout(timeout)
       })
     }, { immediate: true })
   } else {
