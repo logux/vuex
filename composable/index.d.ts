@@ -22,7 +22,11 @@ export type useSubscriptionOptions = {
   /**
    * Logux Vuex store.
    */
-  store: LoguxVuexStore
+  store?: LoguxVuexStore
+  /**
+   * Delay in milliseconds to avoid returning `true` when switching between `channels`.
+   */
+  debounce?: number
 }
 
 /**

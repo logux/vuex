@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.17
+ * Add `debounce` for `useSubscription` to avoid flashing between channels
+ * Update typings
+
 ## 0.9.16
  * Fix eternal `false` loading indication on `channels` changes
  * Update dependencies

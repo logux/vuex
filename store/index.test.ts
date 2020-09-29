@@ -21,7 +21,7 @@ interface State {
 }
 
 function createClient (opts: Partial<ClientOptions> = {}) {
-  let client = new CrossTabClient({
+  let client = new CrossTabClient<{}, TestLog<ClientMeta>>({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
     userId: '10',
@@ -49,10 +49,7 @@ function createStore (
   delete opts.cleanEvery
 
   let client = createClient(opts)
-  let _createStore = createStoreCreator<
-    CrossTabClient<{}, TestLog<ClientMeta>>,
-    TestLog<ClientMeta>
-  >(client, creatorOptions)
+  let _createStore = createStoreCreator<TestLog<ClientMeta>>(client, creatorOptions)
   let store = _createStore({ state: { value: 0 }, mutations, modules })
   return store
 }
@@ -127,7 +124,7 @@ it('commit mutation with prefixed name', async () => {
 
 it('commit from action context', () => {
   let client = createClient()
-  let _createStore = createStoreCreator<CrossTabClient<{}, TestLog<ClientMeta>>, TestLog<ClientMeta>>(client)
+  let _createStore = createStoreCreator<TestLog<ClientMeta>>(client)
   let mutations = { increment }
   let actions: LoguxVuexActionTree<State, State> = {
     INC ({ commit }) {
@@ -196,7 +193,7 @@ it('vuex: detecting action Promise errors', () => {
 
 it('commit root mutation in namespaced module', () => {
   let client = createClient()
-  let _createStore = createStoreCreator<CrossTabClient<{}, TestLog<ClientMeta>>, TestLog<ClientMeta>>(client)
+  let _createStore = createStoreCreator<TestLog<ClientMeta>>(client)
   let store = _createStore({
     state: { value: 0 },
     mutations: { increment },
