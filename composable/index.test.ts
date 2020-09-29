@@ -26,16 +26,13 @@ interface ExtendedComponent extends VueWrapper<ComponentPublicInstance> {
 }
 
 function createComponent (component: any, options?: any): ExtendedComponent {
-  let client = new CrossTabClient({
+  let client = new CrossTabClient<{}, TestLog<ClientMeta>>({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
     userId: '10',
     time: new TestTime()
   })
-  let createStore = createStoreCreator<
-    CrossTabClient<{}, TestLog<ClientMeta>>,
-    TestLog<ClientMeta>
-  >(client)
+  let createStore = createStoreCreator(client)
   let store = createStore({})
   let wrapper: ExtendedComponent = mount(component, {
     ...options,
