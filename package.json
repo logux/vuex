@@ -97,13 +97,13 @@
   "size-limit": [
     {
       "name": "Store",
-      "import": "{ CrossTabClient, createStoreCreator, useStore }",
-      "limit": "10 KB"
+      "import": "{ createStoreCreator }",
+      "limit": "3 KB"
     },
     {
       "name": "Store + Helpers",
-      "import": "{ CrossTabClient, createStoreCreator, useStore, useSubscription, Subscribe }",
-      "limit": "11 KB"
+      "import": "{ createStoreCreator, useStore, useSubscription }",
+      "limit": "3 KB"
     }
   ],
   "yaspeller": {

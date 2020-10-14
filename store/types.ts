@@ -1,7 +1,6 @@
-import {
-  CrossTabClient,
-  createStoreCreator
-} from '../index.js'
+import { CrossTabClient } from '@logux/client'
+
+import { createStoreCreator } from '../index.js'
 
 interface RootState {
   value: number

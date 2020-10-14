@@ -1,5 +1,3 @@
-export { Client, CrossTabClient } from '@logux/client'
-
 export { Subscribe } from './component/index.js'
 export { useStore } from './inject/index.js'
 export {
