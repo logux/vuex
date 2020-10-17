@@ -3,31 +3,30 @@ let {
   ref,
   isRef,
   watch,
-  reactive,
   computed,
   onBeforeUnmount
 } = require('vue')
-
-let { isFunction } = require('../utils')
 
 function useSubscription (channels, options = {}) {
   let isSubscribing = ref(true)
   let debounce = options.debounce || 0
   let store = options.store || useStore()
+  let channelsRef
 
-  let channelsIsFunction = isFunction(channels)
+  if (typeof channels === 'function') {
+    channelsRef = computed(channels)
+  } else if (isRef(channels)) {
+    channelsRef = channels
+  }
 
-  if (isRef(channels) || channelsIsFunction) {
-    let state = reactive({
-      ref: channelsIsFunction ? computed(channels) : channels,
-      subscriptions: computed(() => unifyChannelsObject(state.ref)),
-      id: computed(() => subscriptionsId(state.subscriptions))
-    })
+  if (channelsRef) {
+    let subscriptions = computed(() => unifyChannelsObject(channelsRef.value))
+    let id = computed(() => subscriptionsId(subscriptions.value))
 
-    watch(() => state.id, (newId, oldId, onInvalidate) => {
+    watch(() => id.value, (newId, oldId, onInvalidate) => {
       let timeout
       let ignoreResponse = false
-      let { subscriptions: oldSubscriptions } = state
+      let oldSubscriptions = subscriptions.value
 
       function resetTimeout () {
         clearTimeout(timeout)
@@ -42,7 +41,7 @@ function useSubscription (channels, options = {}) {
         isSubscribing.value = true
       }
 
-      subscribe(store, state.subscriptions).then(() => {
+      subscribe(store, subscriptions.value).then(() => {
         if (timeout) resetTimeout(timeout)
         if (!ignoreResponse) {
           isSubscribing.value = false
