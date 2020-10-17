@@ -1,6 +1,6 @@
+import { CrossTabClient, ClientMeta, ClientOptions } from '@logux/client'
 import { Action, TestLog, TestPair, TestTime } from '@logux/core'
 import { ModuleTree, Mutation, MutationTree } from 'vuex'
-import { ClientMeta, ClientOptions } from '@logux/client'
 import { delay } from 'nanodelay'
 
 import {
@@ -8,10 +8,7 @@ import {
   LoguxVuexAction,
   LoguxVuexActionTree
 } from '../store/index.js'
-import {
-  CrossTabClient,
-  createStoreCreator
-} from '../index.js'
+import { createStoreCreator } from '../index.js'
 
 interface State {
   value: number | string

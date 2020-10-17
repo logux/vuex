@@ -33,14 +33,9 @@ function isPromise (val) {
   return val && typeof val.then === 'function'
 }
 
-function isFunction (val) {
-  return typeof val === 'function'
-}
-
 module.exports = {
   find,
   deepCopy,
   isPromise,
-  isFunction,
   forEachValue
 }
