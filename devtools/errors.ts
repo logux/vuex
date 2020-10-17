@@ -1,6 +1,6 @@
+import { CrossTabClient } from '@logux/client'
 import { createApp } from 'vue'
 
-import { CrossTabClient } from '..'
 import { devtools } from '..'
 
 let client = new CrossTabClient({
