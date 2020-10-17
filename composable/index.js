@@ -8,9 +8,9 @@ let {
 } = require('vue')
 
 function useSubscription (channels, options = {}) {
-  let isSubscribing = ref(true)
-  let debounce = options.debounce || 0
   let store = options.store || useStore()
+  let debounce = options.debounce || 0
+  let isSubscribing = ref(true)
   let channelsRef
 
   if (typeof channels === 'function') {
@@ -24,9 +24,9 @@ function useSubscription (channels, options = {}) {
     let id = computed(() => subscriptionsId(subscriptions.value))
 
     watch(() => id.value, (newId, oldId, onInvalidate) => {
-      let timeout
-      let ignoreResponse = false
       let oldSubscriptions = subscriptions.value
+      let ignoreResponse = false
+      let timeout
 
       function resetTimeout () {
         clearTimeout(timeout)
