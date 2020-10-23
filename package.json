@@ -98,14 +98,20 @@
   ],
   "size-limit": [
     {
-      "name": "Store",
-      "import": "{ createStoreCreator }",
-      "limit": "3 KB"
+      "name": "Client + Store",
+      "import": {
+        "@logux/client": "{ CrossTabClient }",
+        "index.js": "{ createStoreCreator }"
+      },
+      "limit": "9 KB"
     },
     {
-      "name": "Store + Helpers",
-      "import": "{ createStoreCreator, useStore, useSubscription }",
-      "limit": "3 KB"
+      "name": "Client + Store + Helpers",
+      "import": {
+        "@logux/client": "{ CrossTabClient }",
+        "index.js": "{ createStoreCreator, useStore, useSubscription }"
+      },
+      "limit": "10 KB"
     }
   ],
   "yaspeller": {
