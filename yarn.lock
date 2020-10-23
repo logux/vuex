@@ -566,10 +566,10 @@
   dependencies:
     globals "^13.2.0"
 
-"@logux/sharec-config@^0.7.7":
-  version "0.7.7"
-  resolved "https://registry.yarnpkg.com/@logux/sharec-config/-/sharec-config-0.7.7.tgz#69e80e25bf4d35f67e30100e94c55a266a8104de"
-  integrity sha512-6LczjvuFVkLYlIEKmAtGSsCYvTWWdrfw0VcsTI81OoZJY1SVhfoko9RVjsiYwidxkirX67JWoIB9cBJm+ikMAw==
+"@logux/sharec-config@^0.7.9":
+  version "0.7.9"
+  resolved "https://registry.yarnpkg.com/@logux/sharec-config/-/sharec-config-0.7.9.tgz#a7c4fb42d8318b13c061a743fbb369a31338fea8"
+  integrity sha512-JSHPhal4RkfS/Q/l/BBl1dl4wSDDvBMhqBSDpRMw+QgDfEQXcjqxRZEMZOaiXf0TM4HWNN+12iDViy30CwFJpw==
   dependencies:
     sharec "^2.5.1"
 

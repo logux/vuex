@@ -18,6 +18,7 @@
   "homepage": "https://logux.io/",
   "repository": "logux/vuex",
   "sideEffects": false,
+  "types": "./index.d.ts",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -34,7 +35,7 @@
     "@logux/client": "^0.9.2",
     "@logux/core": "^0.6.2",
     "@logux/eslint-config": "^41.0.2",
-    "@logux/sharec-config": "^0.7.7",
+    "@logux/sharec-config": "^0.7.9",
     "@size-limit/dual-publish": "^4.6.2",
     "@size-limit/preset-small-lib": "^4.6.2",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
@@ -143,6 +144,6 @@
   },
   "sharec": {
     "config": "@logux/sharec-config",
-    "version": "0.7.7"
+    "version": "0.7.9"
   }
 }
