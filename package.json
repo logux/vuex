@@ -104,7 +104,7 @@
         "@logux/client": "{ CrossTabClient }",
         "index.js": "{ createStoreCreator }"
       },
-      "limit": "9 KB"
+      "limit": "10 KB"
     },
     {
       "name": "Client + Store + Helpers",
