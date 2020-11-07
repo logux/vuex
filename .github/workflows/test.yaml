@@ -35,12 +35,10 @@ jobs:
   short:
     strategy:
       matrix:
-        node-version:
-          - 14
-          - 12
-     name: Node.js ${{ matrix.node-version }} Quick
-     runs-on: ubuntu-latest
-     steps:
+        node-version: [14, 12]
+    name: Node.js ${{ matrix.node-version }} Quick
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout the repository
         uses: actions/checkout@v2
       - name: Install Node.js ${{ matrix.node-version }}
