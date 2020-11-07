@@ -160,6 +160,18 @@ declare module '@vue/runtime-core' {
 
 Vue Devtools plugin that adds Logux events to the timeline.
 
+### Install
+
+```sh
+npm install --save-dev @vue/devtools-api
+```
+or
+```sh
+yarn add --dev @vue/devtools-api
+```
+
+### Usage
+
 ```js
 import { createApp } from 'vue'
 import { devtools } from '@logux/vuex'
