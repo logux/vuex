@@ -4,9 +4,12 @@ on:
   - push
   - pull_request
 
+env:
+  FORCE_COLOR: 2
+
 jobs:
-  build:
-    name: Test
+  full:
+    name: Node.js 15 Full
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -29,3 +32,22 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Test
         run: yarn test
+  short:
+    strategy:
+      matrix:
+        node-version:
+          - 14
+          - 12
+     name: Node.js ${{ matrix.node-version }} Quick
+     runs-on: ubuntu-latest
+     steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run code tests
+        run: npx jest
