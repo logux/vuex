@@ -220,13 +220,14 @@ export interface createStore<
  * Connects Logux client to Vuex’s `createStore` function.
  *
  * ```js
- * import { CrossTabClient, createStoreCreator } from '@logux/vuex'
+ * import { CrossTabClient } from '@logux/client'
+ * import { createStoreCreator } from '@logux/vuex'
  *
  * const client = new CrossTabClient({
- *   subprotocol: '1.0.0',
  *   server: process.env.NODE_ENV === 'development'
  *     ? 'ws://localhost:31337'
  *     : 'wss://logux.example.com',
+ *   subprotocol: '1.0.0',
  *   userId: 'anonymous',
  *   token: ''
  * })

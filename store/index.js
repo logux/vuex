@@ -27,7 +27,6 @@ function createStoreCreator (client, options = {}) {
 
     let historyCleaned = false
     let stateHistory = {}
-    let processing = {}
 
     let actionCount = 0
     function saveHistory (meta) {
@@ -96,17 +95,7 @@ function createStoreCreator (client, options = {}) {
     store.commit.sync = (type, payload, _meta) => {
       let { action, meta } = unifyCommitArgs(type, payload, _meta)
       if (meta.reasons || meta.keepLast) meta.noAutoReason = true
-
-      meta.sync = true
-
-      if (typeof meta.id === 'undefined') {
-        meta.id = log.generateId()
-      }
-
-      return new Promise((resolve, reject) => {
-        processing[meta.id] = [resolve, reject]
-        log.add(action, meta)
-      })
+      return client.sync(action, meta)
     }
 
     function replaceState (state, actions, pushHistory) {
@@ -250,14 +239,6 @@ function createStoreCreator (client, options = {}) {
         } else {
           await log.changeMeta(meta.id, { reasons: [] })
         }
-        if (processing[action.id]) {
-          let error = new Error(
-            'Server undid Logux action because of ' + action.reason
-          )
-          error.action = action
-          processing[action.id][1](error)
-          delete processing[action.id]
-        }
       } else if (!action.type.startsWith('logux/')) {
         if (isFirstOlder(prevMeta, meta)) {
           prevMeta = meta
@@ -279,12 +260,7 @@ function createStoreCreator (client, options = {}) {
     client.on('add', (action, meta) => {
       if (meta.added > lastAdded) lastAdded = meta.added
 
-      if (action.type === 'logux/processed') {
-        if (processing[action.id]) {
-          processing[action.id][0](meta)
-          delete processing[action.id]
-        }
-      } else if (!meta.noAutoReason) {
+      if (action.type !== 'logux/processed' && !meta.noAutoReason) {
         addCalls += 1
         if (addCalls % cleanEvery === 0 && lastAdded > reasonlessHistory) {
           historyCleaned = true

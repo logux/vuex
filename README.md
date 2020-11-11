@@ -26,11 +26,11 @@ For Vue 2 support, we have [0.8 version from a separate branch](https://github.c
 ## Install
 
 ```sh
-npm install @logux/vuex vuex@next
+npm install @logux/core @logux/client @logux/vuex vuex@next
 ```
 or
 ```sh
-yarn add @logux/vuex vuex@next
+yarn add @logux/core @logux/client @logux/vuex vuex@next
 ```
 
 ## Usage
@@ -40,7 +40,8 @@ See [documentation] for Logux API.
 [documentation]: https://github.com/logux/docs
 
 ```js
-import { CrossTabClient, createStoreCreator } from '@logux/vuex'
+import { CrossTabClient } from '@logux/client'
+import { createStoreCreator } from '@logux/vuex'
 
 const client = new CrossTabClient({
   server: process.env.NODE_ENV === 'development'

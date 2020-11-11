@@ -7,14 +7,13 @@ import {
   defineComponent,
   ComponentPublicInstance
 } from 'vue'
+import { CrossTabClient, ClientMeta } from '@logux/client'
 import { mount, VueWrapper } from '@vue/test-utils'
 import { TestLog, TestTime } from '@logux/core'
-import { ClientMeta } from '@logux/client'
 import { delay } from 'nanodelay'
 
 import {
   Subscribe,
-  CrossTabClient,
   createStoreCreator
 } from '../index.js'
 
