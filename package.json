@@ -104,7 +104,7 @@
         "@logux/client": "{ CrossTabClient }",
         "index.js": "{ createStoreCreator }"
       },
-      "limit": "10 KB"
+      "limit": "11 KB"
     },
     {
       "name": "Client + Store + Helpers",
@@ -112,7 +112,7 @@
         "@logux/client": "{ CrossTabClient }",
         "index.js": "{ createStoreCreator, useStore, useSubscription }"
       },
-      "limit": "10 KB"
+      "limit": "12 KB"
     }
   ],
   "yaspeller": {
