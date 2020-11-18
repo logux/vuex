@@ -20,7 +20,7 @@
   "types": "./index.d.ts",
   "sideEffects": false,
   "engines": {
-    "node": ">=10.0.0"
+    "node": "^12.0.0 || >=14.0.0"
   },
   "peerDependencies": {
     "vue": ">=2.6.12",
