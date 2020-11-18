@@ -9,9 +9,7 @@
     "websocket"
   ],
   "scripts": {
-    "spell": "yaspeller *.md",
-    "clean": "rimraf coverage/",
-    "test": "jest --coverage && eslint . && check-dts && size-limit && yarn spell"
+    "test": "jest --coverage && eslint . && check-dts && size-limit && yaspeller *.md"
   },
   "author": "Eduard Aksamitov <e@edaks.co>",
   "license": "MIT",
