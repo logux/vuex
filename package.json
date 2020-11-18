@@ -32,10 +32,10 @@
   "devDependencies": {
     "@logux/eslint-config": "^40.0.4",
     "@logux/sharec-config": "^0.6.2",
-    "@size-limit/dual-publish": "^4.6.0",
-    "@size-limit/preset-small-lib": "^4.6.0",
-    "@vue/test-utils": "^1.1.0",
-    "check-dts": "^0.3.3",
+    "@size-limit/dual-publish": "^4.7.0",
+    "@size-limit/preset-small-lib": "^4.7.0",
+    "@vue/test-utils": "^1.1.1",
+    "check-dts": "^0.4.0",
     "docdash": "^1.2.0",
     "dual-publish": "^0.11.0",
     "eslint": "^7.9.0",
@@ -50,13 +50,13 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-unicorn": "^21.0.0",
     "husky": "^4.3.0",
-    "jest": "^26.4.2",
-    "lint-staged": "^10.4.0",
-    "nanodelay": "^1.0.3",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.1",
+    "nanodelay": "^1.0.6",
     "rimraf": "^3.0.2",
-    "size-limit": "^4.6.0",
+    "size-limit": "^4.7.0",
     "vue": "^2.6.12",
-    "vue-class-component": "^7.2.5",
+    "vue-class-component": "^7.2.6",
     "vue-template-compiler": "^2.6.12",
     "vue-typed-mixins": "^0.2.0",
     "vuex": "^3.4.0",
@@ -88,14 +88,14 @@
   },
   "size-limit": [
     {
-      "name": "Logux Vuex",
+      "name": "Store",
       "import": "{ createLogux }",
       "limit": "10 KB"
     },
     {
-      "name": "Helpers",
-      "import": "{ loguxMixin, loguxComponent }",
-      "limit": "1 KB"
+      "name": "Store + Helpers",
+      "import": "{ createLogux, loguxMixin, loguxComponent }",
+      "limit": "11 KB"
     }
   ],
   "yaspeller": {
