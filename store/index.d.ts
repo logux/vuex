@@ -1,4 +1,3 @@
-import { InjectionKey } from 'vue'
 import { Unsubscribe } from 'nanoevents'
 import { Action, Log } from '@logux/core'
 import {
@@ -41,12 +40,19 @@ export interface LoguxVuexCommit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
-  sync (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  sync(
+    type: string,
+    payload?: any,
+    meta?: Partial<ClientMeta>
+  ): Promise<ClientMeta>
   /**
    * @param action Action.
    * @param meta Action’s metadata.
    */
-  sync <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  sync<A extends LoguxVuexAction>(
+    action: A,
+    meta?: Partial<ClientMeta>
+  ): Promise<ClientMeta>
 
   /**
    * Adds cross-tab action to log and updates store state.
@@ -66,12 +72,19 @@ export interface LoguxVuexCommit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
-  crossTab (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  crossTab(
+    type: string,
+    payload?: any,
+    meta?: Partial<ClientMeta>
+  ): Promise<ClientMeta>
   /**
    * @param action Action.
    * @param meta Action’s metadata.
    */
-  crossTab <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  crossTab<A extends LoguxVuexAction>(
+    action: A,
+    meta?: Partial<ClientMeta>
+  ): Promise<ClientMeta>
 
   /**
    * Adds local action to log and updates store state.
@@ -92,16 +105,28 @@ export interface LoguxVuexCommit extends VuexCommit {
    * @param meta Action’s metadata.
    * @returns Promise when action will be processed by the server.
    */
-  local (type: string, payload?: any, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  local(
+    type: string,
+    payload?: any,
+    meta?: Partial<ClientMeta>
+  ): Promise<ClientMeta>
   /**
    * @param action Action.
    * @param meta Action’s metadata.
    */
-  local <A extends LoguxVuexAction>(action: A, meta?: Partial<ClientMeta>): Promise<ClientMeta>
+  local<A extends LoguxVuexAction>(
+    action: A,
+    meta?: Partial<ClientMeta>
+  ): Promise<ClientMeta>
 }
 
 interface StateListener<S> {
-  <A extends LoguxVuexAction>(state: S, prevState: S, action: A, meta: ClientMeta): void
+  <A extends LoguxVuexAction>(
+    state: S,
+    prevState: S,
+    action: A,
+    meta: ClientMeta
+  ): void
 }
 
 export interface LoguxVuexActionContext<S, R> extends VuexActionContext<S, R> {
@@ -251,7 +276,4 @@ export interface createStore<
 export function createStoreCreator<
   L extends Log = Log<ClientMeta>,
   C extends Client = Client<{}, L>
-> (
-  client: C,
-  options?: LoguxVuexOptions
-): createStore<L, C>
+> (client: C, options?: LoguxVuexOptions): createStore<L, C>
