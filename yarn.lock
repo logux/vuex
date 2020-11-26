@@ -535,7 +535,7 @@
     fast-json-stable-stringify "^2.1.0"
     nanodelay "^1.0.6"
     nanoevents "^5.1.10"
-    nanoid "^3.1.16"
+    nanoid "^3.1.18"
 
 "@logux/core@logux/core#next":
   version "0.6.2"
@@ -8561,7 +8561,7 @@ vue@^3.0.3:
     "@vue/runtime-dom" "3.0.3"
     "@vue/shared" "3.0.3"
 
-vuex@^4.0.0-rc.1:
+vuex@^4.0.0-rc.2:
   version "4.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-4.0.0-rc.2.tgz#3681c84eb6f5171b039edaa17cc78105e20724f3"
   integrity sha512-HCPzYGea1xL7fMpDoMiHKujC1Bi/HM9LS5ML0Kv55zQtZJvOl0Lq7eWvJoen+SI4Lf7p9V5AqcVsoLPXNBywjg==
