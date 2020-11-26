@@ -33,15 +33,15 @@
     "@logux/client": "logux/client#next",
     "@logux/core": "^0.6.2",
     "@logux/eslint-config": "^42.2.2",
-    "@logux/sharec-config": "^0.8.4",
-    "@size-limit/dual-publish": "^4.7.0",
-    "@size-limit/preset-small-lib": "^4.7.0",
+    "@logux/sharec-config": "^0.8.5",
+    "@size-limit/dual-publish": "^4.9.0",
+    "@size-limit/preset-small-lib": "^4.9.0",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "@vue/test-utils": "^2.0.0-beta.9",
     "check-dts": "^0.4.0",
-    "dual-publish": "^0.11.0",
-    "eslint": "^7.13.0",
+    "dual-publish": "^1.0.3",
+    "eslint": "^7.14.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.1.3",
@@ -56,9 +56,9 @@
     "lint-staged": "^10.5.1",
     "nanodelay": "^1.0.6",
     "rimraf": "^3.0.2",
-    "size-limit": "^4.7.0",
+    "size-limit": "^4.9.0",
     "ts-jest": "^26.4.4",
-    "typescript": "^4.0.5",
+    "typescript": "^4.1.2",
     "vue": "^3.0.2",
     "vuex": "^4.0.0-rc.1",
     "yaspeller": "^7.0.0"
@@ -141,6 +141,6 @@
   },
   "sharec": {
     "config": "@logux/sharec-config",
-    "version": "0.8.4"
+    "version": "0.8.5"
   }
 }
