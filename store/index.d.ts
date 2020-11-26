@@ -1,5 +1,5 @@
 import { Unsubscribe } from 'nanoevents'
-import { Action, Log } from '@logux/core'
+import { Action, AnyAction, Log } from '@logux/core'
 import {
   Client,
   ClientMeta,
@@ -16,7 +16,7 @@ import {
   ActionContext as VuexActionContext
 } from 'vuex'
 
-export type LoguxVuexAction = Action & VuexPayload
+export type LoguxVuexAction = AnyAction & VuexPayload
 
 export interface LoguxVuexCommit extends VuexCommit {
   (type: string, payload?: any, options?: CommitOptions): void
