@@ -22,7 +22,7 @@
   },
   "peerDependencies": {
     "@logux/client": "logux/client#next",
-    "@logux/core": "^0.6.2",
+    "@logux/core": "logux/core#next",
     "vue": ">=3.0.2",
     "vuex": ">=4.0.0-rc.1"
   },
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@logux/client": "logux/client#next",
-    "@logux/core": "^0.6.2",
+    "@logux/core": "logux/core#next",
     "@logux/eslint-config": "^42.2.3",
     "@logux/sharec-config": "^0.8.5",
     "@size-limit/dual-publish": "^4.9.0",
