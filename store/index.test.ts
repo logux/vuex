@@ -220,7 +220,7 @@ it('commit root mutation in namespaced module', () => {
 it('sets tab ID', async () => {
   let store = createStore({ increment })
 
-  await new Promise(resolve => {
+  await new Promise<void>(resolve => {
     store.log.on('add', (action, meta) => {
       expect(meta.tab).toEqual(store.client.tabId)
       expect(meta.reasons).toEqual([`timeTravelTab${store.client.tabId}`])
@@ -980,7 +980,7 @@ it('applies old actions from store in nested modules', async () => {
 it('waits for replaying', async () => {
   let store = createStore({ historyLine })
   let run: undefined | (() => void)
-  let waiting = new Promise(resolve => {
+  let waiting = new Promise<void>(resolve => {
     run = resolve
   })
 
