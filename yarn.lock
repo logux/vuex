@@ -535,7 +535,7 @@
     fast-json-stable-stringify "^2.1.0"
     nanodelay "^1.0.6"
     nanoevents "^5.1.10"
-    nanoid "^3.1.18"
+    nanoid "^3.1.16"
 
 "@logux/core@logux/core#next":
   version "0.6.2"
@@ -8552,7 +8552,7 @@ vnopts@1.0.2:
     leven "^2.1.0"
     tslib "^1.9.3"
 
-vue@^3.0.2:
+vue@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.3.tgz#ad94a475e6ebbf3904673b6a0ae46e47b957bd72"
   integrity sha512-BZG5meD5vLWdvfnRL5WqfDy+cnXO1X/SweModGUna78bdFPZW6+ZO1tU9p0acrskX3DKFcfSp2s4SZnMjABx6w==
