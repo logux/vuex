@@ -1,6 +1,14 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.3
+ * Remove support for Node versions 10, 12, 13
+ * Update dependencies
+   * Vuex to 3.6.0
+   * Logux Core to 0.9.3
+   * Logux Client to 0.6.2
+   * Nanoevents to 5.1.10
+
 ## 0.8.2
  * Fix broken state after second logux/undo
  * Update dependencies
