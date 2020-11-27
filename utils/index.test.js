@@ -1,4 +1,8 @@
-let { deepCopy, find } = require('.')
+let {
+  find,
+  deepCopy,
+  isPromise
+} = require('.')
 
 it('find', () => {
   let list = [33, 22, 112, 222, 43]
@@ -41,4 +45,12 @@ it('deepCopy: circular structure', () => {
   let copy = deepCopy(original)
 
   expect(copy).toEqual(original)
+})
+
+it('isPromise', () => {
+  let promise = new Promise(() => {}, () => {})
+  let func = () => {}
+  expect(isPromise(1)).toBe(false)
+  expect(isPromise(promise)).toBe(true)
+  expect(isPromise(func)).toBe(false)
 })
