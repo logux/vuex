@@ -38,7 +38,7 @@
     "@size-limit/preset-small-lib": "^4.9.1",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
-    "@vue/test-utils": "^2.0.0-beta.12",
+    "@vue/test-utils": "^2.0.0-beta.14",
     "check-dts": "^0.4.1",
     "dual-publish": "^1.0.3",
     "eslint": "^7.14.0",
