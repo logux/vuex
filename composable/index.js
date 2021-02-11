@@ -1,13 +1,13 @@
-let { useStore } = require('vuex')
-let {
+import { useStore } from 'vuex'
+import {
   ref,
   isRef,
   watch,
   computed,
   onBeforeUnmount
-} = require('vue')
+} from 'vue'
 
-function useSubscription (channels, options = {}) {
+export function useSubscription (channels, options = {}) {
   let store = options.store || useStore()
   let debounce = options.debounce || 0
   let isSubscribing = ref(true)
@@ -109,5 +109,3 @@ function unsubscribe (store, subscriptions) {
     }
   })
 }
-
-module.exports = { useSubscription }

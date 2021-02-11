@@ -1,11 +1,8 @@
-let {
-  toRefs,
-  defineComponent
-} = require('vue')
+import { defineComponent, toRefs } from 'vue'
 
-let { useSubscription } = require('../composable')
+import { useSubscription } from '../composable/index.js'
 
-let Subscribe = defineComponent({
+export let Subscribe = defineComponent({
   name: 'LoguxSubscribe',
   props: {
     channels: {
@@ -27,5 +24,3 @@ let Subscribe = defineComponent({
     return () => defaultSlot({ isSubscribing })
   }
 })
-
-module.exports = { Subscribe }

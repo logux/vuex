@@ -1,8 +1,4 @@
-let {
-  find,
-  deepCopy,
-  isPromise
-} = require('.')
+import { find, deepCopy, isPromise } from './index.js'
 
 it('find', () => {
   let list = [33, 22, 112, 222, 43]
