@@ -25,7 +25,7 @@
     "@logux/client": "logux/client#next",
     "@logux/core": "logux/core#next",
     "vue": ">=3.0.5",
-    "vuex": ">=4.0.0-rc.2"
+    "vuex": ">=4.0.0"
   },
   "dependencies": {
     "nanoevents": "^5.1.10"
@@ -59,7 +59,7 @@
     "ts-jest": "^26.5.1",
     "typescript": "^4.1.5",
     "vue": "^3.0.5",
-    "vuex": "^4.0.0-rc.2",
+    "vuex": "^4.0.0",
     "yaspeller": "^7.0.0"
   },
   "husky": {
