@@ -15,8 +15,8 @@
   "license": "MIT",
   "homepage": "https://logux.io/",
   "repository": "logux/vuex",
-  "types": "./index.d.ts",
   "sideEffects": false,
+  "types": "./index.d.ts",
   "engines": {
     "node": "^12.0.0 || >=14.0.0"
   },
@@ -83,9 +83,7 @@
   "eslintConfig": {
     "extends": "@logux/eslint-config/ts",
     "rules": {
-      "prettierx/options": [
-        0
-      ],
+      "prettierx/options": "off",
       "@typescript-eslint/no-var-requires": "off",
       "@typescript-eslint/no-explicit-any": "off"
     }
@@ -98,7 +96,7 @@
       "name": "Client + Store",
       "import": {
         "@logux/client": "{ CrossTabClient }",
-        "index.js": "{ createStoreCreator }"
+        "./index.js": "{ createStoreCreator }"
       },
       "limit": "11 KB"
     },
@@ -106,7 +104,7 @@
       "name": "Client + Store + Helpers",
       "import": {
         "@logux/client": "{ CrossTabClient }",
-        "index.js": "{ createStoreCreator, useStore, useSubscription }"
+        "./index.js": "{ createStoreCreator, useStore, useSubscription }"
       },
       "limit": "12 KB"
     }
