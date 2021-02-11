@@ -22,7 +22,7 @@
     "node": ">=10.0.0"
   },
   "peerDependencies": {
-    "vue": ">=3.0.0",
+    "vue": ">=3.0.5",
     "vuex": ">=4.0.0-beta.4"
   },
   "dependencies": {
@@ -59,7 +59,7 @@
     "size-limit": "^4.6.0",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3",
-    "vue": "^3.0.0",
+    "vue": "^3.0.5",
     "vuex": "^4.0.0-beta.4",
     "yaspeller": "^7.0.0"
   },
