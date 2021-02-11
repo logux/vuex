@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "vue": ">=3.0.5",
-    "vuex": ">=4.0.0-beta.4"
+    "vuex": ">=4.0.0"
   },
   "dependencies": {
     "@logux/client": "^0.9.3",
@@ -60,7 +60,7 @@
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3",
     "vue": "^3.0.5",
-    "vuex": "^4.0.0-beta.4",
+    "vuex": "^4.0.0",
     "yaspeller": "^7.0.0"
   },
   "husky": {
