@@ -28,6 +28,8 @@ export function devtools (app, client, options = {}) {
     {
       id: 'logux',
       label: 'Logux devtools',
+      packageName: '@logux/vuex',
+      homepage: 'https://github.com/logux/vuex',
       app
     },
     api => {
