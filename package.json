@@ -79,9 +79,6 @@
     "transform": {
       ".js": "jest-esm-transformer"
     },
-    "transformIgnorePatterns": [
-      "node_modules/(?!@logux)"
-    ],
     "coverageThreshold": {
       "global": {
         "statements": 100
