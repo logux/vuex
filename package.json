@@ -79,6 +79,9 @@
     "transform": {
       ".js": "jest-esm-transformer"
     },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@logux)"
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 100
@@ -86,7 +89,8 @@
     },
     "coveragePathIgnorePatterns": [
       "/node_modules/",
-      "/devtools/"
+      "/devtools/",
+      "<rootDir>/index.js"
     ]
   },
   "eslintConfig": {

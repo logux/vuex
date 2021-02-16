@@ -1,4 +1,3 @@
-import { Plugin } from 'vue'
 import { App } from '@vue/devtools-api'
 import { Client, CrossTabClient } from '@logux/vuex'
 
