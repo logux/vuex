@@ -1,5 +1,5 @@
-let { setupDevtoolsPlugin } = require('@vue/devtools-api')
-let { parseId } = require('@logux/core/parse-id')
+import { setupDevtoolsPlugin } from '@vue/devtools-api'
+import { parseId } from '@logux/core/parse-id'
 
 const subscriptionLayerId = 'logux:subscription'
 const actionLayerId = 'logux:action'
@@ -9,7 +9,7 @@ const roleLayerId = 'logux:role'
 const userLayerId = 'logux:user'
 const color = 0xf5a623
 
-function devtools (app, client, options = {}) {
+export function devtools (app, client, options = {}) {
   let layers = options.layers || {}
   let ignoreActions = options.ignoreActions || []
 
@@ -323,5 +323,3 @@ function devtools (app, client, options = {}) {
     }
   )
 }
-
-module.exports = { devtools }
