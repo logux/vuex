@@ -2,9 +2,7 @@ import { Unsubscribe } from 'nanoevents'
 import { Action, AnyAction, Log } from '@logux/core'
 import {
   Client,
-  ClientMeta,
-  ClientOptions,
-  CrossTabClient
+  ClientMeta
 } from '@logux/client'
 import {
   CommitOptions,

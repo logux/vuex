@@ -1,3 +1,1 @@
-let { useStore } = require('vuex')
-
-module.exports = { useStore }
+export { useStore } from 'vuex'

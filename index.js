@@ -1,13 +1,5 @@
-let { useStore } = require('./inject')
-let { devtools } = require('./devtools')
-let { Subscribe } = require('./component')
-let { useSubscription } = require('./composable')
-let { createStoreCreator } = require('./store')
-
-module.exports = {
-  devtools,
-  useStore,
-  Subscribe,
-  useSubscription,
-  createStoreCreator
-}
+export { devtools } from './devtools/index.js'
+export { useStore } from './inject/index.js'
+export { Subscribe } from './component/index.js'
+export { useSubscription } from './composable/index.js'
+export { createStoreCreator } from './store/index.js'
