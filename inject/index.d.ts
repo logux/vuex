@@ -24,6 +24,6 @@ export function useStore<
   S = any,
   L extends Log = Log<ClientMeta>,
   C extends Client = Client<{}, L>
-  > (
-    injectKey?: InjectionKey<LoguxVuexStore<S, L, C>> | string
-  ): LoguxVuexStore<S, L, C>
+> (
+  injectKey?: InjectionKey<LoguxVuexStore<S, L, C>> | string
+): LoguxVuexStore<S, L, C>
