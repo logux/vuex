@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.4
+ * Update dependencies
+
 ## 0.8.3
  * Remove support for Node versions 10, 12, 13
  * Update dependencies
