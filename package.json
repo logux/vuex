@@ -78,9 +78,7 @@
   "eslintConfig": {
     "extends": "@logux/eslint-config",
     "rules": {
-      "prettierx/options": [
-        0
-      ]
+      "prettierx/options": "off"
     }
   },
   "size-limit": [
