@@ -22,7 +22,7 @@
   },
   "peerDependencies": {
     "vue": ">=2.6.12",
-    "vuex": ">=3.6.0"
+    "vuex": ">=3.6.2"
   },
   "dependencies": {
     "@logux/client": "^0.9.3",
@@ -56,7 +56,7 @@
     "vue-class-component": "^7.2.6",
     "vue-template-compiler": "^2.6.12",
     "vue-typed-mixins": "^0.2.0",
-    "vuex": "^3.6.0",
+    "vuex": "^3.6.2",
     "yaspeller": "^7.0.0"
   },
   "husky": {
