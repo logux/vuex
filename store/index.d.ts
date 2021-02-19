@@ -1,11 +1,8 @@
-import { InjectionKey } from 'vue'
 import { Unsubscribe } from 'nanoevents'
 import { Action, Log } from '@logux/core'
 import {
   Client,
-  ClientMeta,
-  ClientOptions,
-  CrossTabClient
+  ClientMeta
 } from '@logux/client'
 import {
   CommitOptions,
