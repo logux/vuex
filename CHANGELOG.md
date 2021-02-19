@@ -1,6 +1,15 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.19
+ * Update dependencies
+
+## 0.9.18
+ * Update Vue to 3.0.5
+ * Update Vuex to 4.0.0
+ * Update dependencies
+ * Refactor `useSubscription` for Vue 3.0.5
+
 ## 0.9.17
  * Add `debounce` for `useSubscription` to avoid flashing between channels
  * Update typings
