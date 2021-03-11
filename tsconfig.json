@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "esnext",
+    "target": "es2018",
     "allowJs": true,
     "strict": true,
     "noEmit": true,
