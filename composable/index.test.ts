@@ -117,7 +117,7 @@ it('unsubscribes', async () => {
       })
       state.users = { a: '1', b: '1', c: '2' }
 
-      function change (e: Event & { users: string }) {
+      function change (e: Event & { users: string }): void {
         state.users = e.users
       }
 
@@ -166,7 +166,7 @@ it('changes subscription', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e: Event & { id: string }) {
+      function change (e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -203,7 +203,7 @@ it('does not resubscribe on non-relevant props changes', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e: Event & { id: string }) {
+      function change (e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -234,7 +234,7 @@ it('reports about subscription end', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e: Event & { id: string }) {
+      function change (e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -250,7 +250,7 @@ it('reports about subscription end', async () => {
     `
   })
 
-  let isSubscribing = () => component.find('img').attributes('issubscribing')
+  let isSubscribing = (): string => component.find('img').attributes('issubscribing')
   let nodeId = component.client.nodeId
   let log = component.client.log
 
@@ -324,7 +324,7 @@ it('works on channels size changes', async () => {
     setup () {
       let ids = ref([1])
 
-      function change (e: Event & { ids: number[] }) {
+      function change (e: Event & { ids: number[] }): void {
         ids.value = e.ids
       }
 
@@ -342,6 +342,7 @@ it('works on channels size changes', async () => {
 
   component.trigger('click', { ids: [1, 2] })
   await nextTick()
+  // eslint-disable-next-line no-console
   expect(console.error).not.toHaveBeenCalled()
 })
 
@@ -372,7 +373,7 @@ it('reports about subscription end with non-reactive channels', async () => {
     }
   })
 
-  let isSubscribing = () => component.findAll('div').map(el => el.attributes('issubscribing'))
+  let isSubscribing = (): string[] => component.findAll('div').map(el => el.attributes('issubscribing'))
   let nodeId = component.client.nodeId
   let log = component.client.log
 
@@ -416,7 +417,7 @@ it('supports different store sources', async () => {
     setup () {
       let store = useStore()
 
-      async function subscribe () {
+      async function subscribe (): Promise<void> {
         await nextTick()
         useSubscription(() => ['users'], { store })
       }

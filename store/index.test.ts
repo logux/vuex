@@ -6,7 +6,8 @@ import { delay } from 'nanodelay'
 import {
   LoguxVuexOptions,
   LoguxVuexAction,
-  LoguxVuexActionTree
+  LoguxVuexActionTree,
+  LoguxVuexStore
 } from '../store/index.js'
 import {
   CrossTabClient,
@@ -20,7 +21,9 @@ interface State {
   }
 }
 
-function createClient (opts: Partial<ClientOptions> = {}) {
+function createClient (
+  opts: Partial<ClientOptions> = {}
+): CrossTabClient<{}, TestLog<ClientMeta>> {
   let client = new CrossTabClient<{}, TestLog<ClientMeta>>({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
@@ -35,7 +38,7 @@ function createStore (
   mutations: MutationTree<State>,
   opts: Partial<ClientOptions & Partial<LoguxVuexOptions>> = {},
   modules: ModuleTree<State> = {}
-) {
+): LoguxVuexStore<State, TestLog<ClientMeta>> {
   let creatorOptions = {
     reasonlessHistory: opts.reasonlessHistory,
     onMissedHistory: opts.onMissedHistory,
@@ -54,11 +57,11 @@ function createStore (
   return store
 }
 
-function increment (state: State) {
+function increment (state: State): void {
   state.value = state.value as number + 1
 }
 
-function historyLine (state: State, payload: LoguxVuexAction) {
+function historyLine (state: State, payload: LoguxVuexAction): void {
   if (typeof payload === 'object') {
     state.value = `${state.value}${payload.value}`
   } else {
@@ -66,7 +69,7 @@ function historyLine (state: State, payload: LoguxVuexAction) {
   }
 }
 
-function emit (obj: any, event: string, ...args: any[]) {
+function emit (obj: any, event: string, ...args: any[]): void {
   obj.emitter.emit(event, ...args)
 }
 
@@ -675,6 +678,7 @@ it('cleans sync action after processing', async () => {
   await delay(1)
   expect(resultB).toEqual('error')
   expect(store.log.actions()).toEqual([])
+  // eslint-disable-next-line no-console
   expect(console.warn).not.toHaveBeenCalled()
 })
 

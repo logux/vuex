@@ -174,7 +174,7 @@ it('unsubscribes', async () => {
       let state = reactive({ users: {} })
       state.users = { a: '1', b: '1', c: '2' }
 
-      function change (e: Event & { users: string }) {
+      function change (e: Event & { users: string }): void {
         state.users = e.users
       }
 
@@ -223,7 +223,7 @@ it('changes subscription', async () => {
     setup () {
       let id = ref('1')
 
-      function change ({ id: newId }: { id: string }) {
+      function change ({ id: newId }: { id: string }): void {
         id.value = newId
       }
 
@@ -257,7 +257,7 @@ it('does not resubscribe on non-relevant props changes', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e: Event & { id: string }) {
+      function change (e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -323,7 +323,7 @@ it('reports about subscription end', async () => {
     setup () {
       let id = ref('1')
 
-      function change (e: Event & { id: string }) {
+      function change (e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -339,7 +339,7 @@ it('reports about subscription end', async () => {
     `
   })
 
-  let isSubscribing = () => component.find('img').attributes('issubscribing')
+  let isSubscribing = (): string => component.find('img').attributes('issubscribing')
   let nodeId = component.client.nodeId
   let log = component.client.log
 
