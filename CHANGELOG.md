@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.20
+ * Update Vue to 3.0.7
+ * Update nanoevents to 5.1.12
+ * Update dependencies
+
 ## 0.9.19
  * Update dependencies
 

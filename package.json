@@ -1,6 +1,6 @@
 {
   "name": "@logux/vuex",
-  "version": "0.9.19",
+  "version": "0.9.20",
   "description": "Vuex compatible API for Logux",
   "keywords": [
     "logux",
@@ -127,7 +127,8 @@
       "roadmap",
       "refactor",
       "composable",
-      "unsubscribes"
+      "unsubscribes",
+      "nanoevents"
     ]
   },
   "sharec": {
