@@ -81,9 +81,10 @@ function createLogux (config = {}) {
 
       log.add(action, meta)
       prevMeta = meta
-      let prevState = deepCopy(store.state)
+      let emit = 'change' in emitter.events
+      let prevState = emit ? deepCopy(store.state) : undefined
       originCommit(action, options)
-      emitter.emit('change', deepCopy(store.state), prevState, action, meta)
+      emit && emitter.emit('change', deepCopy(store.state), prevState, action, meta)
       saveHistory(meta)
     }
 
@@ -309,10 +310,13 @@ function createLogux (config = {}) {
       }
 
       if (!meta.commit) {
-        let prevState = deepCopy(store.state)
+        let emit = 'change' in emitter.events
+        let prevState = emit ? deepCopy(store.state) : undefined
         process(action, meta).then(() => {
-          let currentState = deepCopy(store.state)
-          emitter.emit('change', currentState, prevState, action, meta)
+          if (emit) {
+            let currentState = deepCopy(store.state)
+            emitter.emit('change', currentState, prevState, action, meta)
+          }
         })
       }
     })
