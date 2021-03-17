@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.5
+ * Fix bug that caused performance degradation related to `store.on('change', …)`
+ * Update dependencies
+   * Nanoevents to 5.1.13
+
 ## 0.8.4
  * Update dependencies
 
