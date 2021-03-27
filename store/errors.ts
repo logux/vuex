@@ -1,7 +1,4 @@
-import {
-  CrossTabClient,
-  createStoreCreator
-} from '..'
+import { CrossTabClient, createStoreCreator } from '..'
 
 interface RootState {
   value: number
@@ -10,7 +7,7 @@ interface RootState {
 let client = new CrossTabClient({
   server: 'wss://localhost:1337',
   subprotocol: '1.0.0',
-  userId: '10',
+  userId: '10'
 })
 
 let createStore = createStoreCreator(client)

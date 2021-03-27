@@ -1,13 +1,9 @@
-import {
-  toRefs,
-  computed,
-  defineComponent
-} from 'vue'
+import { toRefs, computed, defineComponent } from 'vue'
 
 import { useSubscription, useStore } from '../index.js'
 
 defineComponent({
-  setup () {
+  setup() {
     useSubscription(['users'])
 
     useSubscription(() => ['users'])
@@ -22,7 +18,7 @@ defineComponent({
 
 defineComponent({
   props: ['id'],
-  setup (props) {
+  setup(props) {
     let { id } = toRefs(props)
 
     useSubscription([

@@ -1,12 +1,12 @@
-let {
-  find,
-  deepCopy,
-  isPromise
-} = require('.')
+let { find, deepCopy, isPromise } = require('.')
 
 it('find', () => {
   let list = [33, 22, 112, 222, 43]
-  expect(find(list, a => { return a % 2 === 0 })).toEqual(22)
+  expect(
+    find(list, a => {
+      return a % 2 === 0
+    })
+  ).toEqual(22)
 })
 
 it('deepCopy: nornal structure', () => {
@@ -26,9 +26,13 @@ it('deepCopy: nested structure', () => {
   let original = {
     a: {
       b: 1,
-      c: [2, 3, {
-        d: 4
-      }]
+      c: [
+        2,
+        3,
+        {
+          d: 4
+        }
+      ]
     }
   }
   let copy = deepCopy(original)
@@ -48,7 +52,10 @@ it('deepCopy: circular structure', () => {
 })
 
 it('isPromise', () => {
-  let promise = new Promise(() => {}, () => {})
+  let promise = new Promise(
+    () => {},
+    () => {}
+  )
   let func = () => {}
   expect(isPromise(1)).toBe(false)
   expect(isPromise(promise)).toBe(true)

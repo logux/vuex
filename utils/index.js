@@ -1,8 +1,8 @@
-function find (list, f) {
+function find(list, f) {
   return list.filter(f)[0]
 }
 
-function deepCopy (obj, cache = []) {
+function deepCopy(obj, cache = []) {
   if (obj === null || typeof obj !== 'object') {
     return obj
   }
@@ -25,11 +25,11 @@ function deepCopy (obj, cache = []) {
   return copy
 }
 
-function forEachValue (obj, fn) {
+function forEachValue(obj, fn) {
   Object.keys(obj).forEach(key => fn(obj[key], key))
 }
 
-function isPromise (val) {
+function isPromise(val) {
   return val && typeof val.then === 'function'
 }
 

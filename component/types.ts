@@ -1,37 +1,34 @@
-import {
-  h,
-  toRefs,
-  computed,
-  defineComponent
-} from 'vue'
+import { h, toRefs, computed, defineComponent } from 'vue'
 
 import { Subscribe } from '../index.js'
 
 defineComponent({
-  setup () {
-    return () => h(Subscribe, {
-      channels: ['users']
-    })
+  setup() {
+    return () =>
+      h(Subscribe, {
+        channels: ['users']
+      })
   }
 })
 
 defineComponent({
   props: ['id'],
-  setup (props) {
+  setup(props) {
     let { id } = toRefs(props)
 
-    return () => h(Subscribe, {
-      channels: [
-        { channel: 'users' },
-        { channel: `users/${id}`, fields: ['name'] }
-      ]
-    })
+    return () =>
+      h(Subscribe, {
+        channels: [
+          { channel: 'users' },
+          { channel: `users/${id}`, fields: ['name'] }
+        ]
+      })
   }
 })
 
 defineComponent({
   props: ['id'],
-  setup (props) {
+  setup(props) {
     let { id } = toRefs(props)
 
     let channels = computed(() => {
@@ -41,8 +38,9 @@ defineComponent({
       ]
     })
 
-    return () => h(Subscribe, {
-      channels: channels.value
-    })
+    return () =>
+      h(Subscribe, {
+        channels: channels.value
+      })
   }
 })

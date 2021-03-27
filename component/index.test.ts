@@ -12,17 +12,13 @@ import { TestLog, TestTime } from '@logux/core'
 import { ClientMeta } from '@logux/client'
 import { delay } from 'nanodelay'
 
-import {
-  Subscribe,
-  CrossTabClient,
-  createStoreCreator
-} from '../index.js'
+import { Subscribe, CrossTabClient, createStoreCreator } from '../index.js'
 
 interface ExtendedComponent extends VueWrapper<ComponentPublicInstance> {
   client?: any
 }
 
-function createComponent (component: any, options?: any): ExtendedComponent {
+function createComponent(component: any, options?: any): ExtendedComponent {
   let client = new CrossTabClient<{}, TestLog<ClientMeta>>({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
@@ -52,11 +48,8 @@ let UserPhoto = defineComponent({
     id: { type: String, required: true },
     isSubscribing: { type: Boolean, required: true }
   },
-  setup (props) {
-    let {
-      id,
-      isSubscribing
-    } = toRefs(props)
+  setup(props) {
+    let { id, isSubscribing } = toRefs(props)
     let src = computed(() => `${id.value}.jpg`)
     return {
       src,
@@ -72,12 +65,10 @@ let SubscribeUserPhoto = defineComponent({
   props: {
     id: { type: String, required: true }
   },
-  setup (props) {
+  setup(props) {
     let { id } = toRefs(props)
     let channels = computed(() => {
-      return [
-        { channel: `users/${id.value}`, fields: ['photo'] }
-      ]
+      return [{ channel: `users/${id.value}`, fields: ['photo'] }]
     })
     return {
       id,
@@ -120,7 +111,7 @@ it('subscribes', async () => {
     props: {
       id: { type: String, required: true }
     },
-    setup (props) {
+    setup(props) {
       let { id } = toRefs(props)
       let channels = computed(() => {
         return [`users/${id.value}`]
@@ -170,11 +161,11 @@ it('subscribes by channel name', async () => {
 
 it('unsubscribes', async () => {
   let UserList = {
-    setup () {
+    setup() {
       let state = reactive({ users: {} })
       state.users = { a: '1', b: '1', c: '2' }
 
-      function change (e: Event & { users: string }): void {
+      function change(e: Event & { users: string }): void {
         state.users = e.users
       }
 
@@ -220,10 +211,10 @@ it('unsubscribes', async () => {
 
 it('changes subscription', async () => {
   let component = createComponent({
-    setup () {
+    setup() {
       let id = ref('1')
 
-      function change ({ id: newId }: { id: string }): void {
+      function change({ id: newId }: { id: string }): void {
         id.value = newId
       }
 
@@ -254,10 +245,10 @@ it('changes subscription', async () => {
 
 it('does not resubscribe on non-relevant props changes', async () => {
   let component = createComponent({
-    setup () {
+    setup() {
       let id = ref('1')
 
-      function change (e: Event & { id: string }): void {
+      function change(e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -288,13 +279,10 @@ it('supports multiple channels', async () => {
     props: {
       id: { type: String, required: true }
     },
-    setup (props) {
+    setup(props) {
       let { id } = toRefs(props)
       let channels = computed(() => {
-        return [
-          `users/${id.value}`,
-          `pictures/${id.value}`
-        ]
+        return [`users/${id.value}`, `pictures/${id.value}`]
       })
       return { channels }
     },
@@ -320,10 +308,10 @@ it('supports multiple channels', async () => {
 
 it('reports about subscription end', async () => {
   let component = createComponent({
-    setup () {
+    setup() {
       let id = ref('1')
 
-      function change (e: Event & { id: string }): void {
+      function change(e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -339,7 +327,8 @@ it('reports about subscription end', async () => {
     `
   })
 
-  let isSubscribing = (): string => component.find('img').attributes('issubscribing')
+  let isSubscribing = (): string =>
+    component.find('img').attributes('issubscribing')
   let nodeId = component.client.nodeId
   let log = component.client.log
 

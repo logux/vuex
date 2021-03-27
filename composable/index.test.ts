@@ -25,7 +25,7 @@ interface ExtendedComponent extends VueWrapper<ComponentPublicInstance> {
   client?: any
 }
 
-function createComponent (component: any, options?: any): ExtendedComponent {
+function createComponent(component: any, options?: any): ExtendedComponent {
   let client = new CrossTabClient<{}, TestLog<ClientMeta>>({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
@@ -52,15 +52,16 @@ let UserPhoto = defineComponent({
     id: { type: String, required: true },
     debounce: { type: Number, default: 0 }
   },
-  setup (props) {
+  setup(props) {
     let { id, debounce } = toRefs(props)
     let src = computed(() => `${id.value}.jpg`)
 
-    let isSubscribing = useSubscription(() => {
-      return [
-        { channel: `users/${id.value}`, fields: ['photo'] }
-      ]
-    }, { debounce: debounce.value })
+    let isSubscribing = useSubscription(
+      () => {
+        return [{ channel: `users/${id.value}`, fields: ['photo'] }]
+      },
+      { debounce: debounce.value }
+    )
 
     return {
       src,
@@ -92,13 +93,13 @@ it('subscribes', async () => {
 it('accepts channel names', async () => {
   let User = defineComponent({
     props: ['id'],
-    setup ({ id }) {
+    setup({ id }) {
       useSubscription([`users/${id}`, `users/${id}/comments`])
       return () => h('div')
     }
   })
   let component = createComponent({
-    render () {
+    render() {
       return h('div', [h(User, { id: '1' })])
     }
   })
@@ -111,13 +112,13 @@ it('accepts channel names', async () => {
 
 it('unsubscribes', async () => {
   let UserList = defineComponent({
-    setup () {
+    setup() {
       let state = reactive({
         users: {}
       })
       state.users = { a: '1', b: '1', c: '2' }
 
-      function change (e: Event & { users: string }): void {
+      function change(e: Event & { users: string }): void {
         state.users = e.users
       }
 
@@ -163,10 +164,10 @@ it('unsubscribes', async () => {
 
 it('changes subscription', async () => {
   let Profile = {
-    setup () {
+    setup() {
       let id = ref('1')
 
-      function change (e: Event & { id: string }): void {
+      function change(e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -200,10 +201,10 @@ it('changes subscription', async () => {
 
 it('does not resubscribe on non-relevant props changes', async () => {
   let component = createComponent({
-    setup () {
+    setup() {
       let id = ref('1')
 
-      function change (e: Event & { id: string }): void {
+      function change(e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -231,10 +232,10 @@ it('does not resubscribe on non-relevant props changes', async () => {
 
 it('reports about subscription end', async () => {
   let component = createComponent({
-    setup () {
+    setup() {
       let id = ref('1')
 
-      function change (e: Event & { id: string }): void {
+      function change(e: Event & { id: string }): void {
         id.value = e.id
       }
 
@@ -250,7 +251,8 @@ it('reports about subscription end', async () => {
     `
   })
 
-  let isSubscribing = (): string => component.find('img').attributes('issubscribing')
+  let isSubscribing = (): string =>
+    component.find('img').attributes('issubscribing')
   let nodeId = component.client.nodeId
   let log = component.client.log
 
@@ -305,7 +307,7 @@ it('works on channels size changes', async () => {
 
   let UserList = defineComponent({
     props: ['ids'],
-    setup (props) {
+    setup(props) {
       let { ids } = toRefs(props)
 
       let isSubscribing = useSubscription(() => {
@@ -313,18 +315,19 @@ it('works on channels size changes', async () => {
         return ids.value.map((id: string) => `users/${id}`)
       })
 
-      return () => h('div', {
-        isSubscribing: isSubscribing.value
-      })
+      return () =>
+        h('div', {
+          isSubscribing: isSubscribing.value
+        })
     }
   })
 
   let component = createComponent({
     components: { UserList },
-    setup () {
+    setup() {
       let ids = ref([1])
 
-      function change (e: Event & { ids: number[] }): void {
+      function change(e: Event & { ids: number[] }): void {
         ids.value = e.ids
       }
 
@@ -349,11 +352,12 @@ it('works on channels size changes', async () => {
 it('reports about subscription end with non-reactive channels', async () => {
   let User = defineComponent({
     props: ['id'],
-    setup ({ id }) {
+    setup({ id }) {
       let isSubscribing = useSubscription([`users/${id}`])
-      return () => h('div', {
-        isSubscribing: isSubscribing.value
-      })
+      return () =>
+        h('div', {
+          isSubscribing: isSubscribing.value
+        })
     }
   })
 
@@ -361,9 +365,13 @@ it('reports about subscription end with non-reactive channels', async () => {
     props: {
       ids: { type: Array, required: true }
     },
-    setup (props) {
+    setup(props) {
       let { ids } = toRefs(props)
-      return () => h(Fragment, ids.value.map(id => h(User, { id })))
+      return () =>
+        h(
+          Fragment,
+          ids.value.map(id => h(User, { id }))
+        )
     }
   })
 
@@ -373,7 +381,8 @@ it('reports about subscription end with non-reactive channels', async () => {
     }
   })
 
-  let isSubscribing = (): string[] => component.findAll('div').map(el => el.attributes('issubscribing'))
+  let isSubscribing = (): string[] =>
+    component.findAll('div').map(el => el.attributes('issubscribing'))
   let nodeId = component.client.nodeId
   let log = component.client.log
 
@@ -392,7 +401,7 @@ it('don’t resubscribe on the same channel', async () => {
     props: {
       ids: { type: Array, required: true }
     },
-    setup (props) {
+    setup(props) {
       useSubscription(() => props.ids.map(id => `users/${id}`))
       return () => h('div')
     }
@@ -414,10 +423,10 @@ it('don’t resubscribe on the same channel', async () => {
 
 it('supports different store sources', async () => {
   let component = createComponent({
-    setup () {
+    setup() {
       let store = useStore()
 
-      async function subscribe (): Promise<void> {
+      async function subscribe(): Promise<void> {
         await nextTick()
         useSubscription(() => ['users'], { store })
       }
