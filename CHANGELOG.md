@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.22
+ * Update Vue to 3.0.8
+
 ## 0.9.21
  * Fix bug that caused performance degradation related to `store.on('change', …)`
  * Update nanoevents to 5.1.13
