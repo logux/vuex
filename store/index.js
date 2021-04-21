@@ -2,13 +2,9 @@ import { createStore as createVuexStore } from 'vuex'
 import { createNanoEvents } from 'nanoevents'
 import { isFirstOlder } from '@logux/core'
 
-import {
-  deepCopy,
-  isPromise,
-  forEachValue
-} from '../utils/index.js'
+import { deepCopy, isPromise, forEachValue } from '../utils/index.js'
 
-export function createStoreCreator (client, options = {}) {
+export function createStoreCreator(client, options = {}) {
   let reasonlessHistory = options.reasonlessHistory || 1000
   let onMissedHistory = options.onMissedHistory
   let saveStateEvery = options.saveStateEvery || 50
@@ -16,7 +12,7 @@ export function createStoreCreator (client, options = {}) {
 
   let log = client.log
 
-  function createStore (vuexConfig) {
+  function createStore(vuexConfig) {
     let store = createVuexStore(deepCopy(vuexConfig))
 
     store._actions = Object.create(null)
@@ -29,7 +25,7 @@ export function createStoreCreator (client, options = {}) {
     let stateHistory = {}
 
     let actionCount = 0
-    function saveHistory (meta) {
+    function saveHistory(meta) {
       actionCount += 1
       if (saveStateEvery === 1 || actionCount % saveStateEvery === 1) {
         stateHistory[meta.id] = deepCopy(store.state)
@@ -48,7 +44,7 @@ export function createStoreCreator (client, options = {}) {
     let prevMeta
     let storeCommit = store.commit
 
-    function originCommit (action, opts) {
+    function originCommit(action, opts) {
       if (action.type === 'logux/state') {
         store.replaceState(action.state)
         return
@@ -63,7 +59,11 @@ export function createStoreCreator (client, options = {}) {
     }
 
     store.commit = (type, payload, _options) => {
-      let { action, options: commitOpts } = unifyCommitArgs(type, payload, _options)
+      let { action, options: commitOpts } = unifyCommitArgs(
+        type,
+        payload,
+        _options
+      )
       let meta = {
         id: log.generateId(),
         tab: store.client.tabId,
@@ -73,9 +73,11 @@ export function createStoreCreator (client, options = {}) {
 
       log.add(action, meta)
       prevMeta = meta
-      let prevState = deepCopy(store.state)
+      let emit = 'change' in emitter.events
+      let prevState = emit ? deepCopy(store.state) : undefined
       originCommit(action, commitOpts)
-      emitter.emit('change', deepCopy(store.state), prevState, action, meta)
+      emit &&
+        emitter.emit('change', deepCopy(store.state), prevState, action, meta)
       saveHistory(meta)
     }
 
@@ -98,7 +100,7 @@ export function createStoreCreator (client, options = {}) {
       return client.sync(action, meta)
     }
 
-    function replaceState (state, actions, pushHistory) {
+    function replaceState(state, actions, pushHistory) {
       let last = actions.length ? actions[actions.length - 1][1] : ''
       let newState = actions.reduceRight((prev, [action, id]) => {
         let changed = deepCopy(prev)
@@ -134,7 +136,7 @@ export function createStoreCreator (client, options = {}) {
     }
 
     let replaying
-    function replay (actionId) {
+    function replay(actionId) {
       let ignore = {}
       let actions = []
       let replayed = false
@@ -142,60 +144,62 @@ export function createStoreCreator (client, options = {}) {
       let collecting = true
 
       replaying = new Promise(resolve => {
-        log.each((action, meta) => {
-          if (meta.tab && meta.tab !== client.tabId) return true
+        log
+          .each((action, meta) => {
+            if (meta.tab && meta.tab !== client.tabId) return true
 
-          if (collecting || !stateHistory[meta.id]) {
-            if (action.type === 'logux/undo') {
-              ignore[action.id] = true
-              return true
-            } else if (action.type.startsWith('logux/')) {
-              return true
-            }
-
-            if (!ignore[meta.id]) actions.push([action, meta.id])
-            if (meta.id === actionId) {
-              newAction = action
-              collecting = false
-            }
-
-            return true
-          } else {
-            replayed = true
-            let stateFromHistory = deepCopy(stateHistory[meta.id])
-            replaceState(stateFromHistory, actions)
-            return false
-          }
-        }).then(() => {
-          if (!replayed) {
-            if (historyCleaned) {
-              if (onMissedHistory) {
-                onMissedHistory(newAction)
+            if (collecting || !stateHistory[meta.id]) {
+              if (action.type === 'logux/undo') {
+                ignore[action.id] = true
+                return true
+              } else if (action.type.startsWith('logux/')) {
+                return true
               }
-              for (let i = actions.length - 1; i >= 0; i--) {
-                let id = actions[i][1]
-                if (stateHistory[id]) {
-                  replayed = true
-                  let stateFromHistory = deepCopy(stateHistory[id])
-                  replaceState(
-                    stateFromHistory,
-                    actions.slice(0, i).concat([[newAction, actionId]]),
-                    id
-                  )
-                  break
+
+              if (!ignore[meta.id]) actions.push([action, meta.id])
+              if (meta.id === actionId) {
+                newAction = action
+                collecting = false
+              }
+
+              return true
+            } else {
+              replayed = true
+              let stateFromHistory = deepCopy(stateHistory[meta.id])
+              replaceState(stateFromHistory, actions)
+              return false
+            }
+          })
+          .then(() => {
+            if (!replayed) {
+              if (historyCleaned) {
+                if (onMissedHistory) {
+                  onMissedHistory(newAction)
+                }
+                for (let i = actions.length - 1; i >= 0; i--) {
+                  let id = actions[i][1]
+                  if (stateHistory[id]) {
+                    replayed = true
+                    let stateFromHistory = deepCopy(stateHistory[id])
+                    replaceState(
+                      stateFromHistory,
+                      actions.slice(0, i).concat([[newAction, actionId]]),
+                      id
+                    )
+                    break
+                  }
                 }
               }
+
+              if (!replayed) {
+                let state = collectState(deepCopy(vuexConfig))
+                replaceState(state, actions)
+              }
             }
 
-            if (!replayed) {
-              let state = collectState(deepCopy(vuexConfig))
-              replaceState(state, actions)
-            }
-          }
-
-          replaying = false
-          resolve()
-        })
+            replaying = false
+            resolve()
+          })
       })
 
       return replaying
@@ -217,7 +221,7 @@ export function createStoreCreator (client, options = {}) {
 
     let wait = {}
 
-    async function process (action, meta) {
+    async function process(action, meta) {
       if (replaying) {
         wait[meta.id] = true
         await replaying
@@ -274,10 +278,13 @@ export function createStoreCreator (client, options = {}) {
       }
 
       if (!meta.commit) {
-        let prevState = deepCopy(store.state)
+        let emit = 'change' in emitter.events
+        let prevState = emit ? deepCopy(store.state) : undefined
         process(action, meta).then(() => {
-          let currentState = deepCopy(store.state)
-          emitter.emit('change', currentState, prevState, action, meta)
+          if (emit) {
+            let currentState = deepCopy(store.state)
+            emitter.emit('change', currentState, prevState, action, meta)
+          }
         })
       }
     })
@@ -289,21 +296,23 @@ export function createStoreCreator (client, options = {}) {
 
     let previous = []
     let ignores = {}
-    log.each((action, meta) => {
-      if (!meta.tab) {
-        if (action.type === 'logux/undo') {
-          ignores[action.id] = true
-        } else if (!ignores[meta.id]) {
-          previous.push([action, meta])
+    log
+      .each((action, meta) => {
+        if (!meta.tab) {
+          if (action.type === 'logux/undo') {
+            ignores[action.id] = true
+          } else if (!ignores[meta.id]) {
+            previous.push([action, meta])
+          }
         }
-      }
-    }).then(() => {
-      if (previous.length > 0) {
-        Promise.all(previous.map(i => process(...i))).then(init)
-      } else {
-        init()
-      }
-    })
+      })
+      .then(() => {
+        if (previous.length > 0) {
+          Promise.all(previous.map(i => process(...i))).then(init)
+        } else {
+          init()
+        }
+      })
 
     return store
   }
@@ -311,7 +320,7 @@ export function createStoreCreator (client, options = {}) {
   return createStore
 }
 
-function installModule (store, rootState, path, module) {
+function installModule(store, rootState, path, module) {
   let namespace = store._modules.getNamespace(path)
   let local = modifyLocalContext(store, namespace, module.context)
 
@@ -332,7 +341,7 @@ function installModule (store, rootState, path, module) {
   })
 }
 
-function modifyLocalContext (store, namespace, context) {
+function modifyLocalContext(store, namespace, context) {
   let noNamespace = namespace === ''
 
   context.commit = (_type, _payload, _options) => {
@@ -366,17 +375,21 @@ function modifyLocalContext (store, namespace, context) {
   return context
 }
 
-function registerAction (store, type, handler, local) {
+function registerAction(store, type, handler, local) {
   let entry = store._actions[type] || (store._actions[type] = [])
-  function wrappedActionHandler (payload) {
-    let res = handler.call(store, {
-      dispatch: local.dispatch,
-      commit: local.commit,
-      getters: local.getters,
-      state: local.state,
-      rootGetters: store.getters,
-      rootState: store.state
-    }, payload)
+  function wrappedActionHandler(payload) {
+    let res = handler.call(
+      store,
+      {
+        dispatch: local.dispatch,
+        commit: local.commit,
+        getters: local.getters,
+        state: local.state,
+        rootGetters: store.getters,
+        rootState: store.state
+      },
+      payload
+    )
     if (!isPromise(res)) {
       res = Promise.resolve(res)
     }
@@ -392,11 +405,11 @@ function registerAction (store, type, handler, local) {
   entry.push(wrappedActionHandler)
 }
 
-function hasSimplePayload (action) {
+function hasSimplePayload(action) {
   return 'payload' in action && typeof action.payload !== 'object'
 }
 
-function unifyCommitArgs (type, payload = {}, options = {}) {
+function unifyCommitArgs(type, payload = {}, options = {}) {
   let action
   let meta
 
@@ -417,16 +430,17 @@ function unifyCommitArgs (type, payload = {}, options = {}) {
   return { action, meta, options: meta }
 }
 
-function collectState (store) {
+function collectState(store) {
   let state = store.state || {}
-  function collectModuleState (module, moduleName, moduleState) {
+  function collectModuleState(module, moduleName, moduleState) {
     if (moduleName) {
       moduleState[moduleName] = module.state
     }
     if (module.modules) {
       forEachValue(module.modules, (childModule, childModuleName) => {
-        let childModuleState =
-          moduleName ? moduleState[moduleName] : moduleState
+        let childModuleState = moduleName
+          ? moduleState[moduleName]
+          : moduleState
         collectModuleState(childModule, childModuleName, childModuleState)
       })
     }

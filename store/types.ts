@@ -19,7 +19,7 @@ let store = createStore<RootState>({
     value: 0
   },
   mutations: {
-    increment (state) {
+    increment(state) {
       state.value = state.value + 1
     }
   }

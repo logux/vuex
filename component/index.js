@@ -10,7 +10,7 @@ export let Subscribe = defineComponent({
       required: true
     }
   },
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     let { channels } = toRefs(props)
 
     let defaultSlot = slots.default

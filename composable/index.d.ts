@@ -1,8 +1,4 @@
-import {
-  Ref,
-  ComputedGetter,
-  ComputedRef
-} from '@vue/reactivity'
+import { Ref, ComputedGetter, ComputedRef } from '@vue/reactivity'
 
 import { LoguxVuexStore } from '../index.js'
 
@@ -66,7 +62,7 @@ export type useSubscriptionOptions = {
  * @param options Options.
  * @return `true` during data loading.
  */
-export function useSubscription (
+export function useSubscription(
   channels: Channels,
   options?: useSubscriptionOptions
 ): Ref<boolean>

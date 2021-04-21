@@ -9,7 +9,7 @@ interface RootState {
 let client = new CrossTabClient({
   server: 'wss://localhost:1337',
   subprotocol: '1.0.0',
-  userId: '10',
+  userId: '10'
 })
 
 let createStore = createStoreCreator(client)

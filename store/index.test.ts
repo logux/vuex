@@ -6,7 +6,8 @@ import { delay } from 'nanodelay'
 import {
   LoguxVuexOptions,
   LoguxVuexAction,
-  LoguxVuexActionTree
+  LoguxVuexActionTree,
+  LoguxVuexStore
 } from '../store/index.js'
 import { createStoreCreator } from '../index.js'
 
@@ -17,7 +18,9 @@ interface State {
   }
 }
 
-function createClient (opts: Partial<ClientOptions> = {}) {
+function createClient(
+  opts: Partial<ClientOptions> = {}
+): CrossTabClient<{}, TestLog<ClientMeta>> {
   let client = new CrossTabClient<{}, TestLog<ClientMeta>>({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
@@ -28,11 +31,11 @@ function createClient (opts: Partial<ClientOptions> = {}) {
   return client
 }
 
-function createStore (
+function createStore(
   mutations: MutationTree<State>,
   opts: Partial<ClientOptions & Partial<LoguxVuexOptions>> = {},
   modules: ModuleTree<State> = {}
-) {
+): LoguxVuexStore<State, TestLog<ClientMeta>> {
   let creatorOptions = {
     reasonlessHistory: opts.reasonlessHistory,
     onMissedHistory: opts.onMissedHistory,
@@ -46,16 +49,19 @@ function createStore (
   delete opts.cleanEvery
 
   let client = createClient(opts)
-  let _createStore = createStoreCreator<TestLog<ClientMeta>>(client, creatorOptions)
+  let _createStore = createStoreCreator<TestLog<ClientMeta>>(
+    client,
+    creatorOptions
+  )
   let store = _createStore({ state: { value: 0 }, mutations, modules })
   return store
 }
 
-function increment (state: State) {
-  state.value = state.value as number + 1
+function increment(state: State): void {
+  state.value = (state.value as number) + 1
 }
 
-function historyLine (state: State, payload: LoguxVuexAction) {
+function historyLine(state: State, payload: LoguxVuexAction): void {
   if (typeof payload === 'object') {
     state.value = `${state.value}${payload.value}`
   } else {
@@ -63,7 +69,7 @@ function historyLine (state: State, payload: LoguxVuexAction) {
   }
 }
 
-function emit (obj: any, event: string, ...args: any[]) {
+function emit(obj: any, event: string, ...args: any[]): void {
   obj.emitter.emit(event, ...args)
 }
 
@@ -124,7 +130,7 @@ it('commit from action context', () => {
   let _createStore = createStoreCreator<TestLog<ClientMeta>>(client)
   let mutations = { increment }
   let actions: LoguxVuexActionTree<State, State> = {
-    INC ({ commit }) {
+    INC({ commit }) {
       commit('increment')
       commit.local('increment')
       commit.sync('increment')
@@ -142,9 +148,9 @@ it('commit from action context', () => {
         mutations,
         actions: {
           ...actions,
-          'ROOT_INC': {
+          ROOT_INC: {
             root: true,
-            handler ({ commit }) {
+            handler({ commit }) {
               commit('increment')
             }
           }
@@ -168,7 +174,7 @@ it('vuex: detecting action Promise errors', () => {
   let error = new Error('no')
   let store = _createStore({
     actions: {
-      'TEST' () {
+      TEST() {
         return Promise.reject(error)
       }
     }
@@ -179,7 +185,8 @@ it('vuex: detecting action Promise errors', () => {
     emit: spy
   }
   let thenSpy = jest.fn()
-  store.dispatch('TEST')
+  store
+    .dispatch('TEST')
     .then(thenSpy)
     .catch(err => {
       expect(thenSpy).not.toHaveBeenCalled()
@@ -200,7 +207,7 @@ it('commit root mutation in namespaced module', () => {
         state: { value: 0 },
         mutations: { increment },
         actions: {
-          someAction ({ commit }) {
+          someAction({ commit }) {
             commit('increment')
             commit('increment', null, { root: true })
           }
@@ -247,7 +254,7 @@ it('listen for action from other tabs', () => {
 it('saves previous states', async () => {
   let calls = 0
   let store = createStore({
-    A () {
+    A() {
       calls += 1
     }
   })
@@ -267,20 +274,24 @@ it('saves previous states', async () => {
   expect(calls).toEqual(60)
   calls = 0
   await store.commit.crossTab(
-    { type: 'A' }, { id: '57 10:test1 1', reasons: ['test'] }
+    { type: 'A' },
+    { id: '57 10:test1 1', reasons: ['test'] }
   )
   expect(calls).toEqual(10)
 })
 
 it('changes history recording frequency', async () => {
   let calls = 0
-  let store = createStore({
-    A () {
-      calls += 1
+  let store = createStore(
+    {
+      A() {
+        calls += 1
+      }
+    },
+    {
+      saveStateEvery: 1
     }
-  }, {
-    saveStateEvery: 1
-  })
+  )
 
   await Promise.all([
     store.commit.crossTab({ type: 'A' }, { reasons: ['test'] }),
@@ -290,20 +301,24 @@ it('changes history recording frequency', async () => {
   ])
   calls = 0
   await store.commit.crossTab(
-    { type: 'A' }, { id: '3 10:test1 1', reasons: ['test'] }
+    { type: 'A' },
+    { id: '3 10:test1 1', reasons: ['test'] }
   )
   expect(calls).toEqual(2)
 })
 
 it('cleans its history on removing action', async () => {
   let calls = 0
-  let store = createStore({
-    A () {
-      calls += 1
+  let store = createStore(
+    {
+      A() {
+        calls += 1
+      }
+    },
+    {
+      saveStateEvery: 2
     }
-  }, {
-    saveStateEvery: 2
-  })
+  )
   let nodeId = store.client.nodeId
 
   await Promise.all([
@@ -317,7 +332,8 @@ it('cleans its history on removing action', async () => {
   await store.log.changeMeta(`5 ${nodeId} 0`, { reasons: [] })
   calls = 0
   await store.commit.crossTab(
-    { type: 'A' }, { id: `5 ${nodeId} 1`, reasons: ['test'] }
+    { type: 'A' },
+    { id: `5 ${nodeId} 1`, reasons: ['test'] }
   )
   expect(calls).toEqual(3)
 })
@@ -327,10 +343,12 @@ it('changes history', async () => {
 
   await Promise.all([
     store.commit.crossTab(
-      { type: 'historyLine', value: 'a' }, { reasons: ['test'] }
+      { type: 'historyLine', value: 'a' },
+      { reasons: ['test'] }
     ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'b' }, { reasons: ['test'] }
+      { type: 'historyLine', value: 'b' },
+      { reasons: ['test'] }
     )
   ])
   store.commit({ type: 'historyLine', value: 'c' })
@@ -343,34 +361,46 @@ it('changes history', async () => {
 })
 
 it('undoes actions', async () => {
-  let store = createStore({ historyLine }, {
-    saveStateEvery: 1
-  })
+  let store = createStore(
+    { historyLine },
+    {
+      saveStateEvery: 1
+    }
+  )
   let nodeId = store.client.nodeId
 
   await Promise.all([
     store.commit.crossTab(
-      { type: 'historyLine', value: 'a' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'a' },
+      { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'b' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'b' },
+      { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'c' }, { reasons: ['test'] })
+      { type: 'historyLine', value: 'c' },
+      { reasons: ['test'] }
+    )
   ])
   expect(store.state.value).toEqual('0abc')
 
   await store.commit.crossTab(
-    { type: 'logux/undo', id: `3 ${nodeId} 0` }, { reasons: ['test'] }
+    { type: 'logux/undo', id: `3 ${nodeId} 0` },
+    { reasons: ['test'] }
   )
   await delay(1)
   expect(store.state.value).toEqual('0ab')
 
   await store.commit.crossTab(
-    { type: 'historyLine', value: 'd' }, { reasons: ['test'] }
+    { type: 'historyLine', value: 'd' },
+    { reasons: ['test'] }
   )
   expect(store.state.value).toEqual('0abd')
 
   await store.commit.crossTab(
-    { type: 'logux/undo', id: `5 ${nodeId} 0` }, { reasons: ['test'] }
+    { type: 'logux/undo', id: `5 ${nodeId} 0` },
+    { reasons: ['test'] }
   )
   await delay(1)
   expect(store.state.value).toEqual('0ab')
@@ -378,23 +408,30 @@ it('undoes actions', async () => {
 
 it('ignores cleaned history from non-legacy actions', async () => {
   let onMissedHistory = jest.fn()
-  let store = createStore({ historyLine }, {
-    onMissedHistory,
-    saveStateEvery: 2
-  })
+  let store = createStore(
+    { historyLine },
+    {
+      onMissedHistory,
+      saveStateEvery: 2
+    }
+  )
 
   await Promise.all([
     store.commit.crossTab(
-      { type: 'historyLine', value: 'a' }, { reasons: ['one'] }
+      { type: 'historyLine', value: 'a' },
+      { reasons: ['one'] }
     ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'b' }, { reasons: ['test'] }
+      { type: 'historyLine', value: 'b' },
+      { reasons: ['test'] }
     ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'c' }, { reasons: ['test'] }
+      { type: 'historyLine', value: 'c' },
+      { reasons: ['test'] }
     ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'd' }, { reasons: ['test'] }
+      { type: 'historyLine', value: 'd' },
+      { reasons: ['test'] }
     )
   ])
   await store.log.removeReason('one')
@@ -409,7 +446,8 @@ it('ignores cleaned history from non-legacy actions', async () => {
 
 it('does not replays actions on logux/ actions', async () => {
   let commited: string[] = []
-  let saveCommited: Mutation<State> = (state, action) => commited.push(action.type)
+  let saveCommited: Mutation<State> = (state, action) =>
+    commited.push(action.type)
   let store = createStore({
     'A': saveCommited,
     'B': saveCommited,
@@ -438,11 +476,17 @@ it('replays history for reason-less action', async () => {
 
   await Promise.all([
     store.commit.crossTab(
-      { type: 'historyLine', value: 'a' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'a' },
+      { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'b' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'b' },
+      { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'c' }, { reasons: ['test'] })
+      { type: 'historyLine', value: 'c' },
+      { reasons: ['test'] }
+    )
   ])
   store.commit.crossTab(
     { type: 'historyLine', value: '|' },
@@ -455,18 +499,27 @@ it('replays history for reason-less action', async () => {
 
 it('replays actions before staring since initial state', async () => {
   let onMissedHistory = jest.fn()
-  let store = createStore({ historyLine }, {
-    onMissedHistory,
-    saveStateEvery: 2
-  })
+  let store = createStore(
+    { historyLine },
+    {
+      onMissedHistory,
+      saveStateEvery: 2
+    }
+  )
 
   await Promise.all([
     store.commit.crossTab(
-      { type: 'historyLine', value: 'b' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'b' },
+      { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'c' }, { reasons: ['test'] }),
+      { type: 'historyLine', value: 'c' },
+      { reasons: ['test'] }
+    ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'd' }, { reasons: ['test'] })
+      { type: 'historyLine', value: 'd' },
+      { reasons: ['test'] }
+    )
   ])
   store.commit.crossTab(
     { type: 'historyLine', value: '|' },
@@ -479,12 +532,15 @@ it('replays actions before staring since initial state', async () => {
 
 it('replays actions on missed history', async () => {
   let onMissedHistory = jest.fn()
-  let store = createStore({ historyLine }, {
-    reasonlessHistory: 2,
-    onMissedHistory,
-    saveStateEvery: 2,
-    cleanEvery: 1
-  })
+  let store = createStore(
+    { historyLine },
+    {
+      reasonlessHistory: 2,
+      onMissedHistory,
+      saveStateEvery: 2,
+      cleanEvery: 1
+    }
+  )
 
   store.commit({ type: 'historyLine', value: 'a' })
   store.commit({ type: 'historyLine', value: 'b' })
@@ -497,9 +553,10 @@ it('replays actions on missed history', async () => {
   )
   await delay(1)
   expect(store.state.value).toEqual('0abc[d')
-  expect(onMissedHistory).toHaveBeenCalledWith(
-    { type: 'historyLine', value: '[' }
-  )
+  expect(onMissedHistory).toHaveBeenCalledWith({
+    type: 'historyLine',
+    value: '['
+  })
   store.commit.crossTab(
     { type: 'historyLine', value: ']' },
     { id: '0 10:test1 1', reasons: ['test'] }
@@ -509,11 +566,14 @@ it('replays actions on missed history', async () => {
 })
 
 it('works without onMissedHistory', async () => {
-  let store = createStore({ historyLine }, {
-    reasonlessHistory: 2,
-    saveStateEvery: 2,
-    cleanEvery: 1
-  })
+  let store = createStore(
+    { historyLine },
+    {
+      reasonlessHistory: 2,
+      saveStateEvery: 2,
+      cleanEvery: 1
+    }
+  )
   store.commit({ type: 'ADD', value: 'a' })
   store.commit({ type: 'ADD', value: 'b' })
   store.commit({ type: 'ADD', value: 'c' })
@@ -529,7 +589,8 @@ it('does not fall on missed onMissedHistory', async () => {
   let store = createStore({ historyLine })
 
   await store.commit.crossTab(
-    { type: 'historyLine', value: 'a' }, { reasons: ['first'] }
+    { type: 'historyLine', value: 'a' },
+    { reasons: ['first'] }
   )
   await store.log.removeReason('first')
   await store.commit.crossTab(
@@ -546,7 +607,7 @@ it('cleans action added without reason', async () => {
   store.commit.local({ type: 'historyLine', value: 0 }, { reasons: ['test'] })
   expect(store.log.entries()[0][1].reasons).toEqual(['test'])
 
-  function add (index: number) {
+  function add(index: number) {
     return () => {
       store.commit({ type: 'historyLine', value: 4 * index - 3 })
       store.commit.local({ type: 'historyLine', value: 4 * index - 2 })
@@ -595,11 +656,10 @@ it('copies reasons to undo action', async () => {
   let store = createStore({ increment })
   let nodeId = store.client.nodeId
 
+  await store.commit.crossTab({ type: 'increment' }, { reasons: ['a', 'b'] })
   await store.commit.crossTab(
-    { type: 'increment' }, { reasons: ['a', 'b'] }
-  )
-  await store.commit.crossTab(
-    { type: 'logux/undo', id: `1 ${nodeId} 0` }, { reasons: [] }
+    { type: 'logux/undo', id: `1 ${nodeId} 0` },
+    { reasons: [] }
   )
   let result = await store.log.byId(`2 ${nodeId} 0`)
   if (result[0] === null) throw new Error('Action was not found')
@@ -643,21 +703,27 @@ it('cleans sync action after processing', async () => {
   let store = createStore({ increment }, { server: pair.left })
   let resultA, resultB
 
-  store.commit.sync({ type: 'A' }).then(() => {
-    resultA = 'processed'
-  }).catch(e => {
-    expect(e.message).toContain('undid')
-    expect(e.message).toContain('because of error')
-    resultA = e.action.reason
-  })
+  store.commit
+    .sync({ type: 'A' })
+    .then(() => {
+      resultA = 'processed'
+    })
+    .catch(e => {
+      expect(e.message).toContain('undid')
+      expect(e.message).toContain('because of error')
+      resultA = e.action.reason
+    })
 
-  store.commit.sync({ type: 'B' }, { id: '3 10:1:1 0' }).then(() => {
-    resultB = 'processed'
-  }).catch(e => {
-    expect(e.message).toContain('undid')
-    expect(e.message).toContain('because of error')
-    resultB = e.action.reason
-  })
+  store.commit
+    .sync({ type: 'B' }, { id: '3 10:1:1 0' })
+    .then(() => {
+      resultB = 'processed'
+    })
+    .catch(e => {
+      expect(e.message).toContain('undid')
+      expect(e.message).toContain('because of error')
+      resultB = e.action.reason
+    })
 
   store.log.removeReason('timeTravel')
   await store.log.add({ type: 'logux/processed', id: '0 10:1:1 0' })
@@ -672,6 +738,7 @@ it('cleans sync action after processing', async () => {
   await delay(1)
   expect(resultB).toEqual('error')
   expect(store.log.actions()).toEqual([])
+  // eslint-disable-next-line no-console
   expect(console.warn).not.toHaveBeenCalled()
 })
 
@@ -681,16 +748,20 @@ it('applies old actions from store', async () => {
 
   await Promise.all([
     store1.commit.crossTab(
-      { type: 'historyLine', value: '1' }, { id: '0 10:x 1', reasons: ['test'] }
+      { type: 'historyLine', value: '1' },
+      { id: '0 10:x 1', reasons: ['test'] }
     ),
     store1.commit.crossTab(
-      { type: 'historyLine', value: '2' }, { id: '0 10:x 2', reasons: ['test'] }
+      { type: 'historyLine', value: '2' },
+      { id: '0 10:x 2', reasons: ['test'] }
     ),
     store1.commit.crossTab(
-      { type: 'historyLine', value: '3' }, { id: '0 10:x 3', reasons: ['test'] }
+      { type: 'historyLine', value: '3' },
+      { id: '0 10:x 3', reasons: ['test'] }
     ),
     store1.commit.crossTab(
-      { type: 'historyLine', value: '4' }, { id: '0 10:x 4', reasons: ['test'] }
+      { type: 'historyLine', value: '4' },
+      { id: '0 10:x 4', reasons: ['test'] }
     ),
     store1.log.add(
       { type: 'historyLine', value: '5' },
@@ -706,7 +777,8 @@ it('applies old actions from store', async () => {
   store2.commit({ type: 'historyLine', value: 'a' })
   store2.commit({ type: 'historyLine', value: 'b' })
   store2.commit.crossTab(
-    { type: 'historyLine', value: 'c' }, { reasons: ['test'] }
+    { type: 'historyLine', value: 'c' },
+    { reasons: ['test'] }
   )
   store2.commit({ type: 'historyLine', value: 'd' })
   store2.commit({ type: 'historyLine', value: 'e' })
@@ -775,11 +847,14 @@ it('applies old actions from store in modules', async () => {
   store2.commit({ type: 'user/historyLine', value: 'a' })
   store2.commit({ type: 'user/historyLine', value: 'b' })
   store2.commit.crossTab(
-    { type: 'user/historyLine', value: 'c' }, { reasons: ['test'] }
+    { type: 'user/historyLine', value: 'c' },
+    { reasons: ['test'] }
   )
   store2.commit({ type: 'user/historyLine', value: 'd' })
   store2.commit({ type: 'user/historyLine', value: 'e' })
-  if (typeof store2.state.user === 'undefined') throw new Error('user is undefined')
+  if (typeof store2.state.user === 'undefined') {
+    throw new Error('user is undefined')
+  }
   expect(store2.state.user.value).toEqual('0abde')
 
   await store2.initialize
@@ -841,11 +916,14 @@ it('applies old actions from store in namespaced modules', async () => {
   store2.commit({ type: 'user/historyLine', value: 'a' })
   store2.commit({ type: 'user/historyLine', value: 'b' })
   store2.commit.crossTab(
-    { type: 'user/historyLine', value: 'c' }, { reasons: ['test'] }
+    { type: 'user/historyLine', value: 'c' },
+    { reasons: ['test'] }
   )
   store2.commit({ type: 'user/historyLine', value: 'd' })
   store2.commit({ type: 'user/historyLine', value: 'e' })
-  if (typeof store2.state.user === 'undefined') throw new Error('user is undefined')
+  if (typeof store2.state.user === 'undefined') {
+    throw new Error('user is undefined')
+  }
   expect(store2.state.user.value).toEqual('0abde')
 
   await store2.initialize
@@ -889,13 +967,16 @@ it('applies old actions from store in nested modules', async () => {
 
   await Promise.all([
     store1.commit.crossTab('historyLine', '1', {
-      id: '0 10:x 1', reasons: ['test']
+      id: '0 10:x 1',
+      reasons: ['test']
     }),
     store1.commit.crossTab('a/historyLine', '2', {
-      id: '0 10:x 2', reasons: ['test']
+      id: '0 10:x 2',
+      reasons: ['test']
     }),
     store1.commit.crossTab('a/c/d/historyLine', '3', {
-      id: '0 10:x 3', reasons: ['test']
+      id: '0 10:x 3',
+      reasons: ['test']
     })
   ])
 
@@ -996,17 +1077,21 @@ it('waits for replaying', async () => {
   }
 
   await store.commit.crossTab(
-    { type: 'historyLine', value: 'b' }, { reasons: ['t'] }
+    { type: 'historyLine', value: 'b' },
+    { reasons: ['t'] }
   )
   await store.commit.crossTab(
-    { type: 'historyLine', value: 'a' }, { id: '0 test 0', reasons: ['t'] }
+    { type: 'historyLine', value: 'a' },
+    { id: '0 test 0', reasons: ['t'] }
   )
   await Promise.all([
     store.commit.crossTab(
-      { type: 'historyLine', value: 'c' }, { reasons: ['o'] }
+      { type: 'historyLine', value: 'c' },
+      { reasons: ['o'] }
     ),
     store.commit.crossTab(
-      { type: 'historyLine', value: 'd' }, { reasons: ['t'] }
+      { type: 'historyLine', value: 'd' },
+      { reasons: ['t'] }
     )
   ])
   delay(1)
@@ -1034,25 +1119,14 @@ it('emits change event', async () => {
   store.commit({ type: 'historyLine', value: 'a' })
   store.commit.local({ type: 'historyLine', value: 'c' })
   store.commit.local(
-    { type: 'historyLine', value: 'b' }, { id: '1 10:test1 1' }
+    { type: 'historyLine', value: 'b' },
+    { id: '1 10:test1 1' }
   )
   await delay(10)
   expect(calls).toEqual([
-    [
-      { value: '0a' },
-      { value: 0 },
-      { type: 'historyLine', value: 'a' }
-    ],
-    [
-      { value: '0ac' },
-      { value: '0a' },
-      { type: 'historyLine', value: 'c' }
-    ],
-    [
-      { value: '0abc' },
-      { value: '0ac' },
-      { type: 'historyLine', value: 'b' }
-    ]
+    [{ value: '0a' }, { value: 0 }, { type: 'historyLine', value: 'a' }],
+    [{ value: '0ac' }, { value: '0a' }, { type: 'historyLine', value: 'c' }],
+    [{ value: '0abc' }, { value: '0ac' }, { type: 'historyLine', value: 'b' }]
   ])
 })
 
@@ -1073,7 +1147,9 @@ it('does not put reason on request', async () => {
   await store.commit.crossTab({ type: 'a' }, { reasons: ['a'] })
   await store.commit.crossTab({ type: 'b' }, { keepLast: 'b' })
   expect(store.log.actions()).toEqual([
-    { type: 'B' }, { type: 'a' }, { type: 'b' }
+    { type: 'B' },
+    { type: 'a' },
+    { type: 'b' }
   ])
   expect(store.log.entries()[1][1].noAutoReason).toBe(true)
   expect(store.log.entries()[2][1].noAutoReason).toBe(true)

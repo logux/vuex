@@ -1,9 +1,6 @@
 import { Unsubscribe } from 'nanoevents'
+import { Client, ClientMeta } from '@logux/client'
 import { Action, AnyAction, Log } from '@logux/core'
-import {
-  Client,
-  ClientMeta
-} from '@logux/client'
 import {
   CommitOptions,
   Store as VuexStore,
@@ -160,7 +157,7 @@ export class LoguxVuexStore<
   L extends Log = Log<ClientMeta>,
   C extends Client = Client<{}, L>
 > extends VuexStore<S> {
-  constructor (options: LoguxVuexStoreOptions<S>)
+  constructor(options: LoguxVuexStoreOptions<S>)
 
   dispatch: VuexDispatch
 
@@ -184,7 +181,7 @@ export class LoguxVuexStore<
    * @param listener The listener function.
    * @returns Unbind listener from event.
    */
-  on (event: 'change', listener: StateListener<S>): Unsubscribe
+  on(event: 'change', listener: StateListener<S>): Unsubscribe
 
   /**
    * Logux synchronization client.
@@ -274,4 +271,4 @@ export interface createStore<
 export function createStoreCreator<
   L extends Log = Log<ClientMeta>,
   C extends Client = Client<{}, L>
-> (client: C, options?: LoguxVuexOptions): createStore<L, C>
+>(client: C, options?: LoguxVuexOptions): createStore<L, C>
