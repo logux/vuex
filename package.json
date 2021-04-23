@@ -15,9 +15,13 @@
   "license": "MIT",
   "homepage": "https://logux.io/",
   "repository": "logux/vuex",
-  "types": "./index.d.ts",
   "sideEffects": false,
   "type": "module",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./": "./"
+  },
   "engines": {
     "node": "^12.0.0 || >=14.0.0"
   },
