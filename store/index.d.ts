@@ -199,7 +199,7 @@ export class LoguxVuexStore<
   initialize: Promise<void>
 }
 
-export type LoguxVuexOptions = {
+export interface LoguxVuexOptions {
   /**
    * How many actions without `meta.reasons` will be kept for time travel.
    * Default is `1000`.

@@ -14,7 +14,7 @@ export type Channels =
   | ComputedRef<Channel[]>
   | Channel[]
 
-export type useSubscriptionOptions = {
+export interface useSubscriptionOptions {
   /**
    * Logux Vuex store.
    */
