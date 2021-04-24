@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es2018",
-    "allowJs": true,
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   },
   "exclude": [
     "**/errors.ts"
