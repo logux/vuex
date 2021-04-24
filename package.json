@@ -27,7 +27,7 @@
   "peerDependencies": {
     "@logux/client": "logux/client#next",
     "@logux/core": "logux/core#next",
-    "vue": ">=3.0.10",
+    "vue": ">=3.0.11",
     "vuex": ">=4.0.0"
   },
   "dependencies": {
@@ -43,7 +43,7 @@
     "@types/jest": "^26.0.22",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
-    "@vue/test-utils": "^2.0.0-rc.4",
+    "@vue/test-utils": "^2.0.0-rc.6",
     "check-dts": "^0.4.4",
     "eslint": "^7.25.0",
     "eslint-config-standard": "^16.0.2",
@@ -62,7 +62,7 @@
     "size-limit": "^4.10.2",
     "ts-jest": "^27.0.0-next.11",
     "typescript": "^4.2.4",
-    "vue": "^3.0.10",
+    "vue": "^3.0.11",
     "vuex": "^4.0.0",
     "yaspeller": "^7.0.0"
   },
