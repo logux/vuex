@@ -52,9 +52,9 @@ let UserPhoto = defineComponent({
     let src = computed(() => `${id.value}.jpg`)
 
     let isSubscribing = useSubscription(
-      () => {
+      computed(() => {
         return [{ channel: `users/${id.value}`, fields: ['photo'] }]
-      },
+      }),
       { debounce: debounce.value }
     )
 
@@ -305,10 +305,12 @@ it('works on channels size changes', async () => {
     setup(props) {
       let { ids } = toRefs(props)
 
-      let isSubscribing = useSubscription(() => {
-        if (typeof ids === 'undefined') return []
-        return ids.value.map((id: string) => `users/${id}`)
-      })
+      let isSubscribing = useSubscription(
+        computed(() => {
+          if (typeof ids === 'undefined') return []
+          return ids.value.map((id: string) => `users/${id}`)
+        })
+      )
 
       return () =>
         h('div', {
@@ -397,7 +399,7 @@ it('don’t resubscribe on the same channel', async () => {
       ids: { type: Array, required: true }
     },
     setup(props) {
-      useSubscription(() => props.ids.map(id => `users/${id}`))
+      useSubscription(computed(() => props.ids.map(id => `users/${id}`)))
       return () => h('div')
     }
   })
@@ -423,7 +425,10 @@ it('supports different store sources', async () => {
 
       async function subscribe(): Promise<void> {
         await nextTick()
-        useSubscription(() => ['users'], { store })
+        useSubscription(
+          computed(() => ['users']),
+          { store }
+        )
       }
       subscribe()
 

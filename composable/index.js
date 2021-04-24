@@ -1,68 +1,53 @@
-import { ref, isRef, watch, computed, onBeforeUnmount } from 'vue'
+import { ref, isRef, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 
 export function useSubscription(channels, options = {}) {
   let store = options.store || useStore()
   let debounce = options.debounce || 0
   let isSubscribing = ref(true)
-  let channelsRef
 
-  if (typeof channels === 'function') {
-    channelsRef = computed(channels)
-  } else if (isRef(channels)) {
-    channelsRef = channels
+  if (!isRef(channels)) {
+    channels = ref(channels)
   }
 
-  if (channelsRef) {
-    let subscriptions = computed(() => unifyChannelsObject(channelsRef.value))
-    let id = computed(() => subscriptionsId(subscriptions.value))
+  let subscriptions = computed(() => unifyChannelsObject(channels.value))
+  let id = computed(() => subscriptionsId(subscriptions.value))
 
-    watch(
-      () => id.value,
-      (newId, oldId, onInvalidate) => {
-        let oldSubscriptions = subscriptions.value
-        let ignoreResponse = false
-        let timeout
+  watch(
+    id,
+    (newId, oldId, onInvalidate) => {
+      let oldSubscriptions = subscriptions.value
+      let ignoreResponse = false
+      let timeout
 
-        function resetTimeout() {
-          clearTimeout(timeout)
-          timeout = null
-        }
+      function resetTimeout() {
+        clearTimeout(timeout)
+        timeout = null
+      }
 
-        if (debounce > 0) {
-          timeout = setTimeout(() => {
-            isSubscribing.value = true
-          }, debounce)
-        } else {
+      if (debounce > 0) {
+        timeout = setTimeout(() => {
           isSubscribing.value = true
+        }, debounce)
+      } else {
+        isSubscribing.value = true
+      }
+
+      subscribe(store, subscriptions.value).then(() => {
+        if (timeout) resetTimeout(timeout)
+        if (!ignoreResponse) {
+          isSubscribing.value = false
         }
+      })
 
-        subscribe(store, subscriptions.value).then(() => {
-          if (timeout) resetTimeout(timeout)
-          if (!ignoreResponse) {
-            isSubscribing.value = false
-          }
-        })
-
-        onInvalidate(() => {
-          ignoreResponse = true
-          unsubscribe(store, oldSubscriptions)
-          if (timeout) resetTimeout(timeout)
-        })
-      },
-      { immediate: true }
-    )
-  } else {
-    let subscriptions = unifyChannelsObject(channels)
-
-    subscribe(store, subscriptions).then(() => {
-      isSubscribing.value = false
-    })
-
-    onBeforeUnmount(() => {
-      unsubscribe(store, subscriptions)
-    })
-  }
+      onInvalidate(() => {
+        ignoreResponse = true
+        unsubscribe(store, oldSubscriptions)
+        if (timeout) resetTimeout(timeout)
+      })
+    },
+    { immediate: true }
+  )
 
   return isSubscribing
 }

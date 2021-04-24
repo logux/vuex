@@ -6,10 +6,13 @@ defineComponent({
   setup() {
     useSubscription(['users'])
 
-    useSubscription(() => ['users'])
+    useSubscription(computed(() => ['users']))
 
     let store = useStore()
-    useSubscription(() => ['users'], { store })
+    useSubscription(
+      computed(() => ['users']),
+      { store }
+    )
 
     let channels = computed(() => ['users'])
     useSubscription(channels)
@@ -22,11 +25,6 @@ defineComponent({
     let { id } = toRefs(props)
 
     useSubscription([
-      { channel: 'users' },
-      { channel: `users/${id}`, fields: ['name'] }
-    ])
-
-    useSubscription(() => [
       { channel: 'users' },
       { channel: `users/${id}`, fields: ['name'] }
     ])
