@@ -1,8 +1,10 @@
-import { createStore as createVuexStore } from 'vuex'
+import vuex from 'vuex'
 import { createNanoEvents } from 'nanoevents'
 import { isFirstOlder } from '@logux/core'
 
 import { deepCopy, isPromise, forEachValue } from '../utils/index.js'
+
+let { createStore: createVuexStore } = vuex
 
 export function createStoreCreator(client, options = {}) {
   let reasonlessHistory = options.reasonlessHistory || 1000

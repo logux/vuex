@@ -18,9 +18,9 @@ defineComponent({
     useSubscription(computed(() => 'users'))
 
     let store = useStore()
-    // THROWS Type 'Store<any>' is missing the following properties from type 'LoguxVuexStore<any, Log<ClientMeta, LogStore>, Client<{}, Log<ClientMeta, LogStore>>>': on, client, log, initialize
     useSubscription(
       computed(() => ['users']),
+      // THROWS Type 'Store<any>' is missing the following properties
       { store }
     )
 

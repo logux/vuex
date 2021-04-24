@@ -2,6 +2,7 @@ import { CrossTabClient, ClientMeta, ClientOptions } from '@logux/client'
 import { Action, TestLog, TestPair, TestTime } from '@logux/core'
 import { ModuleTree, Mutation, MutationTree } from 'vuex'
 import { delay } from 'nanodelay'
+import { jest } from '@jest/globals'
 
 import {
   LoguxVuexOptions,

@@ -1,1 +1,5 @@
-export { useStore } from 'vuex'
+import vuex from 'vuex'
+
+let { useStore } = vuex
+
+export { useStore }

@@ -13,6 +13,7 @@ import { CrossTabClient, ClientMeta } from '@logux/client'
 import { mount, VueWrapper } from '@vue/test-utils'
 import { TestLog, TestTime } from '@logux/core'
 import { delay } from 'nanodelay'
+import { jest } from '@jest/globals'
 
 import { useStore, useSubscription, createStoreCreator } from '../index.js'
 

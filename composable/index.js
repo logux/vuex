@@ -1,5 +1,7 @@
 import { ref, isRef, watch, computed } from 'vue'
-import { useStore } from 'vuex'
+import vuex from 'vuex'
+
+let { useStore } = vuex
 
 export function useSubscription(channels, options = {}) {
   let store = options.store || useStore()
