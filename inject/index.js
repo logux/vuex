@@ -1,3 +1,5 @@
-let { useStore } = require('vuex')
+import vuex from 'vuex'
 
-module.exports = { useStore }
+let { useStore } = vuex
+
+export { useStore }

@@ -1,4 +1,4 @@
-import { Ref, ComputedGetter, ComputedRef } from '@vue/reactivity'
+import { Ref } from 'vue'
 
 import { LoguxVuexStore } from '../index.js'
 
@@ -9,12 +9,9 @@ export type Channel =
       [key: string]: any
     }
 
-export type Channels =
-  | ComputedGetter<Channel[]>
-  | ComputedRef<Channel[]>
-  | Channel[]
+export type Channels = Channel[] | Ref<Channel[]>
 
-export type useSubscriptionOptions = {
+export interface useSubscriptionOptions {
   /**
    * Logux Vuex store.
    */
@@ -40,7 +37,7 @@ export type useSubscriptionOptions = {
  * </template>
  *
  * <script>
- * import { toRefs } from 'vue'
+ * import { computed, toRefs } from 'vue'
  * import { useStore, useSubscription } from '@logux/vuex'
  *
  * export default {
@@ -48,7 +45,9 @@ export type useSubscriptionOptions = {
  *   setup (props) {
  *     let store = useStore()
  *     let { userId } = toRefs(props)
- *     let isSubscribing = useSubscription(() => [`user/${userId.value}`])
+ *
+ *     let channels = computed(() => [`user/${userId.value}`])
+ *     let isSubscribing = useSubscription(channels)
  *
  *     let user = computed(() => store.state.users[userId.value])
  *

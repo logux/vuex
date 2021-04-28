@@ -1,6 +1,6 @@
 import { Unsubscribe } from 'nanoevents'
-import { Action, Log } from '@logux/core'
 import { Client, ClientMeta } from '@logux/client'
+import { Action, AnyAction, Log } from '@logux/core'
 import {
   CommitOptions,
   Store as VuexStore,
@@ -11,7 +11,7 @@ import {
   ActionContext as VuexActionContext
 } from 'vuex'
 
-export type LoguxVuexAction = Action & VuexPayload
+export type LoguxVuexAction = AnyAction & VuexPayload
 
 export interface LoguxVuexCommit extends VuexCommit {
   (type: string, payload?: any, options?: CommitOptions): void
@@ -199,7 +199,7 @@ export class LoguxVuexStore<
   initialize: Promise<void>
 }
 
-export type LoguxVuexOptions = {
+export interface LoguxVuexOptions {
   /**
    * How many actions without `meta.reasons` will be kept for time travel.
    * Default is `1000`.
@@ -240,13 +240,14 @@ export interface createStore<
  * Connects Logux client to Vuex’s `createStore` function.
  *
  * ```js
- * import { CrossTabClient, createStoreCreator } from '@logux/vuex'
+ * import { CrossTabClient } from '@logux/client'
+ * import { createStoreCreator } from '@logux/vuex'
  *
  * const client = new CrossTabClient({
- *   subprotocol: '1.0.0',
  *   server: process.env.NODE_ENV === 'development'
  *     ? 'ws://localhost:31337'
  *     : 'wss://logux.example.com',
+ *   subprotocol: '1.0.0',
  *   userId: 'anonymous',
  *   token: ''
  * })

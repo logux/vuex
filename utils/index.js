@@ -1,8 +1,8 @@
-function find(list, f) {
+export function find (list, f) {
   return list.filter(f)[0]
 }
 
-function deepCopy(obj, cache = []) {
+export function deepCopy (obj, cache = []) {
   if (obj === null || typeof obj !== 'object') {
     return obj
   }
@@ -25,17 +25,10 @@ function deepCopy(obj, cache = []) {
   return copy
 }
 
-function forEachValue(obj, fn) {
+export function forEachValue (obj, fn) {
   Object.keys(obj).forEach(key => fn(obj[key], key))
 }
 
-function isPromise(val) {
+export function isPromise (val) {
   return val && typeof val.then === 'function'
-}
-
-module.exports = {
-  find,
-  deepCopy,
-  isPromise,
-  forEachValue
 }

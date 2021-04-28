@@ -9,56 +9,62 @@
     "websocket"
   ],
   "scripts": {
-    "test": "jest --coverage && eslint . && check-dts && size-limit && yaspeller *.md"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage && eslint . && check-dts && size-limit && yaspeller *.md"
   },
   "author": "Eduard Aksamitov <e@edaks.co>",
   "license": "MIT",
   "homepage": "https://logux.io/",
   "repository": "logux/vuex",
-  "types": "./index.d.ts",
   "sideEffects": false,
+  "type": "module",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
   "engines": {
-    "node": ">=10.0.0"
+    "node": "^12.0.0 || ^14.0.0 || >=16.0.0"
   },
   "peerDependencies": {
-    "vue": ">=3.0.10",
+    "@logux/client": "^0.10.0",
+    "@logux/core": "^0.7.0",
+    "vue": ">=3.0.11",
     "vuex": ">=4.0.0"
   },
   "dependencies": {
-    "@logux/client": "^0.9.3",
-    "@logux/core": "^0.6.2",
-    "nanoevents": "^5.1.13"
+    "nanoevents": "^6.0.0"
   },
   "devDependencies": {
-    "@logux/eslint-config": "^45.2.1",
-    "@logux/sharec-config": "^0.9.0",
-    "@size-limit/dual-publish": "^4.10.2",
+    "@babel/core": "^7.13.16",
+    "@logux/client": "^0.10.0",
+    "@logux/core": "^0.7.0",
+    "@logux/eslint-config": "^45.4.1",
+    "@logux/sharec-config": "^0.10.1",
     "@size-limit/preset-small-lib": "^4.10.2",
-    "@types/jest": "^26.0.22",
-    "@typescript-eslint/eslint-plugin": "^4.20.0",
-    "@typescript-eslint/parser": "^4.20.0",
-    "@vue/test-utils": "^2.0.0-rc.4",
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "@vue/test-utils": "^2.0.0-rc.6",
     "check-dts": "^0.4.4",
-    "dual-publish": "^1.0.5",
-    "eslint": "^7.23.0",
+    "clean-publish": "^2.1.1",
+    "eslint": "^7.25.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^24.3.2",
+    "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^1.1.0",
-    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-unicorn": "^29.0.0",
-    "jest": "^26.6.3",
+    "eslint-plugin-unicorn": "^31.0.0",
+    "jest": "^27.0.0-next.8",
     "lint-staged": "^10.5.4",
-    "nanodelay": "^1.0.8",
+    "nanodelay": "^2.0.0",
     "prettier": "^2.2.1",
-    "rimraf": "^3.0.2",
-    "simple-git-hooks": "^2.2.0",
+    "simple-git-hooks": "^2.4.1",
     "size-limit": "^4.10.2",
-    "ts-jest": "^26.5.4",
-    "typescript": "^4.2.3",
-    "vue": "^3.0.10",
+    "ts-jest": "^27.0.0-next.11",
+    "typescript": "^4.2.4",
+    "vue": "^3.0.11",
     "vuex": "^4.0.0",
     "yaspeller": "^7.0.0"
   },
@@ -77,7 +83,16 @@
     ]
   },
   "jest": {
-    "preset": "ts-jest",
+    "preset": "ts-jest/presets/default-esm",
+    "testEnvironment": "jsdom",
+    "globals": {
+      "ts-jest": {
+        "useESM": true
+      }
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@logux)"
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 100
@@ -93,8 +108,9 @@
     "trailingComma": "none"
   },
   "eslintConfig": {
-    "extends": "@logux/eslint-config/ts",
+    "extends": "@logux/eslint-config/esm",
     "rules": {
+      "jest/no-conditional-expect": "off",
       "@typescript-eslint/no-var-requires": "off",
       "@typescript-eslint/no-explicit-any": "off"
     }
@@ -104,14 +120,20 @@
   ],
   "size-limit": [
     {
-      "name": "Store",
-      "import": "{ CrossTabClient, createStoreCreator, useStore }",
-      "limit": "10.1 KB"
+      "name": "Client + Store",
+      "import": {
+        "@logux/client": "{ CrossTabClient }",
+        "./index.js": "{ createStoreCreator }"
+      },
+      "limit": "6 KB"
     },
     {
-      "name": "Store + Helpers",
-      "import": "{ CrossTabClient, createStoreCreator, useStore, useSubscription, Subscribe }",
-      "limit": "11 KB"
+      "name": "Client + Store + Helpers",
+      "import": {
+        "@logux/client": "{ CrossTabClient }",
+        "./index.js": "{ createStoreCreator, useStore, useSubscription }"
+      },
+      "limit": "6 KB"
     }
   ],
   "yaspeller": {
@@ -139,11 +161,13 @@
       "refactor",
       "composable",
       "unsubscribes",
-      "nanoevents"
+      "nanoevents",
+      "ESM",
+      "js"
     ]
   },
   "sharec": {
     "config": "@logux/sharec-config",
-    "version": "0.9.0"
+    "version": "0.10.1"
   }
 }

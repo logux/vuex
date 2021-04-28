@@ -7,12 +7,13 @@ import {
   defineComponent,
   ComponentPublicInstance
 } from 'vue'
+import { CrossTabClient, ClientMeta } from '@logux/client'
 import { mount, VueWrapper } from '@vue/test-utils'
 import { TestLog, TestTime } from '@logux/core'
-import { ClientMeta } from '@logux/client'
 import { delay } from 'nanodelay'
+import { jest } from '@jest/globals'
 
-import { Subscribe, CrossTabClient, createStoreCreator } from '../index.js'
+import { createStoreCreator, Subscribe } from '../index.js'
 
 interface ExtendedComponent extends VueWrapper<ComponentPublicInstance> {
   client?: any
@@ -86,8 +87,8 @@ let SubscribeUserPhoto = defineComponent({
 })
 
 it('throw empty scoped slot', () => {
-  jest.spyOn(console, 'warn').mockImplementation()
-  jest.spyOn(console, 'error').mockImplementation()
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
+  jest.spyOn(console, 'error').mockImplementation(() => {})
 
   expect(() => {
     createComponent(Subscribe, {
