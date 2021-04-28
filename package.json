@@ -46,6 +46,7 @@
     "@typescript-eslint/parser": "^4.22.0",
     "@vue/test-utils": "^2.0.0-rc.6",
     "check-dts": "^0.4.4",
+    "clean-publish": "^2.1.1",
     "eslint": "^7.25.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
