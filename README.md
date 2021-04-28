@@ -87,7 +87,8 @@ export default {
   setup (props) {
     let store = useStore()
     let { userId } = toRefs(props)
-    let isSubscribing = useSubscription(() => [`user/${userId.value}`])
+    let channels = computed(() => [`user/${userId.value}`])
+    let isSubscribing = useSubscription(channels)
 
     let user = computed(() => store.state.users[userId.value])
 

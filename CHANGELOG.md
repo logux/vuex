@@ -1,6 +1,15 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.10.0
+ * Moved project to ESM-only type. Applications must use ESM too
+ * Dropped Node.js 10 support
+ * Fixed types performance by replacing type to interface
+ * Simplified `useSubscription` API: `channels` cannot be function, but can be `computed`, `ref`
+ * Moved `@logux/core` and `@logux/client` to peer dependencies
+ * Removed `Client` and `CrossTabClient` from exports
+ * Updated Vue to 3.0.11
+
 ## 0.9.24
  * Update Vue to 3.0.10
 
