@@ -522,13 +522,15 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@logux/actions@logux/actions":
-  version "0.0.0"
-  resolved "https://codeload.github.com/logux/actions/tar.gz/18da8a3eadafa5dea8ec3903aa9e604a8d3a5422"
+"@logux/actions@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@logux/actions/-/actions-0.1.0.tgz#4ee83b3d26101f2fde21b3a198e6605fb032fd8b"
+  integrity sha512-TPz7g3fW7BhmwMU4XEEe2y9dSimPMutw64AjpHTNHqIVgRL4KyUHc1tkOxSursdq05zGJtnSmy5y1R2PleVmNw==
 
-"@logux/client@logux/client#next":
-  version "0.9.3"
-  resolved "https://codeload.github.com/logux/client/tar.gz/4ecece0889e8f94045ba0812f1999f49a8191dcb"
+"@logux/client@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@logux/client/-/client-0.10.0.tgz#34f8d9ac95bf442b1250115b28de7b44924fbdcc"
+  integrity sha512-t/TY5oF+xrPT3BPzQfrix8rthHTe5ffMmRQGLbGdO+mONlvivSeD9JpGyUPuBOIoalOFg83dMd5da/fzltvPjA==
   dependencies:
     "@logux/actions" "^0.1.0"
     fast-json-stable-stringify "^2.1.0"
@@ -536,9 +538,10 @@
     nanoevents "^6.0.0"
     nanoid "^3.1.22"
 
-"@logux/core@logux/core#next":
-  version "0.6.2"
-  resolved "https://codeload.github.com/logux/core/tar.gz/89c7d68269ce4c99bce015d5f05efaa11df134bf"
+"@logux/core@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@logux/core/-/core-0.7.0.tgz#b167e97127f2eb9b9faf37ca637ce929aa6e5f3e"
+  integrity sha512-vUpJ3KBlPoIqSpvNxf9hTUVT8zn1eNRAE8p4mbHbaOyNVEE9LQpYnBqxm6yQxcojhz/I/3NdeaBY0F2XbAwJsg==
   dependencies:
     nanoevents "^6.0.0"
 
@@ -706,9 +709,9 @@
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
 "@types/node@*":
-  version "14.14.41"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.41.tgz#d0b939d94c1d7bd53d04824af45f1139b8c45615"
-  integrity sha512-dueRKfaJL4RTtSa7bWeTK1M+VH+Gns73oCgzvYfHZywRCoPSd8EkXBL0mZ9unPTveBn+D9phZBaxuzpwjWkW0g==
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.1.tgz#ef34dea0881028d11398be5bf4e856743e3dc35a"
+  integrity sha512-TMkXt0Ck1y0KKsGr9gJtWGjttxlZnnvDtphxUOSd0bfaR6Q1jle+sPvrzNR1urqYTWMinoKvjKfXUGsumaO1PA==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1104,9 +1107,9 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
     uri-js "^4.2.2"
 
 ajv@^8.0.1:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.1.0.tgz#45d5d3d36c7cdd808930cc3e603cf6200dbeb736"
-  integrity sha512-B/Sk2Ix7A36fs/ZkuGLIR86EdjbgR6fsAcbx9lOP/QBSXujDNbVmIS/U4Itz5k8fPFDeVZl/zQ/gJW4Jrq6XjQ==
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.2.0.tgz#c89d3380a784ce81b2085f48811c4c101df4c602"
+  integrity sha512-WSNGFuyWd//XO8n/m/EaOlNLtO0yL8EXT/74LqT4khdhpZjP7lkj/kT5uwRmGitKEVp/Oj7ZUHeGfPtgHhQ5CA==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -1707,9 +1710,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001214:
-  version "1.0.30001214"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001214.tgz#70f153c78223515c6d37a9fde6cd69250da9d872"
-  integrity sha512-O2/SCpuaU3eASWVaesQirZv1MSjUNOvmugaD8zNSJqw6Vv5SGwoOpA9LJs3pNPfM745nxqPvfZY3MQKY4AKHYg==
+  version "1.0.30001219"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001219.tgz#5bfa5d0519f41f993618bd318f606a4c4c16156b"
+  integrity sha512-c0yixVG4v9KBc/tQ2rlbB3A/bgBFRvl8h8M4IeUbqCca4gsiCfvtaheUssbnux/Mb66Vjz7x8yYjDgYcNQOhyQ==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -1725,7 +1728,7 @@ chalk@^2.0.0, chalk@^2.0.1, chalk@^2.4.1, chalk@^2.4.2:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.1.0:
+chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
   integrity sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==
@@ -1813,9 +1816,9 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     safe-buffer "^5.0.1"
 
 cjs-module-lexer@^1.0.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.1.1.tgz#4a62531147dd488d0369c1cf1580b621796a9b26"
-  integrity sha512-7/a2+QJu5Bt1WYi4vk0NinXin/4pEUBlygSree2N5dSlhc/szO0+HwYKL3llv7myOVingwTgmEHH4WO6Q7Zv7w==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.0.tgz#5b2a542d63f32f69c8735e4447ec26a8a6f21b3e"
+  integrity sha512-S3lnDW/6bYN8xry9cmjsY+sTo0du8OMce/ux+MTWA1/IvkarL4FrPLCn+RU+v0hpX9Sa4TMBro4idpm51b3fXw==
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -2539,9 +2542,9 @@ editorconfig@^0.15.3:
     sigmund "^1.0.1"
 
 electron-to-chromium@^1.3.719:
-  version "1.3.720"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.720.tgz#f5d66df8754d993006b7b2ded15ff7738c58bd94"
-  integrity sha512-B6zLTxxaOFP4WZm6DrvgRk8kLFYWNhQ5TrHMC0l5WtkMXhU5UbnvWoTfeEwqOruUSlNMhVLfYak7REX6oC5Yfw==
+  version "1.3.723"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.723.tgz#52769a75635342a4db29af5f1e40bd3dad02c877"
+  integrity sha512-L+WXyXI7c7+G1V8ANzRsPI5giiimLAUDC6Zs1ojHHPhYXb3k/iTABFmWjivEtsWrRQymjnO66/rO2ZTABGdmWg==
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -3740,9 +3743,9 @@ is-color-stop@^1.0.0:
     rgba-regex "^1.0.0"
 
 is-core-module@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.2.0.tgz#97037ef3d52224d85163f5597b2b63d9afed981a"
-  integrity sha512-XRAfAdyyY5F5cOXn7hYQDqh2Xmii+DEfIcQGxK/uNwMHhIkPWO0g8msXcbzLe+MpGoR951MlqM/2iIlU4vKDdQ==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.3.0.tgz#d341652e3408bca69c4671b79a0954a3d349f887"
+  integrity sha512-xSphU2KG9867tsYdLD4RWQ1VqdFl4HTO9Thf3I/3dLEfr0dbPTWKsuCKrgqMljg4nPE+Gq0VCnzT3gr0CyBmsw==
   dependencies:
     has "^1.0.3"
 
@@ -4647,11 +4650,11 @@ lint-staged@^10.5.4:
     stringify-object "^3.3.0"
 
 listr2@^3.2.2:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/listr2/-/listr2-3.7.1.tgz#ff0c410b10eb1c5c76735e4814128ec8f7d2b983"
-  integrity sha512-cNd368GTrk8351/ov/IV+BSwyf9sJRgI0UIvfORonCZA1u9UHAtAlqSEv9dgafoQIA1CgB3nu4No79pJtK2LHw==
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/listr2/-/listr2-3.8.1.tgz#0237a8211962249db97828e5d704633f7c26c965"
+  integrity sha512-75vMLokDIEoZIXp3FE3P7U4yi7BRroZb7Az9+XBq+wGGnvq70QPT+BX41aSrROUMLuVan9l3aAjdeXWgaFyFEw==
   dependencies:
-    chalk "^4.1.0"
+    chalk "^4.1.1"
     cli-truncate "^2.1.0"
     figures "^3.2.0"
     indent-string "^4.0.0"
@@ -5046,20 +5049,10 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
 
-nanodelay@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/nanodelay/-/nanodelay-1.0.8.tgz#e6ff3d94f6c80b300b8fb1bbeb2eae0b5506ad0a"
-  integrity sha512-mfVn7t26m4mVoUuWdUevZccq0saIh5T4Lu3cAzbZ6j03yc4sIDwM3Dof0LS70YwflPZtGJ92BGhNYV862wXRvg==
-
 nanodelay@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/nanodelay/-/nanodelay-2.0.0.tgz#e9c676d085b1dd2813da21ef377f3c0783657537"
   integrity sha512-kwm0xaJQpmkxl9RLg83kMmqqZ9BoL51nvWEF8Grd9xChHU18utE9NHU1Nzx7OiC92M1iW5JCl4xxxbXs7P3Ujg==
-
-nanoevents@^5.1.13:
-  version "5.1.13"
-  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-5.1.13.tgz#0e49c30acbcf847c10f29f1d1e7147c0f88fa3d1"
-  integrity sha512-JFAeG9fp0QZnRoESHjkbVFbZ9BkOXkkagUVwZVo/pkSX+Fq1VKlY+5og/8X9CYc6C7vje/CV+bwJ5M2X0+IY9Q==
 
 nanoevents@^6.0.0:
   version "6.0.0"
@@ -5920,9 +5913,9 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.27:
     supports-color "^6.1.0"
 
 postcss@^8.2.10:
-  version "8.2.12"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.12.tgz#81248a1a87e0f575cc594a99a08207fd1c4addc4"
-  integrity sha512-BJnGT5+0q2tzvs6oQfnY2NpEJ7rIXNfBnZtQOKCIsweeWXBXeDd5k31UgTdS3d/c02ouspufn37mTaHWkJyzMQ==
+  version "8.2.13"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.13.tgz#dbe043e26e3c068e45113b1ed6375d2d37e2129f"
+  integrity sha512-FCE5xLH+hjbzRdpbRb1IMCvPv9yZx2QnDarBEYSN0N0HYk+TcXsEhwdFcFb+SRWOKzKGErhIEbBK2ogyLdTtfQ==
   dependencies:
     colorette "^1.2.2"
     nanoid "^3.1.22"
@@ -7003,9 +6996,9 @@ symbol-tree@^3.2.4:
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
 table@^6.0.4:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/table/-/table-6.5.1.tgz#930885a7430f15f8766b35cd1e36de40793db523"
-  integrity sha512-xGDXWTBJxahkzPQCsn1S9ESHEenU7TbMD5Iv4FeopXv/XwJyWatFjfbor+6ipI10/MNPXBYUamYukOrbPZ9L/w==
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/table/-/table-6.6.0.tgz#905654b79df98d9e9a973de1dd58682532c40e8e"
+  integrity sha512-iZMtp5tUvcnAdtHpZTWLPF0M7AgiQsURR2DwmxnJwSy8I3+cY+ozzVvYha3BOLG2TB+L0CqjIz+91htuj6yCXg==
   dependencies:
     ajv "^8.0.1"
     lodash.clonedeep "^4.5.0"
