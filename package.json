@@ -161,7 +161,9 @@
       "refactor",
       "composable",
       "unsubscribes",
-      "nanoevents"
+      "nanoevents",
+      "ESM",
+      "js"
     ]
   },
   "sharec": {
