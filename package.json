@@ -77,11 +77,11 @@
     "*.md": "yaspeller",
     "*.js": [
       "prettier --write",
-      "eslint"
+      "eslint --fix"
     ],
     "*.ts": [
       "prettier --write",
-      "eslint"
+      "eslint --fix"
     ]
   },
   "jest": {
