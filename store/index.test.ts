@@ -252,6 +252,39 @@ it('listen for action from other tabs', () => {
   expect(store.state).toEqual({ value: 1 })
 })
 
+it('undoes last when snapshot exists', async () => {
+  let store = createStore({ historyLine }, { saveStateEvery: 1 })
+
+  await store.commit.crossTab(
+    { type: 'historyLine', value: 'a' },
+    {
+      id: '57 106:test1 1',
+      reasons: ['test']
+    }
+  )
+  await store.commit.crossTab(
+    { type: 'historyLine', value: 'a' },
+    {
+      id: '58 106:test1 1',
+      reasons: ['test']
+    }
+  )
+  await store.commit.crossTab(
+    {
+      type: 'logux/undo',
+      id: '58 106:test1 1',
+      reason: 'test undo',
+      action: { type: '???' }
+    },
+    {
+      id: '59 106:test1 1',
+      reasons: ['as requested']
+    }
+  )
+  await delay(10)
+  expect(store.state.value).toEqual('0a')
+})
+
 it('saves previous states', async () => {
   let calls = 0
   let store = createStore({
