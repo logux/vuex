@@ -2,12 +2,22 @@ let Vue = require('vue')
 let Vuex = require('vuex')
 let { TestPair, TestTime } = require('@logux/core')
 let { delay } = require('nanodelay')
+let { CrossTabClient } = require("@logux/client")
 
 let { createLogux } = require('..')
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
 Vue.use(Vuex)
+
+function initCrossTabClient (opts = {}) {
+  if (!opts.server) opts.server = 'wss://localhost:1337'
+  opts.subprotocol = '1.0.0'
+  opts.userId = '10'
+  opts.time = new TestTime()
+
+  return new CrossTabClient(opts)
+}
 
 function initLogux (opts = {}) {
   if (!opts.server) opts.server = 'wss://localhost:1337'
@@ -16,6 +26,12 @@ function initLogux (opts = {}) {
   opts.time = new TestTime()
 
   return createLogux(opts)
+}
+
+function createStoreWithCrossTabCLient (mutations, crossTabClient) {
+  let Logux = initLogux({}, crossTabClient)
+  let store = new Logux.Store({ state: { value: 0 }, mutations })
+  return store
 }
 
 function createStore (mutations, opts) {
@@ -54,6 +70,13 @@ it('throws error on missed config', () => {
 
 it('creates Vuex store', () => {
   let store = createStore({ increment })
+  store.commit({ type: 'increment' })
+  expect(store.state).toEqual({ value: 1 })
+})
+
+it('creates Vuex store with a crossTabClient', () => {
+  let crossTabClient = initCrossTabClient();
+  let store = createStoreWithCrossTabCLient({ increment }, crossTabClient)
   store.commit({ type: 'increment' })
   expect(store.state).toEqual({ value: 1 })
 })

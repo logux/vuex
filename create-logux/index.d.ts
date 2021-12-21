@@ -1,5 +1,3 @@
-import { Unsubscribe } from 'nanoevents'
-import { Action, Log } from '@logux/core'
 import {
   ClientMeta,
   ClientOptions,
@@ -264,9 +262,35 @@ export type LoguxConfig = ClientOptions & {
  * store.client.start()
  * ```
  *
+ * You can also attach your logux client already created to Vuex instance.
+ * 
+ * ```js
+ * import { createLogux } from '@logux/vuex'
+ *
+ * const client = new CrossTabClient({
+ *   subprotocol: '1.0.0',
+ *   server: process.env.NODE_ENV === 'development'
+ *     ? 'ws://localhost:31337'
+ *     : 'wss://logux.example.com',
+ *   userId: 'anonymous',
+ *   token: ''
+ * })
+ * const Logux = createLogux({}, client)
+ *
+ * const store = new Logux.Store({
+ *  state: {},
+ *  mutations: {},
+ *  actions: {},
+ *  modules: {}
+ * })
+ *
+ * store.client.start()
+ * ```
+ * 
  * @param config Logux Client config.
+ * @param crossTabClient Logux Client instance.
  * @returns Logux Vuex instance
  */
-export function createLogux(config: LoguxConfig): {
+export function createLogux(config: Partial<LoguxConfig>, crossTabClient?: CrossTabClient): {
   Store: typeof LoguxVuexStore
 }

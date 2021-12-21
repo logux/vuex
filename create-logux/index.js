@@ -9,7 +9,7 @@ let {
   forEachValue
 } = require('../utils')
 
-function createLogux (config = {}) {
+function createLogux (config = {}, crossTabClient = undefined) {
   let reasonlessHistory = config.reasonlessHistory || 1000
   let saveStateEvery = config.saveStateEvery || 50
   let onMissedHistory = config.onMissedHistory
@@ -20,7 +20,7 @@ function createLogux (config = {}) {
   delete config.onMissedHistory
   delete config.cleanEvery
 
-  let client = new CrossTabClient(config)
+  let client = crossTabClient || new CrossTabClient(config)
   let log = client.log
 
   let Store = function Store (vuexConfig) {
