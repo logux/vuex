@@ -1,4 +1,5 @@
-export { loguxMixin, Channel, Subscription, loguxMixinComponent } from './mixin'
 export { loguxComponent } from './component'
 export { createLogux } from './create-logux'
 export { LoguxVuex } from './install'
+export { Channel, loguxMixin, loguxMixinComponent, Subscription } from './mixin'
+export { createStoreCreator } from './store'

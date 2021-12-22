@@ -2,35 +2,31 @@ let Vue = require('vue')
 let Vuex = require('vuex')
 let { TestPair, TestTime } = require('@logux/core')
 let { delay } = require('nanodelay')
+let { CrossTabClient } = require("@logux/client")
 
-let { createLogux } = require('..')
+let { createStoreCreator } = require('..')
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
 Vue.use(Vuex)
 
-function initLogux (opts = {}) {
+function initCrossTabClient (opts = {}) {
   if (!opts.server) opts.server = 'wss://localhost:1337'
   opts.subprotocol = '1.0.0'
   opts.userId = '10'
   opts.time = new TestTime()
 
-  return createLogux(opts)
+  return new CrossTabClient(opts)
 }
 
-function createStore (mutations, opts) {
-  let Logux = initLogux(opts)
-  let store = new Logux.Store({ state: { value: 0 }, mutations })
-  return store
+function initLogux (crossTabClient, opts = {}) {
+  return createStoreCreator(crossTabClient, opts)
 }
 
-function createStoreWithModule (namespaced, mutations, opts) {
-  let Logux = initLogux(opts)
-  let store = new Logux.Store({
-    modules: {
-      user: { namespaced, state: { value: 0 }, mutations }
-    }
-  })
+function createNewStore (mutations, opts = {}) {
+  let crossTabClient = initCrossTabClient();
+  let createStore = initLogux(crossTabClient, opts)
+  let store = createStore({ state: { value: 0 }, mutations })
   return store
 }
 
@@ -46,20 +42,14 @@ function historyLine (state, payload) {
   }
 }
 
-it('throws error on missed config', () => {
-  expect(() => {
-    createLogux()
-  }).toThrow('Missed server option in Logux client')
-})
-
 it('creates Vuex store', () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
   store.commit({ type: 'increment' })
   expect(store.state).toEqual({ value: 1 })
 })
 
 it('unify commit arguments', async () => {
-  let store = createStore({ historyLine })
+  let store = createNewStore({ historyLine })
   store.commit('historyLine', 1)
   store.commit({ type: 'historyLine', value: 1 })
   expect(store.state).toEqual({ value: 2 })
@@ -75,12 +65,12 @@ it('unify commit arguments', async () => {
 })
 
 it('creates Logux client', () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
   expect(store.client.options.subprotocol).toEqual('1.0.0')
 })
 
 it('not found mutation', () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
 
   store.crossTab({ type: 'mutation' })
   store.commit('increment')
@@ -90,7 +80,7 @@ it('not found mutation', () => {
 })
 
 it('commit mutation with prefixed name', async () => {
-  let store = createStore({
+  let store = createNewStore({
     'utils/clean': state => {
       state.value = 0
     },
@@ -105,7 +95,8 @@ it('commit mutation with prefixed name', async () => {
 })
 
 it('commit from action context', () => {
-  let Logux = initLogux()
+  let crossTabClient = initCrossTabClient();
+  let createStore = initLogux(crossTabClient)
   let mutations = { increment }
   let actions = {
     INC ({ commit }) {
@@ -115,7 +106,7 @@ it('commit from action context', () => {
       commit.crossTab('increment')
     }
   }
-  let store = new Logux.Store({
+  let store = createStore({
     state: { value: 0 },
     mutations,
     actions,
@@ -147,9 +138,10 @@ it('commit from action context', () => {
 
 // https://github.com/vuejs/vuex/blob/dev/test/unit/store.spec.js#L164
 it('vuex: detecting action Promise errors', () => {
-  let Logux = initLogux()
+  let crossTabClient = initCrossTabClient();
+  let createStore = initLogux(crossTabClient)
   let error = new Error('no')
-  let store = new Logux.Store({
+  let store = createStore({
     actions: {
       'TEST' () {
         return Promise.reject(error)
@@ -171,13 +163,14 @@ it('vuex: detecting action Promise errors', () => {
 })
 
 it('commit root mutation in namespaced module', () => {
-  let Logux = createLogux({
+  let crossTabClient= new CrossTabClient({
     server: 'wss://localhost:1337',
     subprotocol: '1.0.0',
     userId: '10',
     time: new TestTime()
   })
-  let store = new Logux.Store({
+  let createStore = createStoreCreator(crossTabClient);
+  let store = createStore({
     state: { value: 0 },
     mutations: { increment },
     modules: {
@@ -204,7 +197,7 @@ it('commit root mutation in namespaced module', () => {
 })
 
 it('sets tab ID', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
 
   await new Promise(resolve => {
     store.log.on('add', (action, meta) => {
@@ -217,7 +210,7 @@ it('sets tab ID', async () => {
 })
 
 it('has shortcut for add', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
 
   await store.crossTab({ type: 'increment' }, { reasons: ['test'] })
   expect(store.state).toEqual({ value: 1 })
@@ -225,14 +218,14 @@ it('has shortcut for add', async () => {
 })
 
 it('listen for action from other tabs', () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
   store.client.emitter.emit('add', { type: 'increment' }, { id: '1 t 0' })
   expect(store.state).toEqual({ value: 1 })
 })
 
 it('saves previous states', async () => {
   let calls = 0
-  let store = createStore({
+  let store = createNewStore({
     A () {
       calls += 1
     }
@@ -260,7 +253,7 @@ it('saves previous states', async () => {
 
 it('changes history recording frequency', async () => {
   let calls = 0
-  let store = createStore({
+  let store = createNewStore({
     A () {
       calls += 1
     }
@@ -283,7 +276,7 @@ it('changes history recording frequency', async () => {
 
 it('cleans its history on removing action', async () => {
   let calls = 0
-  let store = createStore({
+  let store = createNewStore({
     A () {
       calls += 1
     }
@@ -309,7 +302,7 @@ it('cleans its history on removing action', async () => {
 })
 
 it('changes history', async () => {
-  let store = createStore({ historyLine })
+  let store = createNewStore({ historyLine })
 
   await Promise.all([
     store.crossTab(
@@ -329,7 +322,7 @@ it('changes history', async () => {
 })
 
 it('undoes actions', async () => {
-  let store = createStore({ historyLine }, {
+  let store = createNewStore({ historyLine }, {
     saveStateEvery: 1
   })
   let nodeId = store.client.nodeId
@@ -364,7 +357,7 @@ it('undoes actions', async () => {
 
 it('ignores cleaned history from non-legacy actions', async () => {
   let onMissedHistory = jest.fn()
-  let store = createStore({ historyLine }, {
+  let store = createNewStore({ historyLine }, {
     onMissedHistory,
     saveStateEvery: 2
   })
@@ -396,7 +389,7 @@ it('ignores cleaned history from non-legacy actions', async () => {
 it('does not replays actions on logux/ actions', async () => {
   let commited = []
   let saveCommited = (state, action) => commited.push(action.type)
-  let store = createStore({
+  let store = createNewStore({
     'A': saveCommited,
     'B': saveCommited,
     'logux/processed': saveCommited,
@@ -420,7 +413,7 @@ it('does not replays actions on logux/ actions', async () => {
 })
 
 it('replays history for reason-less action', async () => {
-  let store = createStore({ historyLine })
+  let store = createNewStore({ historyLine })
 
   await Promise.all([
     store.crossTab(
@@ -441,7 +434,7 @@ it('replays history for reason-less action', async () => {
 
 it('replays actions before staring since initial state', async () => {
   let onMissedHistory = jest.fn()
-  let store = createStore({ historyLine }, {
+  let store = createNewStore({ historyLine }, {
     onMissedHistory,
     saveStateEvery: 2
   })
@@ -465,7 +458,7 @@ it('replays actions before staring since initial state', async () => {
 
 it('replays actions on missed history', async () => {
   let onMissedHistory = jest.fn()
-  let store = createStore({ historyLine }, {
+  let store = createNewStore({ historyLine }, {
     reasonlessHistory: 2,
     onMissedHistory,
     saveStateEvery: 2,
@@ -495,7 +488,7 @@ it('replays actions on missed history', async () => {
 })
 
 it('works without onMissedHistory', async () => {
-  let store = createStore({ historyLine }, {
+  let store = createNewStore({ historyLine }, {
     reasonlessHistory: 2,
     saveStateEvery: 2,
     cleanEvery: 1
@@ -512,7 +505,7 @@ it('works without onMissedHistory', async () => {
 })
 
 it('does not fall on missed onMissedHistory', async () => {
-  let store = createStore({ historyLine })
+  let store = createNewStore({ historyLine })
 
   await store.crossTab(
     { type: 'historyLine', value: 'a' }, { reasons: ['first'] }
@@ -527,7 +520,7 @@ it('does not fall on missed onMissedHistory', async () => {
 })
 
 it('cleans action added without reason', async () => {
-  let store = createStore({ historyLine }, { reasonlessHistory: 3 })
+  let store = createNewStore({ historyLine }, { reasonlessHistory: 3 })
 
   store.local({ type: 'historyLine', value: 0 }, { reasons: ['test'] })
   expect(store.log.entries()[0][1].reasons).toEqual(['test'])
@@ -564,7 +557,7 @@ it('cleans action added without reason', async () => {
 })
 
 it('cleans last 1000 by default', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
 
   let promise = Promise.resolve()
   for (let i = 0; i < 1050; i++) {
@@ -578,7 +571,7 @@ it('cleans last 1000 by default', async () => {
 })
 
 it('copies reasons to undo action', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
   let nodeId = store.client.nodeId
 
   await store.crossTab(
@@ -593,7 +586,7 @@ it('copies reasons to undo action', async () => {
 })
 
 it('commits local actions', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
 
   await store.local({ type: 'increment' }, { reasons: ['test'] })
   let log = store.log.entries()
@@ -603,7 +596,7 @@ it('commits local actions', async () => {
 })
 
 it('allows to miss meta for local actions', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
   store.log.on('preadd', (action, meta) => {
     meta.reasons.push('preadd')
   })
@@ -612,7 +605,7 @@ it('allows to miss meta for local actions', async () => {
 })
 
 it('commits sync actions', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
 
   store.sync({ type: 'increment' }, { reasons: ['test'] })
   await delay(1)
@@ -625,7 +618,7 @@ it('commits sync actions', async () => {
 it('cleans sync action after processing', async () => {
   jest.spyOn(console, 'warn').mockImplementation(() => {})
   let pair = new TestPair()
-  let store = createStore({ increment }, { server: pair.left })
+  let store = createNewStore({ increment }, { server: pair.left })
   let resultA, resultB
 
   store.sync({ type: 'A' }).then(() => {
@@ -661,7 +654,11 @@ it('cleans sync action after processing', async () => {
 })
 
 it('applies old actions from store', async () => {
-  let store1 = createStore({ historyLine }, { reasonlessHistory: 2 })
+  let crossTabClient1 = initCrossTabClient();
+  let createStore1 = initLogux(crossTabClient1, { reasonlessHistory: 2 })
+  let store1 = createStore1({
+    mutations: { historyLine }
+  })
   let store2
 
   await Promise.all([
@@ -686,7 +683,12 @@ it('applies old actions from store', async () => {
       { id: '0 10:x 6', reasons: ['test'] }
     )
   ])
-  store2 = createStore({ historyLine }, { store: store1.log.store })
+  let crossTabClient2 = initCrossTabClient({ store: store1.log.store });
+  let createStore2 = initLogux(crossTabClient2)
+  store2 = createStore2({
+    state: { value: 0 },
+    mutations: { historyLine }
+  })
 
   store2.commit({ type: 'historyLine', value: 'a' })
   store2.commit({ type: 'historyLine', value: 'b' })
@@ -702,11 +704,13 @@ it('applies old actions from store', async () => {
 })
 
 it('applies old actions from store in modules', async () => {
-  let store1 = createStoreWithModule(
-    false,
-    { 'user/historyLine': historyLine },
-    { reasonlessHistory: 2 }
-  )
+  let crossTabClient1 = initCrossTabClient();
+  let createStore1 = initLogux(crossTabClient1, { reasonlessHistory: 2 })
+  let store1 = createStore1({
+    modules: {
+      user: { namespaced: false, state: { value: 0 }, mutations: { 'user/historyLine': historyLine } }
+    }
+  })
   let store2
 
   await Promise.all([
@@ -735,11 +739,13 @@ it('applies old actions from store in modules', async () => {
       { id: '0 10:x 6', reasons: ['test'] }
     )
   ])
-  store2 = createStoreWithModule(
-    false,
-    { 'user/historyLine': historyLine },
-    { store: store1.log.store }
-  )
+  let crossTabClient2 = initCrossTabClient({ store: store1.log.store });
+  let createStore2 = initLogux(crossTabClient2)
+  store2 = createStore2({
+    modules: {
+      user: { namespaced: false, state: { value: 0 }, mutations: { 'user/historyLine': historyLine } }
+    }
+  })
 
   store2.commit({ type: 'user/historyLine', value: 'a' })
   store2.commit({ type: 'user/historyLine', value: 'b' })
@@ -755,11 +761,13 @@ it('applies old actions from store in modules', async () => {
 })
 
 it('applies old actions from store in namespaced modules', async () => {
-  let store1 = createStoreWithModule(
-    true,
-    { historyLine },
-    { reasonlessHistory: 2 }
-  )
+  let crossTabClient1 = initCrossTabClient();
+  let createStore1 = initLogux(crossTabClient1, { reasonlessHistory: 2 })
+  let store1 = createStore1({
+    modules: {
+      user: { namespaced: true, state: { value: 0 }, mutations: { historyLine } }
+    }
+  })
   let store2
 
   await Promise.all([
@@ -788,11 +796,14 @@ it('applies old actions from store in namespaced modules', async () => {
       { id: '0 10:x 6', reasons: ['test'] }
     )
   ])
-  store2 = createStoreWithModule(
-    true,
-    { historyLine },
-    { store: store1.log.store }
-  )
+
+  let crossTabClient2 = initCrossTabClient({ store: store1.log.store });
+  let createStore2 = initLogux(crossTabClient2)
+  store2 = createStore2({
+    modules: {
+      user: { namespaced: true, state: { value: 0 }, mutations: { historyLine } }
+    }
+  })
 
   store2.commit({ type: 'user/historyLine', value: 'a' })
   store2.commit({ type: 'user/historyLine', value: 'b' })
@@ -808,8 +819,9 @@ it('applies old actions from store in namespaced modules', async () => {
 })
 
 it('applies old actions from store in nested modules', async () => {
-  let Logux1 = initLogux()
-  let store1 = new Logux1.Store({
+  let crossTabClient = initCrossTabClient();
+  let createStore1 = initLogux(crossTabClient)
+  let store1 = createStore1({
     state: { value: 0 },
     mutations: { historyLine },
     modules: {
@@ -853,8 +865,9 @@ it('applies old actions from store in nested modules', async () => {
     })
   ])
 
-  let Logux2 = initLogux({ store: store1.log.store })
-  let store2 = new Logux2.Store({
+  let crossTabClient2 = initCrossTabClient({ store: store1.log.store });
+  let createStore2 = initLogux(crossTabClient2)
+  let store2 = createStore2({
     state: { value: 0 },
     mutations: { historyLine },
     modules: {
@@ -913,7 +926,7 @@ it('applies old actions from store in nested modules', async () => {
 })
 
 it('waits for replaying', async () => {
-  let store = createStore({ historyLine })
+  let store = createNewStore({ historyLine })
   let run
   let waiting = new Promise(resolve => {
     run = resolve
@@ -953,7 +966,7 @@ it('waits for replaying', async () => {
 })
 
 it('emits change event', async () => {
-  let store = createStore({ historyLine })
+  let store = createNewStore({ historyLine })
 
   store.log.on('preadd', (action, meta) => {
     meta.reasons.push('test')
@@ -991,14 +1004,14 @@ it('emits change event', async () => {
 })
 
 it('warns about undoes cleaned action', async () => {
-  let store = createStore({ increment })
+  let store = createNewStore({ increment })
 
   await store.crossTab({ type: 'logux/undo', id: '1 t 0' })
   expect(store.log.actions()).toHaveLength(0)
 })
 
 it('does not put reason on request', async () => {
-  let store = createStore(increment)
+  let store = createNewStore(increment)
 
   await store.crossTab({ type: 'A' }, { noAutoReason: true })
   await store.crossTab({ type: 'B' })

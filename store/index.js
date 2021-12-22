@@ -1,5 +1,4 @@
 let { createNanoEvents } = require('nanoevents')
-let { CrossTabClient } = require('@logux/client/cross-tab-client')
 let { isFirstOlder } = require('@logux/core/is-first-older')
 let Vuex = require('vuex')
 
@@ -9,7 +8,7 @@ let {
   forEachValue
 } = require('../utils')
 
-function createLogux (config = {}) {
+function createStoreCreator (client, config = {}) {
   let reasonlessHistory = config.reasonlessHistory || 1000
   let saveStateEvery = config.saveStateEvery || 50
   let onMissedHistory = config.onMissedHistory
@@ -20,10 +19,9 @@ function createLogux (config = {}) {
   delete config.onMissedHistory
   delete config.cleanEvery
 
-  let client = new CrossTabClient(config)
   let log = client.log
 
-  let Store = function Store (vuexConfig) {
+  function createStore (vuexConfig) {
     let store = new Vuex.Store(deepCopy(vuexConfig))
 
     store._actions = Object.create(null)
@@ -347,7 +345,7 @@ function createLogux (config = {}) {
     return store
   }
 
-  return { Store }
+  return createStore
 }
 
 function installModule (store, rootState, path, module) {
@@ -481,4 +479,4 @@ function collectState (store) {
   return state
 }
 
-module.exports = { createLogux }
+module.exports = { createStoreCreator }

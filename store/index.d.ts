@@ -4,12 +4,8 @@ import {
   CrossTabClient
 } from '@logux/client'
 import {
-  CommitOptions,
-  Payload as VuexPayload,
-  Commit as VuexCommit,
-  Store as VuexStore,
-  StoreOptions as VuexStoreOptions,
-  Dispatch as VuexDispatch
+  Commit as VuexCommit, CommitOptions, Dispatch as VuexDispatch, Payload as VuexPayload, Store as VuexStore,
+  StoreOptions as VuexStoreOptions
 } from 'vuex'
 
 export type LoguxVuexAction = Action & VuexPayload
@@ -238,33 +234,45 @@ export type LoguxConfig = ClientOptions & {
 }
 
 /**
- * Creates Logux client and attach it to Vuex instance.
+ * Vuex’s `createStore` function, compatible with Logux Client.
  *
+ * @param options Vuex store options.
+ * @returns Vuex store, compatible with Logux Client.
+ */
+export interface createStore {
+  <S>(options?: VuexStoreOptions<S>): LoguxVuexStore<S>
+}
+
+/**
+ * Connects Logux client to Vuex’s `createStore` function.
+ * 
  * ```js
- * import { createLogux } from '@logux/vuex'
+ * import { CrossTabClient } from '@logux/client'
+ * import { createStoreCreator } from '@logux/vuex'
  *
- * const Logux = createLogux({
- *   subprotocol: '1.0.0',
+ * const client = new CrossTabClient({
  *   server: process.env.NODE_ENV === 'development'
  *     ? 'ws://localhost:31337'
  *     : 'wss://logux.example.com',
+ *   subprotocol: '1.0.0',
  *   userId: 'anonymous',
  *   token: ''
  * })
  *
- * const store = new Logux.Store({
- *  state: {},
- *  mutations: {},
- *  actions: {},
- *  modules: {}
+ * const createStore = createStoreCreator(client)
+ *
+ * const store = createStore({
+ *   state: {},
+ *   mutations: {},
+ *   actions: {},
+ *   modules: {}
  * })
  *
  * store.client.start()
  * ```
  * 
- * @param config Logux Client config.
- * @returns Logux Vuex instance
+ * @param crossTabClient Logux Client instance.
+ * @param config Logux Vuex config
+ * @returns Vuex’s `createStore` function, compatible with Logux Client.
  */
-export function createLogux(config: Partial<LoguxConfig>): {
-  Store: typeof LoguxVuexStore
-}
+export function createStoreCreator(crossTabClient: CrossTabClient, config?: Partial<LoguxConfig>): createStore
