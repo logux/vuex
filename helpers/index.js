@@ -1,4 +1,4 @@
-function unifyChannelsObject (channels) {
+export function unifyChannelsObject (channels) {
   if (!channels) {
     return [[{}, '']]
   }
@@ -8,11 +8,11 @@ function unifyChannelsObject (channels) {
   })
 }
 
-function subscriptionsId (subscriptions) {
+export function subscriptionsId (subscriptions) {
   return subscriptions.map(i => i[1]).sort().join(' ')
 }
 
-function subscribe (store, subscriptions) {
+export function subscribe (store, subscriptions) {
   if (!store.subscriptions) store.subscriptions = {}
   if (!store.subscribers) store.subscribers = {}
 
@@ -29,7 +29,7 @@ function subscribe (store, subscriptions) {
   }))
 }
 
-function unsubscribe (store, subscriptions) {
+export function unsubscribe (store, subscriptions) {
   subscriptions.forEach(i => {
     let subscription = i[0]
     let json = i[1]
@@ -40,11 +40,4 @@ function unsubscribe (store, subscriptions) {
       delete store.subscriptions[json]
     }
   })
-}
-
-module.exports = {
-  subscribe,
-  unsubscribe,
-  subscriptionsId,
-  unifyChannelsObject
 }

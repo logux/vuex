@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
+    "target": "es2018",
+    "module": "esnext",
     "experimentalDecorators": true,
-    "strictFunctionTypes": false,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "stripInternal": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "allowJs": true,
-    "target": "ES5",
     "strict": true,
-    "noEmit": true,
-    "skipLibCheck": true
-  }
+    "noEmit": true
+  },
+  "exclude": [
+    "**/errors.ts"
+  ]
 }

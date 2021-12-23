@@ -1,6 +1,6 @@
 import type { ExtendedVue, Vue } from 'vue/types/vue'
 
-import { Channel, Subscription } from '../mixin'
+import { Channel, Subscription } from '../mixin/index.js'
 
 /**
  * Component with scoped slots,

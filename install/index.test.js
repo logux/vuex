@@ -1,7 +1,7 @@
-let { TestTime } = require('@logux/core')
-let { mount, createLocalVue } = require('@vue/test-utils')
+import { mount, createLocalVue } from '@vue/test-utils'
+import { TestTime } from '@logux/core'
 
-let { LoguxVuex, createLogux } = require('..')
+import { LoguxVuex, createLogux } from '../index.js'
 
 function createComponent (component) {
   let localVue = createLocalVue()

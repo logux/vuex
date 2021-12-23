@@ -1,10 +1,12 @@
-let Vue = require('vue')
-let Vuex = require('vuex')
-let { TestPair, TestTime } = require('@logux/core')
-let { delay } = require('nanodelay')
-let { CrossTabClient } = require("@logux/client")
+/* eslint-disable jest/no-conditional-expect */
+import { TestPair, TestTime } from '@logux/core'
+import { CrossTabClient } from "@logux/client"
+import { delay } from 'nanodelay'
+import { jest } from '@jest/globals'
+import Vuex from 'vuex'
+import Vue from 'vue'
 
-let { createStoreCreator } = require('..')
+import { createStoreCreator } from '..'
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
@@ -66,7 +68,7 @@ it('unify commit arguments', async () => {
 
 it('creates Logux client', () => {
   let store = createNewStore({ increment })
-  expect(store.client.options.subprotocol).toEqual('1.0.0')
+  expect(store.client.options.subprotocol).toBe('1.0.0')
 })
 
 it('not found mutation', () => {
@@ -243,12 +245,12 @@ it('saves previous states', async () => {
   }
 
   await promise
-  expect(calls).toEqual(60)
+  expect(calls).toBe(60)
   calls = 0
   await store.crossTab(
     { type: 'A' }, { id: '57 10:test1 1', reasons: ['test'] }
   )
-  expect(calls).toEqual(10)
+  expect(calls).toBe(10)
 })
 
 it('changes history recording frequency', async () => {
@@ -271,7 +273,7 @@ it('changes history recording frequency', async () => {
   await store.crossTab(
     { type: 'A' }, { id: '3 10:test1 1', reasons: ['test'] }
   )
-  expect(calls).toEqual(2)
+  expect(calls).toBe(2)
 })
 
 it('cleans its history on removing action', async () => {
@@ -298,7 +300,7 @@ it('cleans its history on removing action', async () => {
   await store.crossTab(
     { type: 'A' }, { id: `5 ${nodeId} 1`, reasons: ['test'] }
   )
-  expect(calls).toEqual(3)
+  expect(calls).toBe(3)
 })
 
 it('changes history', async () => {
@@ -318,7 +320,7 @@ it('changes history', async () => {
     { type: 'historyLine', value: '|' },
     { id: '2 10:test1 1', reasons: ['test'] }
   )
-  expect(store.state.value).toEqual('0ab|cd')
+  expect(store.state.value).toBe('0ab|cd')
 })
 
 it('undoes actions', async () => {
@@ -335,24 +337,24 @@ it('undoes actions', async () => {
     store.commit.crossTab(
       { type: 'historyLine', value: 'c' }, { reasons: ['test'] })
   ])
-  expect(store.state.value).toEqual('0abc')
+  expect(store.state.value).toBe('0abc')
 
   await store.commit.crossTab(
     { type: 'logux/undo', id: `3 ${nodeId} 0` }, { reasons: ['test'] }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0ab')
+  expect(store.state.value).toBe('0ab')
 
   await store.commit.crossTab(
     { type: 'historyLine', value: 'd' }, { reasons: ['test'] }
   )
-  expect(store.state.value).toEqual('0abd')
+  expect(store.state.value).toBe('0abd')
 
   await store.commit.crossTab(
     { type: 'logux/undo', id: `5 ${nodeId} 0` }, { reasons: ['test'] }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0ab')
+  expect(store.state.value).toBe('0ab')
 })
 
 it('ignores cleaned history from non-legacy actions', async () => {
@@ -382,7 +384,7 @@ it('ignores cleaned history from non-legacy actions', async () => {
     { id: '1 10:test1 0', reasons: ['test'] }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0|bcd')
+  expect(store.state.value).toBe('0|bcd')
   expect(onMissedHistory).not.toHaveBeenCalledWith()
 })
 
@@ -428,7 +430,7 @@ it('replays history for reason-less action', async () => {
     { id: '1 10:test1 1', noAutoReason: true }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0a|bc')
+  expect(store.state.value).toBe('0a|bc')
   expect(store.log.entries()).toHaveLength(3)
 })
 
@@ -453,7 +455,7 @@ it('replays actions before staring since initial state', async () => {
   )
   await delay(1)
   expect(onMissedHistory).not.toHaveBeenCalled()
-  expect(store.state.value).toEqual('0|bcd')
+  expect(store.state.value).toBe('0|bcd')
 })
 
 it('replays actions on missed history', async () => {
@@ -475,7 +477,7 @@ it('replays actions on missed history', async () => {
     { id: '0 10:test1 0', reasons: ['test'] }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0abc[d')
+  expect(store.state.value).toBe('0abc[d')
   expect(onMissedHistory).toHaveBeenCalledWith(
     { type: 'historyLine', value: '[' }
   )
@@ -484,7 +486,7 @@ it('replays actions on missed history', async () => {
     { id: '0 10:test1 1', reasons: ['test'] }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0abc[]d')
+  expect(store.state.value).toBe('0abc[]d')
 })
 
 it('works without onMissedHistory', async () => {
@@ -516,7 +518,7 @@ it('does not fall on missed onMissedHistory', async () => {
     { id: '0 10:test1 0', reasons: ['test'] }
   )
   await delay(1)
-  expect(store.state.value).toEqual('0|')
+  expect(store.state.value).toBe('0|')
 })
 
 it('cleans action added without reason', async () => {
@@ -581,7 +583,7 @@ it('copies reasons to undo action', async () => {
     { type: 'logux/undo', id: `1 ${nodeId} 0` }, { reasons: [] }
   )
   let result = await store.log.byId(`2 ${nodeId} 0`)
-  expect(result[0].type).toEqual('logux/undo')
+  expect(result[0].type).toBe('logux/undo')
   expect(result[1].reasons).toEqual(['a', 'b'])
 })
 
@@ -643,13 +645,14 @@ it('cleans sync action after processing', async () => {
   expect(resultB).toBeUndefined()
   expect(store.log.actions()).toEqual([{ type: 'A' }, { type: 'B' }])
   await store.log.add({ type: 'logux/processed', id: '1 10:1:1 0' })
-  expect(resultA).toEqual('processed')
+  expect(resultA).toBe('processed')
   expect(resultB).toBeUndefined()
   expect(store.log.actions()).toEqual([{ type: 'B' }])
   store.log.add({ type: 'logux/undo', reason: 'error', id: '3 10:1:1 0' })
   await delay(1)
-  expect(resultB).toEqual('error')
+  expect(resultB).toBe('error')
   expect(store.log.actions()).toEqual([])
+  // eslint-disable-next-line no-console
   expect(console.warn).not.toHaveBeenCalled()
 })
 
@@ -697,10 +700,10 @@ it('applies old actions from store', async () => {
   )
   store2.commit({ type: 'historyLine', value: 'd' })
   store2.commit({ type: 'historyLine', value: 'e' })
-  expect(store2.state.value).toEqual('0abde')
+  expect(store2.state.value).toBe('0abde')
 
   await store2.initialize
-  expect(store2.state.value).toEqual('0134abcde')
+  expect(store2.state.value).toBe('0134abcde')
 })
 
 it('applies old actions from store in modules', async () => {
@@ -754,10 +757,10 @@ it('applies old actions from store in modules', async () => {
   )
   store2.commit({ type: 'user/historyLine', value: 'd' })
   store2.commit({ type: 'user/historyLine', value: 'e' })
-  expect(store2.state.user.value).toEqual('0abde')
+  expect(store2.state.user.value).toBe('0abde')
 
   await store2.initialize
-  expect(store2.state.user.value).toEqual('0134abcde')
+  expect(store2.state.user.value).toBe('0134abcde')
 })
 
 it('applies old actions from store in namespaced modules', async () => {
@@ -812,10 +815,10 @@ it('applies old actions from store in namespaced modules', async () => {
   )
   store2.commit({ type: 'user/historyLine', value: 'd' })
   store2.commit({ type: 'user/historyLine', value: 'e' })
-  expect(store2.state.user.value).toEqual('0abde')
+  expect(store2.state.user.value).toBe('0abde')
 
   await store2.initialize
-  expect(store2.state.user.value).toEqual('0134abcde')
+  expect(store2.state.user.value).toBe('0134abcde')
 })
 
 it('applies old actions from store in nested modules', async () => {
@@ -958,11 +961,11 @@ it('waits for replaying', async () => {
     )
   ])
   delay(1)
-  expect(store.state.value).toEqual('0b')
+  expect(store.state.value).toBe('0b')
   store.log.removeReason('o')
   run()
   await delay(10)
-  expect(store.state.value).toEqual('0abd')
+  expect(store.state.value).toBe('0abd')
 })
 
 it('emits change event', async () => {
@@ -974,7 +977,7 @@ it('emits change event', async () => {
 
   let calls = []
   store.on('change', (state, prevState, action, meta) => {
-    expect(typeof meta.id).toEqual('string')
+    expect(typeof meta.id).toBe('string')
     calls.push([state, prevState, action])
   })
 

@@ -1,13 +1,5 @@
-let { createLogux } = require('./create-logux')
-let { createStoreCreator } = require('./store')
-let { LoguxVuex } = require('./install')
-let { loguxMixin } = require('./mixin')
-let { loguxComponent } = require('./component')
-
-module.exports = {
-  createStoreCreator,
-  createLogux,
-  LoguxVuex,
-  loguxMixin,
-  loguxComponent
-}
+export { createLogux } from './create-logux/index.js'
+export { createStoreCreator } from './store/index.js'
+export { LoguxVuex } from './install/index.js'
+export { loguxMixin } from './mixin/index.js'
+export { loguxComponent } from './component/index.js'

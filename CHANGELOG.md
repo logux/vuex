@@ -1,6 +1,13 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Next
+ * Moved project to ESM-only type. Applications must use ESM too.
+ * Moved @logux/core and @logux/client to peer dependencies.
+ * Removed support for Node 15.
+ * Updated dependencies.
+ * Migrated to pnpm.
+
 ## 0.8.5
  * Fix bug that caused performance degradation related to `store.on('change', …)`
  * Update dependencies

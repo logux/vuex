@@ -4,7 +4,7 @@ import { loguxMixin } from '..'
 
 @Component
 class UserPhoto extends mixins(loguxMixin) {
-  mounted() {
+  mounted () {
     // THROWS Type 'boolean' is not assignable to type 'string'.
     let message: string = this.isSubscribing
 

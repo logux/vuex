@@ -1,11 +1,11 @@
-const {
-  subscribe,
-  unsubscribe,
+import {
+  unifyChannelsObject,
   subscriptionsId,
-  unifyChannelsObject
-} = require('../helpers')
+  unsubscribe,
+  subscribe
+} from '../helpers/index.js'
 
-let loguxMixin = {
+export const loguxMixin = {
   data: () => ({
     isSubscribing: false,
     $_logux_ignoreResponse: {}
@@ -51,5 +51,3 @@ let loguxMixin = {
     }
   }
 }
-
-module.exports = { loguxMixin }

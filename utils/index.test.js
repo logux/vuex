@@ -1,12 +1,8 @@
-let {
-  find,
-  deepCopy,
-  isPromise
-} = require('.')
+import { find, deepCopy, isPromise } from '.'
 
 it('find', () => {
   let list = [33, 22, 112, 222, 43]
-  expect(find(list, a => { return a % 2 === 0 })).toEqual(22)
+  expect(find(list, a => { return a % 2 === 0 })).toBe(22)
 })
 
 it('deepCopy: nornal structure', () => {

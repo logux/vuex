@@ -1,15 +1,15 @@
-let { createNanoEvents } = require('nanoevents')
-let { CrossTabClient } = require('@logux/client/cross-tab-client')
-let { isFirstOlder } = require('@logux/core/is-first-older')
-let Vuex = require('vuex')
+import { createNanoEvents } from 'nanoevents'
+import { CrossTabClient } from '@logux/client'
+import { isFirstOlder } from '@logux/core'
+import Vuex from 'vuex'
 
-let {
-  deepCopy,
+import {
+  forEachValue,
   isPromise,
-  forEachValue
-} = require('../utils')
+  deepCopy
+} from '../utils/index.js'
 
-function createLogux (config = {}) {
+export function createLogux (config = {}) {
   let reasonlessHistory = config.reasonlessHistory || 1000
   let saveStateEvery = config.saveStateEvery || 50
   let onMissedHistory = config.onMissedHistory
@@ -480,5 +480,3 @@ function collectState (store) {
   collectModuleState(store, false, state)
   return state
 }
-
-module.exports = { createLogux }

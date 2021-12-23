@@ -1,11 +1,11 @@
-const {
-  subscribe,
-  unsubscribe,
+import {
+  unifyChannelsObject,
   subscriptionsId,
-  unifyChannelsObject
-} = require('../helpers')
+  unsubscribe,
+  subscribe
+} from '../helpers/index.js'
 
-let loguxComponent = {
+export const loguxComponent = {
   props: {
     channels: {
       type: Array,
@@ -78,5 +78,3 @@ let loguxComponent = {
     return vnode
   }
 }
-
-module.exports = { loguxComponent }

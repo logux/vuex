@@ -1,4 +1,4 @@
-const { install: installVuex } = require('vuex')
+import Vuex from 'vuex'
 
 function installLoguxVuex (Vue) {
   Vue.mixin({
@@ -10,9 +10,7 @@ function installLoguxVuex (Vue) {
   })
 }
 
-function LoguxVuex (Vue) {
-  installVuex(Vue)
+export function LoguxVuex (Vue) {
+  Vue.use(Vuex)
   installLoguxVuex(Vue)
 }
-
-module.exports = { LoguxVuex }

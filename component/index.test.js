@@ -1,9 +1,10 @@
-let Vuex = require('vuex')
-let { TestTime } = require('@logux/core')
-let { mount, createLocalVue } = require('@vue/test-utils')
-let { delay } = require('nanodelay')
+import { mount, createLocalVue } from '@vue/test-utils'
+import { TestTime } from '@logux/core'
+import { delay } from 'nanodelay'
+import { jest } from '@jest/globals'
+import Vuex from 'vuex'
 
-let { createLogux, loguxComponent: subscribe } = require('..')
+import { createLogux, loguxComponent as subscribe } from '../index.js'
 
 let localVue = createLocalVue()
 
@@ -276,7 +277,7 @@ it('does not resubscribe on non-relevant props changes', () => {
   })
 
   component.trigger('click', { id: 2 })
-  expect(resubscriptions).toEqual(0)
+  expect(resubscriptions).toBe(0)
 })
 
 it('supports multiple channels', async () => {

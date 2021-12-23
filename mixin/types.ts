@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue'
 import typedMixins from 'vue-typed-mixins'
 import Component, { mixins } from 'vue-class-component'

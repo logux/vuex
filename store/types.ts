@@ -1,4 +1,5 @@
-import { CrossTabClient } from "@logux/client"
+import { CrossTabClient } from '@logux/client'
+
 import { createStoreCreator } from '..'
 
 interface RootState {

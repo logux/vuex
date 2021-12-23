@@ -1,14 +1,14 @@
-let { createNanoEvents } = require('nanoevents')
-let { isFirstOlder } = require('@logux/core/is-first-older')
-let Vuex = require('vuex')
+import { createNanoEvents } from 'nanoevents'
+import { isFirstOlder } from '@logux/core/is-first-older'
+import Vuex from 'vuex'
 
-let {
+import {
   deepCopy,
   isPromise,
   forEachValue
-} = require('../utils')
+} from '../utils/index.js'
 
-function createStoreCreator (client, config = {}) {
+export function createStoreCreator (client, config = {}) {
   let reasonlessHistory = config.reasonlessHistory || 1000
   let saveStateEvery = config.saveStateEvery || 50
   let onMissedHistory = config.onMissedHistory
@@ -478,5 +478,3 @@ function collectState (store) {
   collectModuleState(store, false, state)
   return state
 }
-
-module.exports = { createStoreCreator }
