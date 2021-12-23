@@ -28,8 +28,8 @@ let store = createStore<RootState>({
 store.commit('increment')
 store.commit({ type: 'increment' })
 store.commit({ type: 'increment' }, { silent: true })
-store.local('increment', null, { reasons: ['reason'] })
-store.crossTab({ type: 'increment' }, { reasons: ['reason'] })
-store.sync({ type: 'increment' }).then(meta => {
+store.commit.local('increment', null, { reasons: ['reason'] })
+store.commit.crossTab({ type: 'increment' }, { reasons: ['reason'] })
+store.commit.sync({ type: 'increment' }).then(meta => {
   console.log(meta.id)
 })

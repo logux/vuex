@@ -25,4 +25,4 @@ let store = createStore<RootState>({
 })
 
 // THROWS Type 'number' is not assignable to type 'string[] | undefined'.
-store.crossTab('increment', null, { reasons: 1 })
+store.commit.crossTab('increment', null, { reasons: 1 })
