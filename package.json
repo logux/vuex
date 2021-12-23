@@ -91,12 +91,12 @@
     {
       "name": "Store",
       "import": "{ createLogux }",
-      "limit": "10 KB"
+      "limit": "3 KB"
     },
     {
       "name": "Store + Helpers",
       "import": "{ createLogux, loguxMixin, loguxComponent }",
-      "limit": "11 KB"
+      "limit": "4 KB"
     }
   ]
 }
