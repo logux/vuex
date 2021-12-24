@@ -6,7 +6,7 @@ it('find', () => {
     find(list, a => {
       return a % 2 === 0
     })
-  ).toEqual(22)
+  ).toBe(22)
 })
 
 it('deepCopy: nornal structure', () => {

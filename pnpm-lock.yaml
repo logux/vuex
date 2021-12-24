@@ -26,6 +26,7 @@ specifiers:
   nanodelay: ^2.0.0
   nanoevents: ^6.0.0
   nanostores: ^0.5.8
+  prettier: ^2.5.1
   simple-git-hooks: ^2.6.1
   size-limit: ^7.0.4
   ts-jest: ^27.0.5
@@ -61,6 +62,7 @@ devDependencies:
   nano-staged: 0.5.0
   nanodelay: 2.0.2
   nanostores: 0.5.8
+  prettier: 2.5.1
   simple-git-hooks: 2.7.0
   size-limit: 7.0.4
   ts-jest: 27.1.2_b65cae1b46840061996b6cc0ea16ca56
@@ -3785,6 +3787,12 @@ packages:
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+    dev: true
+
+  /prettier/2.5.1:
+    resolution: {integrity: sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /pretty-format/27.4.2:

@@ -223,7 +223,7 @@ it('does not resubscribe on non-relevant props changes', async () => {
 
   component.trigger('click', { id: 2 })
   await nextTick()
-  expect(resubscriptions).toEqual(0)
+  expect(resubscriptions).toBe(0)
 })
 
 it('reports about subscription end', async () => {
@@ -353,7 +353,7 @@ it('reports about subscription end with non-reactive channels', async () => {
     setup({ id }) {
       let isSubscribing = useSubscription([`users/${id}`])
       return () =>
-        h('div', {
+        h('li', {
           isSubscribing: isSubscribing.value
         })
     }
@@ -380,7 +380,7 @@ it('reports about subscription end with non-reactive channels', async () => {
   })
 
   let isSubscribing = (): string[] =>
-    component.findAll('div').map(el => el.attributes('issubscribing'))
+    component.findAll('li').map(el => el.attributes('issubscribing'))
   let nodeId = component.client.nodeId
   let log = component.client.log
 

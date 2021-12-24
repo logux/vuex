@@ -272,7 +272,7 @@ it('does not resubscribe on non-relevant props changes', async () => {
 
   component.trigger('click', { id: 2 })
   await nextTick()
-  expect(resubscriptions).toEqual(0)
+  expect(resubscriptions).toBe(0)
 })
 
 it('supports multiple channels', async () => {

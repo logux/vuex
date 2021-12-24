@@ -59,6 +59,7 @@
     "nano-staged": "^0.5.0",
     "nanodelay": "^2.0.0",
     "nanostores": "^0.5.8",
+    "prettier": "^2.5.1",
     "simple-git-hooks": "^2.6.1",
     "size-limit": "^7.0.4",
     "ts-jest": "^27.0.5",
