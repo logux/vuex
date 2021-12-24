@@ -1,23 +1,25 @@
 import { mount, createLocalVue } from '@vue/test-utils'
+import { CrossTabClient } from '@logux/client'
 import { TestTime } from '@logux/core'
 import { delay } from 'nanodelay'
 import { jest } from '@jest/globals'
 import Vuex from 'vuex'
 
-import { createLogux, loguxMixin } from '../index.js'
+import { createStoreCreator, loguxMixin } from '../index.js'
 
 let localVue = createLocalVue()
 
 localVue.use(Vuex)
 
 function createComponent (content) {
-  let Logux = createLogux({
+  let client = new CrossTabClient({
     subprotocol: '1.0.0',
     server: 'wss://localhost:1337',
     userId: '',
     time: new TestTime()
   })
-  let store = new Logux.Store(() => ({}))
+  let createStore = createStoreCreator(client)
+  let store = createStore(() => ({}))
   let component = mount(content, { store, localVue })
   component.client = store.client
   return component

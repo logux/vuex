@@ -2,11 +2,13 @@
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Next
+ * Changed API to use own Logux Client instance (by @legarsjules) (#54).
+ * Deprecated `createLogux`. Use `createStoreCreator(client, opts)` instead.
+ * Removed `store.local`, `store.crossTab` and `store.sync` aliases.
+ * Removed `Client` and `CrossTabClient` from exports.
+ * Removed support for Node 15.
  * Moved project to ESM-only type. Applications must use ESM too.
  * Moved @logux/core and @logux/client to peer dependencies.
- * Removed `store.local`, `store.crossTab` and `store.sync` aliases.
- * Removed Client and CrossTabClient from exports.
- * Removed support for Node 15.
  * Fixed Typescript support.
  * Updated dependencies.
  * Migrated to pnpm.

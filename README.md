@@ -33,21 +33,21 @@ See [documentation] for Logux API.
 [documentation]: https://github.com/logux/docs
 
 ```js
-import Vue from 'vue'
-import { LoguxVuex, createLogux } from '@logux/vuex'
+import { CrossTabClient } from '@logux/client'
+import { createStoreCreator } from '@logux/vuex'
 
-Vue.use(LoguxVuex)
-
-const Logux = createLogux({
-  subprotocol: '1.0.0',
+const client = new CrossTabClient({
   server: process.env.NODE_ENV === 'development'
     ? 'ws://localhost:31337'
     : 'wss://logux.example.com',
+  subprotocol: '1.0.0',
   userId: 'anonymous',
   token: ''
 })
 
-const store = new Logux.Store({
+const createStore = createStoreCreator(client)
+
+const store = createStore({
   state: {},
   mutations: {},
   actions: {},
