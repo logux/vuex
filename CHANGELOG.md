@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Next
  * Moved project to ESM-only type. Applications must use ESM too.
  * Moved @logux/core and @logux/client to peer dependencies.
+ * Removed `store.local`, `store.crossTab` and `store.sync` aliases.
+ * Removed Client and CrossTabClient from exports.
  * Removed support for Node 15.
  * Updated dependencies.
  * Migrated to pnpm.
