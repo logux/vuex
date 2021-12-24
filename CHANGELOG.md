@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  * Removed `store.local`, `store.crossTab` and `store.sync` aliases.
  * Removed Client and CrossTabClient from exports.
  * Removed support for Node 15.
+ * Fixed Typescript support.
  * Updated dependencies.
  * Migrated to pnpm.
 
