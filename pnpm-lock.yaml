@@ -22,7 +22,7 @@ specifiers:
   jest: ^27.4.5
   nano-staged: ^0.5.0
   nanodelay: ^2.0.2
-  nanoevents: ^5.1.13
+  nanoevents: ^6.0.2
   nanostores: ^0.5.8
   simple-git-hooks: ^2.7.0
   size-limit: ^7.0.4
@@ -35,7 +35,7 @@ specifiers:
   ws: ^8.4.0
 
 dependencies:
-  nanoevents: 5.1.13
+  nanoevents: 6.0.2
 
 devDependencies:
   '@jest/globals': 27.4.4
@@ -3505,15 +3505,9 @@ packages:
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     dev: true
 
-  /nanoevents/5.1.13:
-    resolution: {integrity: sha512-JFAeG9fp0QZnRoESHjkbVFbZ9BkOXkkagUVwZVo/pkSX+Fq1VKlY+5og/8X9CYc6C7vje/CV+bwJ5M2X0+IY9Q==}
-    engines: {node: '>=6.0.0'}
-    dev: false
-
   /nanoevents/6.0.2:
     resolution: {integrity: sha512-FRS2otuFcPPYDPYViNWQ42+1iZqbXydinkRHTHFxrF4a1CpBfmydR9zkI44WSXAXCyPrkcGtPk5CnpW6Y3lFKQ==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
-    dev: true
 
   /nanoid/3.1.30:
     resolution: {integrity: sha512-zJpuPDwOv8D2zq2WRoMe1HsfZthVewpel9CAvTfc/2mBD1uUT/agc5f7GHGWXlYkFvi1mVxe4IjvP2HNrop7nQ==}
