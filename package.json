@@ -57,7 +57,7 @@
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-unicorn": "^35.0.0",
     "jest": "^27.0.6",
-    "lint-staged": "^11.1.2",
+    "nano-staged": "^0.5.0",
     "nanodelay": "^2.0.0",
     "nanostores": "^0.4.3",
     "prettier": "^2.3.2",
@@ -69,14 +69,10 @@
     "vuex": "^4.0.2"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "./node_modules/.bin/nano-staged"
   },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.ts": [
+  "nano-staged": {
+    "*.{js,ts}": [
       "prettier --write",
       "eslint --fix"
     ]
