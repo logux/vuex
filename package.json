@@ -9,7 +9,7 @@
     "websocket"
   ],
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage && eslint . && check-dts && size-limit && yaspeller *.md"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage && eslint . && check-dts && size-limit"
   },
   "author": "Eduard Aksamitov <e@edaks.co>",
   "license": "MIT",
@@ -67,14 +67,12 @@
     "ts-jest": "^27.0.5",
     "typescript": "^4.3.5",
     "vue": "^3.2.3",
-    "vuex": "^4.0.2",
-    "yaspeller": "^7.0.0"
+    "vuex": "^4.0.2"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.md": "yaspeller",
     "*.js": [
       "prettier --write",
       "eslint --fix"
@@ -139,36 +137,6 @@
       "limit": "6 KB"
     }
   ],
-  "yaspeller": {
-    "lang": "en",
-    "ignoreCapitalization": true,
-    "ignoreText": [
-      " \\(by [^)]+\\)"
-    ],
-    "dictionary": [
-      "versioning",
-      "peerDependencies",
-      "npm",
-      "vue",
-      "GraphQL",
-      "io",
-      "logux",
-      "vuex",
-      "mixin",
-      "mixin’s",
-      "TypeDoc",
-      "WebSocket",
-      "payload",
-      "ES",
-      "roadmap",
-      "refactor",
-      "composable",
-      "unsubscribes",
-      "nanoevents",
-      "ESM",
-      "js"
-    ]
-  },
   "sharec": {
     "config": "@logux/sharec-config",
     "version": "0.11.0"
