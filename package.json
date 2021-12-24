@@ -9,7 +9,7 @@
     "websocket"
   ],
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage && eslint . && check-dts && size-limit"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage && eslint . && check-dts && size-limit"
   },
   "author": "Eduard Aksamitov <e@edaks.co>",
   "license": "MIT",
