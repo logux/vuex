@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.10.2
+ * Update dependencies
+
 ## 0.10.1
  * Update Vue to 3.1.5
  * Update dependencies
