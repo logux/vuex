@@ -10,13 +10,13 @@ export function createLogux (config = {}) {
   )
 
   let reasonlessHistory = config.reasonlessHistory || 1000
-  let saveStateEvery = config.saveStateEvery || 50
   let onMissedHistory = config.onMissedHistory
+  let saveStateEvery = config.saveStateEvery || 50
   let cleanEvery = config.cleanEvery || 25
 
   delete config.reasonlessHistory
-  delete config.saveStateEvery
   delete config.onMissedHistory
+  delete config.saveStateEvery
   delete config.cleanEvery
 
   let client = new CrossTabClient(config)
