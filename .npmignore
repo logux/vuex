@@ -3,6 +3,7 @@ tsconfig.json
 
 coverage/
 test/
+
 **/*.test.*
 **/types.ts
 **/errors.ts

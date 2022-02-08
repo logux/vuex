@@ -1,7 +1,7 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Next
+## 0.8.6
  * Changed API to use own Logux Client instance (by @legarsjules) (#54).
  * Deprecated `createLogux`. Use `createStoreCreator(client, opts)` instead.
  * Removed `store.local`, `store.crossTab` and `store.sync` aliases.
