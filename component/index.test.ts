@@ -328,7 +328,7 @@ it('reports about subscription end', async () => {
     `
   })
 
-  let isSubscribing = (): string =>
+  let isSubscribing = (): string | undefined =>
     component.find('img').attributes('issubscribing')
   let nodeId = component.client.nodeId
   let log = component.client.log
