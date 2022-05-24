@@ -11,7 +11,7 @@
   "scripts": {
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage && eslint . && check-dts && size-limit"
   },
-  "author": "Eduard Aksamitov <e@edaks.co>",
+  "author": "Eduard Aksamitov <e@euaaaio.ru>",
   "license": "MIT",
   "homepage": "https://logux.io/",
   "repository": "logux/vuex",
