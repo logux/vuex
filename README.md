@@ -1,17 +1,16 @@
 # Logux Vuex
 
 <img align="right" width="95" height="148" title="Logux logotype"
-     src="https://logux.io/branding/logotype.svg">
+     src="https://logux.org/branding/logotype.svg">
 
 Logux is a new way to connect client and server. Instead of sending
 HTTP requests (e.g., AJAX and GraphQL) it synchronizes log of operations
 between client, server, and other clients.
 
-* **[Guide, recipes, and API](https://logux.io/)**
-* **[Chat](https://gitter.im/logux/logux)** for any questions
+* **[Guide, recipes, and API](https://logux.org/)**
 * **[Issues](https://github.com/logux/logux/issues)**
   and **[roadmap](https://github.com/orgs/logux/projects/1)**
-* **[Projects](https://logux.io/guide/architecture/parts/)**
+* **[Projects](https://logux.org/guide/architecture/parts/)**
   inside Logux ecosystem
 
 This repository contains [Vuex] compatible API on top of the [Logux Client].
@@ -21,7 +20,6 @@ For Vue 2 support, we have [0.8 version from a separate branch](https://github.c
 
 [Vuex]: https://vuex.vuejs.org
 [Logux Client]: https://github.com/logux/client
-[logux.io]: https://logux.io/
 
 ## Install
 
