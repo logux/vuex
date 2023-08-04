@@ -13,7 +13,7 @@
   },
   "author": "Eduard Aksamitov <e@euaaaio.ru>",
   "license": "MIT",
-  "homepage": "https://logux.io/",
+  "homepage": "https://logux.org/",
   "repository": "logux/vuex",
   "sideEffects": false,
   "type": "module",
