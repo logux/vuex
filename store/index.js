@@ -436,7 +436,8 @@ function collectState(store) {
   let state = store.state || {}
   function collectModuleState(module, moduleName, moduleState) {
     if (moduleName) {
-      moduleState[moduleName] = module.state
+      moduleState[moduleName] =
+        typeof module.state === 'function' ? module.state() : module.state
     }
     if (module.modules) {
       forEachValue(module.modules, (childModule, childModuleName) => {

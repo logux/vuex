@@ -870,7 +870,7 @@ it('applies old actions from store in modules', async () => {
     {
       user: {
         namespaced: false,
-        state: { value: 0 },
+        state: () => ({ value: 0 }),
         mutations: {
           'user/historyLine': historyLine
         }
