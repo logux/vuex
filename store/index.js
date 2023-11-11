@@ -433,7 +433,10 @@ function unifyCommitArgs(type, payload = {}, options = {}) {
 }
 
 function collectState(store) {
-  let state = store.state || {}
+  let state =
+    store.state && typeof store.state === 'function'
+      ? store.state()
+      : store.state || {}
   function collectModuleState(module, moduleName, moduleState) {
     if (moduleName) {
       moduleState[moduleName] =
