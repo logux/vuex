@@ -22,12 +22,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Run tests
         run: pnpm test
-        env:
-          FORCE_COLOR: 2
   short:
     runs-on: ubuntu-latest
     strategy:
@@ -50,9 +48,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Run unit tests
         run: pnpm test
-        env:
-          FORCE_COLOR: 2
