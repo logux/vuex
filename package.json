@@ -9,7 +9,11 @@
     "websocket"
   ],
   "scripts": {
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage && eslint . && check-dts && size-limit"
+    "test:lint": "eslint .",
+    "test:coverage": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage",
+    "test:types": "check-dts",
+    "test:size": "size-limit",
+    "test": "pnpm run /^test:/"
   },
   "author": "Eduard Aksamitov <e@euaaaio.ru>",
   "license": "MIT",
