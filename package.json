@@ -36,7 +36,7 @@
     "vuex": ">=4.0.2"
   },
   "dependencies": {
-    "nanoevents": "^6.0.2"
+    "nanoevents": "^8.0.0"
   },
   "devDependencies": {
     "@jest/globals": "^27.5.1",
