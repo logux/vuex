@@ -3,6 +3,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## next
  * Drop NodeJS 12, 14 support
+ * Update dependencies
 
 ## 0.10.3
  * Update dependencies

@@ -499,7 +499,6 @@ it('does not replays actions on logux/ actions', async () => {
   expect(commited).toEqual(['A', 'B', 'A'])
   expect(store.log.actions()).toEqual([
     { type: 'logux/subscribe' },
-    { type: 'logux/unsubscribe' },
     { type: 'B' },
     { type: 'A' }
   ])

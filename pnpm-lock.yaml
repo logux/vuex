@@ -14,14 +14,14 @@ devDependencies:
     specifier: ^27.5.1
     version: 27.5.1
   '@logux/actions':
-    specifier: ^0.2.3
-    version: 0.2.3(@logux/core@0.7.3)
+    specifier: ^0.3.1
+    version: 0.3.1(@logux/core@0.8.5)
   '@logux/client':
-    specifier: ^0.15.3
-    version: 0.15.3(@logux/core@0.7.3)(nanostores@0.5.12)(vue@3.2.36)
+    specifier: ^0.18.4
+    version: 0.18.4(@logux/core@0.8.5)(nanostores@0.7.4)(vue@3.2.36)
   '@logux/core':
-    specifier: ^0.7.3
-    version: 0.7.3
+    specifier: ^0.8.5
+    version: 0.8.5
   '@logux/eslint-config':
     specifier: 46.0.1
     version: 46.0.1(eslint-config-standard@17.0.0)(eslint-plugin-import@2.26.0)(eslint-plugin-jest@26.2.2)(eslint-plugin-node@11.1.0)(eslint-plugin-prefer-let@3.0.1)(eslint-plugin-promise@6.0.0)(eslint-plugin-security@1.5.0)(eslint-plugin-unicorn@42.0.0)(eslint@8.16.0)
@@ -705,24 +705,24 @@ packages:
       chalk: 4.1.2
     dev: true
 
-  /@logux/actions@0.2.3(@logux/core@0.7.3):
-    resolution: {integrity: sha512-LITIzuRFYkss8dL+da8IkTrpPH/q/I9maT1Ip+sanMxIxNu3Ba7eYcxIin7lR/Fhsq1O8ngjzs/clsEgIaR/Og==}
-    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+  /@logux/actions@0.3.1(@logux/core@0.8.5):
+    resolution: {integrity: sha512-9NU+3he2DaOYXlQjaZWornrnMsbw+8mvgUHtTyKcBotvpS5me5VVxVo9y02G7k2byz4FXtvafq9KPVStyag3oA==}
+    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     peerDependencies:
-      '@logux/core': ^0.7.0
+      '@logux/core': ^0.8.0
     dependencies:
-      '@logux/core': 0.7.3
+      '@logux/core': 0.8.5
     dev: true
 
-  /@logux/client@0.15.3(@logux/core@0.7.3)(nanostores@0.5.12)(vue@3.2.36):
-    resolution: {integrity: sha512-bgTIGhZm8OhyPDhR8s+fUsN8tJHTGmKmAgzdSI+a6o981my8UDn5CnRU8fQyBaeMQS+NbLIaaze8+UR1fIdWxg==}
-    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+  /@logux/client@0.18.4(@logux/core@0.8.5)(nanostores@0.7.4)(vue@3.2.36):
+    resolution: {integrity: sha512-gFOU22dxxxR1psxmQH1EO82nSgqkfSgVtKsMpwdLQCvgidjoYLAQYmiv8w5wfo5Kk53V/QvK9irMvr/0N7IW7Q==}
+    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     peerDependencies:
-      '@logux/core': ^0.7.0
+      '@logux/core': ^0.8.0
       '@nanostores/preact': '>=0.0.0'
       '@nanostores/react': '>=0.0.0'
       '@nanostores/vue': '>=0.0.0'
-      nanostores: ^0.5.0
+      nanostores: ^0.6.0 || ^0.7.0
       preact: '>=10.0.0'
       react: '>=18.0.0'
       react-dom: '>=16.8.0'
@@ -743,21 +743,21 @@ packages:
       vue:
         optional: true
     dependencies:
-      '@logux/actions': 0.2.3(@logux/core@0.7.3)
-      '@logux/core': 0.7.3
+      '@logux/actions': 0.3.1(@logux/core@0.8.5)
+      '@logux/core': 0.8.5
       fast-json-stable-stringify: 2.1.0
       nanodelay: 2.0.2
-      nanoevents: 6.0.2
-      nanoid: 3.3.4
-      nanostores: 0.5.12
+      nanoevents: 7.0.1
+      nanoid: 4.0.2
+      nanostores: 0.7.4
       vue: 3.2.36
     dev: true
 
-  /@logux/core@0.7.3:
-    resolution: {integrity: sha512-IMqhl8hEK/Ej/URUcpeREW9hMuKdakVHPyy3k0GSwcC+PlYmtCRirp7+4b7v3EfDjB+evSw8CnQTiNwnfev0gQ==}
-    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+  /@logux/core@0.8.5:
+    resolution: {integrity: sha512-KHNcr1hyaPiU4k407CXegyGz945Imwrelz6XnZpbpFdUvC8PaA43fZiIoZ4y2x8Cwfh8gzWUjFP9JiKXlO2yrA==}
+    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     dependencies:
-      nanoevents: 6.0.2
+      nanoevents: 7.0.1
     dev: true
 
   /@logux/eslint-config@46.0.1(eslint-config-standard@17.0.0)(eslint-plugin-import@2.26.0)(eslint-plugin-jest@26.2.2)(eslint-plugin-node@11.1.0)(eslint-plugin-prefer-let@3.0.1)(eslint-plugin-promise@6.0.0)(eslint-plugin-security@1.5.0)(eslint-plugin-unicorn@42.0.0)(eslint@8.16.0):
@@ -3773,9 +3773,9 @@ packages:
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     dev: true
 
-  /nanoevents@6.0.2:
-    resolution: {integrity: sha512-FRS2otuFcPPYDPYViNWQ42+1iZqbXydinkRHTHFxrF4a1CpBfmydR9zkI44WSXAXCyPrkcGtPk5CnpW6Y3lFKQ==}
-    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+  /nanoevents@7.0.1:
+    resolution: {integrity: sha512-o6lpKiCxLeijK4hgsqfR6CNToPyRU3keKyyI6uwuHRvpRTbZ0wXw51WRgyldVugZqoJfkGFrjrIenYH3bfEO3Q==}
+    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     dev: true
 
   /nanoevents@8.0.0:
@@ -3795,6 +3795,12 @@ packages:
     hasBin: true
     dev: true
 
+  /nanoid@4.0.2:
+    resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: true
+
   /nanospinner@1.0.0:
     resolution: {integrity: sha512-14c2r2QQ9xfTmdbqdF51FKCNvww+0ZON9GeEHur+pBdOufoFvxD4CZQRaYWmFrGH3Nuv7PZ/9Q+wsV+hFSp32g==}
     dependencies:
@@ -3807,9 +3813,9 @@ packages:
       picocolors: 1.0.0
     dev: true
 
-  /nanostores@0.5.12:
-    resolution: {integrity: sha512-5BccS7nNInTc7Noz2gv19gyx5h5y6m72nj6ZnCTV98GdFdwvcFJf2MMl+7VsX76E1toV1YrLqlDn+R+OF73PVg==}
-    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+  /nanostores@0.7.4:
+    resolution: {integrity: sha512-MBeUVt7NBcXqh7AGT+KSr3O0X/995CZsvcP2QEMP+PXFwb07qv3Vjyq+EX0yS8f12Vv3Tn2g/BvK/OZoMhJlOQ==}
+    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     dev: true
 
   /natural-compare@1.4.0:
