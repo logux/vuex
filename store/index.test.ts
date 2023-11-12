@@ -869,7 +869,7 @@ it('applies old actions from store in modules', async () => {
     {
       user: {
         namespaced: false,
-        state: { value: 0 },
+        state: () => ({ value: 0 }),
         mutations: {
           'user/historyLine': historyLine
         }
@@ -1033,7 +1033,7 @@ it('applies old actions from store in nested modules', async () => {
   }
 
   let store2 = _createStore2<Store2State>({
-    state: { value: 0 },
+    state: () => ({ value: 0 }),
     mutations: { historyLine },
     modules: {
       a: {
@@ -1047,7 +1047,7 @@ it('applies old actions from store in nested modules', async () => {
             modules: {
               c: {
                 namespaced: true,
-                state: { value: 0 },
+                state: () => ({ value: 0 }),
                 mutations: { historyLine },
                 modules: {
                   d: {
