@@ -82,9 +82,6 @@ devDependencies:
   nanodelay:
     specifier: ^2.0.2
     version: 2.0.2
-  nanostores:
-    specifier: ^0.5.12
-    version: 0.5.12
   prettier:
     specifier: ^2.6.2
     version: 2.6.2
