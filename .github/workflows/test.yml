@@ -4,11 +4,11 @@ on: [push, pull_request]
 
 jobs:
   full:
-    name: Node.js 17 Full
+    name: Node.js 20 Full
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -16,27 +16,25 @@ jobs:
           version: latest
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: 17
+          node-version: 20
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Run tests
         run: pnpm test
-        env:
-          FORCE_COLOR: 2
   short:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16, 14, 12]
+        node-version: [18, 16]
     name: Node.js ${{ matrix.node-version }} Quick
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -44,15 +42,13 @@ jobs:
           version: latest
 
       - name: Install Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Run unit tests
         run: pnpm test
-        env:
-          FORCE_COLOR: 2

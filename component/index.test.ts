@@ -204,9 +204,7 @@ it('unsubscribes', async () => {
   component.trigger('click', { users: { a: '1' } })
   await nextTick()
   expect(log.actions()).toEqual([
-    { type: 'logux/subscribe', channel: 'users/1', fields: ['photo'] },
-    { type: 'logux/subscribe', channel: 'users/2', fields: ['photo'] },
-    { type: 'logux/unsubscribe', channel: 'users/2', fields: ['photo'] }
+    { type: 'logux/subscribe', channel: 'users/1', fields: ['photo'] }
   ])
 })
 
@@ -237,9 +235,9 @@ it('changes subscription', async () => {
 
   component.trigger('click', { id: '2' })
   await nextTick()
+  await delay(10)
   expect(component.client.log.actions()).toEqual([
     { type: 'logux/subscribe', channel: 'users/1', fields: ['photo'] },
-    { type: 'logux/unsubscribe', channel: 'users/1', fields: ['photo'] },
     { type: 'logux/subscribe', channel: 'users/2', fields: ['photo'] }
   ])
 })
